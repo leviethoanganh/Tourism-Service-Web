@@ -1,0 +1,103 @@
+extends ../layouts/default.pug
+
+block main
+    h1.box-title Chỉnh sửa tài khoản quản trị
+
+    .section-8
+        form(id="setting-account-admin-edit-form")
+            //- Input ẩn để chứa ID tài khoản phục vụ cho việc gửi request PATCH
+            .inner-group(style="display: none;")
+                label.inner-label(for="id") Id *
+                input(
+                    type="text" 
+                    id="id" 
+                    name="id" 
+                    value=account.id
+                )
+
+            .inner-group
+                label.inner-label(for="fullName") Họ tên *
+                input(
+                    type="text" 
+                    id="fullName" 
+                    name="fullName" 
+                    value=account.fullName
+                )
+
+            .inner-group
+                label.inner-label(for="email") Email *
+                input(
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    value=account.email
+                )
+
+            .inner-group
+                label.inner-label(for="phone") Số điện thoại
+                input(
+                    type="text" 
+                    id="phone" 
+                    name="phone" 
+                    value=account.phone
+                )
+
+            .inner-group
+                label.inner-label(for="role") Nhóm quyền
+                select(id="role" name="role")
+                    each item in roleList
+                        option(
+                            value=item.id
+                            selected=(item.id == account.role)
+                        ) #{item.name}
+
+            .inner-group
+                label.inner-label(for="positionCompany") Chức vụ *
+                input(
+                    type="text" 
+                    id="positionCompany" 
+                    name="positionCompany" 
+                    value=account.positionCompany
+                )
+
+            .inner-group
+                label.inner-label(for="status") Trạng thái
+                select(id="status" name="status")
+                    option(
+                        value="initial"
+                        selected=(account.status == "initial")
+                    ) Khởi tạo
+                    option(
+                        value="active"
+                        selected=(account.status == "active")
+                    ) Hoạt động
+                    option(
+                        value="inactive"
+                        selected=(account.status == "inactive")
+                    ) Tạm dừng
+
+            .inner-group
+                label.inner-label(for="password") Mật khẩu mới
+                input(
+                    type="text" 
+                    id="password" 
+                    name="password"
+                    placeholder="Để trống nếu không muốn đổi mật khẩu"
+                )
+
+            .inner-group.inner-two-col
+                label.inner-label(for="avatar") Ảnh đại diện
+                div(class="inner-upload-image")
+                    input(
+                        type="file" 
+                        id="avatar" 
+                        name="avatar" 
+                        filepond-image 
+                        image-default=account.avatar
+                    )
+
+            .inner-button.inner-two-col
+                button Cập nhật
+
+        .inner-back
+            a(href=`/${pathAdmin}/setting/account-admin/list`) Quay lại danh sách

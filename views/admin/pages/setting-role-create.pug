@@ -1,0 +1,26 @@
+extends ../layouts/default.pug
+include ../mixins/checkbox.pug
+
+
+block main
+  h1.box-title Tạo nhóm quyền
+
+  .section-8
+    form(id="setting-role-create-form")
+      .inner-group
+        label.inner-label(for="name") Tên nhóm quyền *
+        input(type="text" id="name" name="name")
+      .inner-group
+        label.inner-label(for="description") Mô tả ngắn
+        input(type="text" id="description" name="description")
+      .inner-group
+        label.inner-label Phân quyền
+        .inner-checkbox-list
+          each item, index in permissionList
+            .inner-checkbox-item
+              +checkbox-30("permissions", `permissions-${index}`, item.value)
+              label(for=`permissions-${index}`) #{item.label}
+      .inner-button.inner-two-col
+        button Tạo mới
+    .inner-back
+      a(href=`/${pathAdmin}/setting/role/list`) Quay lại danh sách

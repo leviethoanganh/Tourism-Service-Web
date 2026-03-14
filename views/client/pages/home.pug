@@ -1,0 +1,364 @@
+extends ../layouts/default.pug
+include ../mixins/product-item.pug
+
+block main
+  // Section 1
+  .section-1
+    .container
+      .inner-wrap
+        h1.inner-title(
+          data-aos-duration="800" 
+          data-aos="fade-up"
+          )
+          | Du lịch Châu Á - Khám phá Mỹ, Úc, Âu
+          br
+          | Đi nơi đâu bạn muốn
+        p.inner-desc(
+          data-aos-delay="200" 
+          data-aos-duration="800" 
+          data-aos="fade-up"
+          )
+          | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+        form.inner-form(
+          data-aos-delay="400" 
+          data-aos-duration="800" 
+          data-aos="fade-up" 
+          action=""
+          form-search
+          )
+          .inner-box.inner-address
+            .inner-input-group
+              img.inner-icon(
+                alt="" 
+                src="/client/assets/images/icon-address.png"
+                )
+              input.inner-input(
+                placeholder="Bạn muốn đi đâu?" 
+                type="text"
+                name="locationTo"
+                )
+              i.fa-solid.fa-angle-down.inner-down
+            .inner-suggest
+              .inner-suggest-title
+                i.fa-solid.fa-location-dot
+                | Địa Điểm Hot
+              .inner-suggest-list
+                .inner-item
+                  .inner-item-image
+                    img(
+                      alt="" 
+                      src="/client/assets/images/product-1.png"
+                      )
+                  .inner-item-content
+                    .inner-item-title Nhật Bản
+                    .inner-item-desc 50 tours
+                .inner-item
+                  .inner-item-image
+                    img(
+                      alt="" 
+                      src="/client/assets/images/product-1.png"
+                      )
+                  .inner-item-content
+                    .inner-item-title Phú Quốc
+                    .inner-item-desc 50 tours
+                .inner-item
+                  .inner-item-image
+                    img(
+                      alt="" 
+                      src="/client/assets/images/product-1.png"
+                      )
+                  .inner-item-content
+                    .inner-item-title Singapore
+                    .inner-item-desc 50 tours
+          .inner-box.inner-user
+            .inner-input-group
+              img.inner-icon(
+                alt="" 
+                src="/client/assets/images/icon-user.png"
+                )
+              input.inner-input(
+                readonly="" 
+                placeholder="Số lượng" 
+                type="text"
+                )
+              i.fa-solid.fa-angle-down.inner-down
+            .inner-quantity
+              .inner-item
+                .inner-label Người lớn
+                .inner-count
+                  span.inner-down -
+                  span.inner-number (stock-adult) 1
+                  span.inner-up +
+              .inner-item
+                .inner-label Trẻ em
+                .inner-count
+                  span.inner-down -
+                  span.inner-number (stock-children) 0
+                  span.inner-up +
+              .inner-item
+                .inner-label Em bé
+                .inner-count
+                  span.inner-down -
+                  span.inner-number (stock-baby) 0
+                  span.inner-up +
+          .inner-box.inner-calendar
+            .inner-input-group
+              img.inner-icon(
+                alt="" 
+                src="/client/assets/images/icon-calendar.png"
+                )
+              input.inner-input(
+                placeholder="Lịch khởi hành" 
+                type="date"
+                name="departureDate"
+                )
+              i.fa-solid.fa-angle-down.inner-down
+          button.inner-button
+            i.fa-solid.fa-magnifying-glass
+            | Tìm Kiếm
+  // End Section 1
+  // Section 2
+  .section-2
+    .container
+      .inner-wrap
+        .inner-info
+          h2.inner-title(
+            data-aos-duration="800" 
+            data-aos="fade-up"
+            )
+            | ƯU ĐÃI 2024
+            br
+            | TOUR GIỜ CHÓT
+          p.inner-desc(
+            data-aos-delay="200" 
+            data-aos-duration="800" 
+            data-aos="fade-up"
+            ) Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+          .inner-clock-title(
+            data-aos-delay="400" 
+            data-aos-duration="800" 
+            data-aos="fade-up"
+            ) Kết thúc sau
+          .inner-clock-number(
+            data-aos-delay="400" 
+            data-aos-duration="800" 
+            data-aos="fade-up" 
+            clock-expire="2025-10-28T20:00:00"
+            )
+            .inner-item
+              .inner-number 00
+              .inner-label Ngày
+            .inner-item
+              .inner-number 00
+              .inner-label Giờ
+            .inner-item
+              .inner-number 00
+              .inner-label Phút
+            .inner-item
+              .inner-number 00
+              .inner-label Giây
+          .inner-discount-title(
+            data-aos-delay="600" 
+            data-aos-duration="800" 
+            data-aos="fade-up"
+            ) GIẢM ĐẾN
+          .inner-discount-price(
+            data-aos-delay="600" 
+            data-aos-duration="800" 
+            data-aos="fade-up"
+            )
+            | 990.000
+            span đ
+        .inner-list(
+          data-aos-delay="800" 
+          data-aos-duration="800" 
+          data-aos="fade-up"
+          )
+          .swiper.swiperSection2
+            .swiper-wrapper
+              each item in tourListSection2
+                .swiper-slide
+                  +product-item(item)
+  // End Section 2
+  // Section 3
+  .section-3
+    .container
+      h2.box-title(
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        ) Khuyến Mại Bùng Nổ - Đánh Tan Nóng Bức
+      .inner-wrap(
+        data-aos-delay="200" 
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        )
+        .swiper.swiperSection3
+          .swiper-wrapper
+            .swiper-slide
+              .inner-item
+                a(href="#")
+                  img(
+                    alt="" 
+                    src="/client/assets/images/banner-1.png"
+                    )
+            .swiper-slide
+              .inner-item
+                a(href="#")
+                  img(
+                    alt="" 
+                    src="/client/assets/images/banner-2.png"
+                    )
+            .swiper-slide
+              .inner-item
+                a(href="#")
+                  img(
+                    alt="" 
+                    src="/client/assets/images/banner-3.png"
+                    )
+            .swiper-slide
+              .inner-item
+                a(href="#")
+                  img(
+                    alt="" 
+                    src="/client/assets/images/banner-3.png"
+                    )
+            .swiper-slide
+              .inner-item
+                a(href="#")
+                  img(
+                    alt="" 
+                    src="/client/assets/images/banner-3.png"
+                    )
+          .swiper-pagination
+  // End Section 3
+  // Section 4
+  .section-4
+    .container
+      h2.box-title(
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        ) Tour Trong Nước
+      .inner-wrap(
+        data-aos-delay="200" 
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        )
+        each item in tourListSection4
+          +product-item(item)
+      .inner-button(
+        data-aos-delay="200" 
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        )
+        a.button-outline(href="#") Xem tất cả
+  // End Section 4
+  // Section 5
+  .section-5(
+    data-aos-duration="800" 
+    data-aos="fade-up"
+    )
+    .container
+      a.inner-image(href="#")
+        img(
+          alt="" 
+          src="/client/assets/images/banner-4.png"
+          )
+  // End Section 5
+  // Section 6
+  .section-4
+    .container
+      h2.box-title(
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        ) Tour Nước Ngoài
+      .inner-wrap(
+        data-aos-delay="200" 
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        )
+        each item in tourListSection6
+          +product-item(item)
+      .inner-button(
+        data-aos-delay="400" 
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        )
+        a.button-outline(href="#") Xem tất cả
+  // End Section 6
+  // Section 7
+  .section-5(
+    data-aos-duration="800" 
+    data-aos="fade-up"
+    )
+    .container
+      a.inner-image(href="#")
+        img(
+          alt="" 
+          src="/client/assets/images/banner-5.png"
+          )
+  // End Section 7
+  // Section 8
+  .section-8
+    .container
+      h2.box-title(
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        ) Tin Tức Mới
+      .inner-wrap(
+        data-aos-delay="200" 
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        )
+        .blog-item-1
+          a(href="#")
+            .inner-image
+              img(
+                alt="" 
+                src="/client/assets/images/blog-1.png"
+                )
+            .inner-content
+              .inner-date 23/05/2024
+              h3.inner-title Homestay “cổ tích” giữa Đà Lạt mộng mơ
+        .blog-item-2
+          a(href="#")
+            .inner-image
+              img(
+                alt="" 
+                src="/client/assets/images/blog-2.png"
+                )
+            .inner-content
+              .inner-date 23/05/2024
+              h3.inner-title Top 5 điểm check in độc đáo tại Singapore
+              .inner-desc
+                | Nếu bạn nghĩ du lịch Singapore rất nhàm chán vì chỉ mãi quanh quẩn trong những khối bê tông vô cảm thì bạn “chắc chưa?”. Tuy đảo quốc Sư Tử không phải là một quốc gia rộng lớn nhưng các địa điểm du lịch tại Singapore chưa từng đánh mất sức hút đối với cộng đồng xê dịch quốc tế.
+        .blog-item-1
+          a(href="#")
+            .inner-image
+              img(
+                alt="" 
+                src="/client/assets/images/blog-3.png"
+                )
+            .inner-content
+              .inner-date 23/05/2024
+              h3.inner-title(title="Đặc sản không thể bỏ qua khi đến với Đà Nẵng – Hội An") Đặc sản không thể bỏ qua khi đến với Đà Nẵng – Hội An
+        .blog-item-1
+          a(href="#")
+            .inner-image
+              img(
+                alt="" 
+                src="/client/assets/images/blog-4.png"
+                )
+            .inner-content
+              .inner-date 23/05/2024
+              h3.inner-title Homestay “cổ tích” giữa Đà Lạt mộng mơ
+        .blog-item-1
+          a(href="#")
+            .inner-image
+              img(
+                alt="" 
+                src="/client/assets/images/blog-5.png"
+                )
+            .inner-content
+              .inner-date 23/05/2024
+              h3.inner-title Homestay “cổ tích” giữa Đà Lạt mộng mơ
+  // End Section 8

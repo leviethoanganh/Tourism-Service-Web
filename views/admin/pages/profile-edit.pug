@@ -1,0 +1,31 @@
+extends ../layouts/default.pug
+
+
+block main
+  h1.box-title Thông tin cá nhân
+
+  .section-8
+    form(id="profile-edit-form")
+      .inner-group
+        label.inner-label(for="fullName") Họ tên *
+        input(type="text" id="fullName" name="fullName" value=account.fullName)
+      .inner-group
+        label.inner-label(for="email") Email *
+        input(type="email" id="email" name="email" value=account.email)
+      .inner-group
+        label.inner-label(for="phone") Số điện thoại
+        input(type="text" id="phone" name="phone" value=account.phone)
+      .inner-group
+        label.inner-label Chức vụ
+        input(type="text" value=account.positionCompany readonly)
+      .inner-group
+        label.inner-label Nhóm quyền
+        input(type="text" value=account.roleName readonly)
+      .inner-group.inner-two-col
+        label.inner-label(for="avatar") Ảnh đại diện
+        div(class="inner-upload-image")
+          input(type="file" id="avatar" name="avatar" filepond-image image-default=account.avatar)
+      .inner-button.inner-two-col
+        button Cập nhật
+    .inner-back
+      a(href=`/${pathAdmin}/profile/change-password`) Đổi mật khẩu

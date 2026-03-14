@@ -1,0 +1,135 @@
+extends ../layouts/default.pug
+include ../mixins/checkbox.pug
+
+
+block main
+  h1.box-title Quản lý tour
+
+  //- Section 4
+  .section-4
+    .inner-wrap
+      .inner-item.inner-label
+        <i class="fa-solid fa-filter"></i> Bộ lọc
+      .inner-item
+        select
+          option(value="") Trạng thái
+          option(value="") Hoạt động
+          option(value="") Tạm dừng
+      .inner-item
+        select
+          option(value="") Người tạo
+          option(value="") Lê Văn A
+          option(value="") Lê Văn B
+      .inner-item.inner-date
+        input(type="date")
+        span -
+        input(type="date")
+      .inner-item
+        select
+          option(value="") Danh mục
+          option(value="") Danh mục 1
+          option(value="") Danh mục 2
+      .inner-item
+        select
+          option(value="") Mức giá
+          option(value="") Dưới 1tr
+          option(value="") Từ 1tr đến 2tr
+          option(value="") Từ 2tr đến 6tr
+          option(value="") Trên 6tr
+      .inner-item.inner-reset
+        <i class="fa-solid fa-rotate-left"></i>
+  //- End Section 4
+
+  //- Section 5
+  .section-5
+    .inner-wrap
+      .inner-change-status
+        .inner-item
+          select
+            option(value="") -- Hành động --
+            option(value="") Hoạt động
+            option(value="") Dừng hoạt động
+            option(value="") Xóa
+        .inner-item
+          button Áp dụng
+      .inner-search
+        <i class="fa-solid fa-magnifying-glass"></i>
+        input(type="text" placeholder="Tìm kiếm")
+      .inner-button-create
+        a(href=`/${pathAdmin}/tour/create`) + Tạo mới
+      .inner-button-trash
+        a(href=`/${pathAdmin}/tour/trash`) Thùng rác
+  //- End Section 5
+
+  //- Section 6
+  .section-6
+    .table-2
+      table
+        thead
+          tr
+            th.text-left
+              +checkbox-30("", "")
+            th.text-left Tên tour
+            th.text-center Ảnh đại diện
+            th.text-left Giá
+            th.text-left Còn lại
+            th.text-center Vị trí
+            th.text-center Trạng thái
+            th.text-left Tạo bởi
+            th.text-left Cập nhật bởi
+            th.text-left Hành động
+        tbody
+          each item in tourList          
+            tr
+              td.text-left
+                +checkbox-30("", "")
+              td.text-left #{item.name}
+              td.text-center
+                img(src= item.avatar class="inner-avatar")
+              td.text-left
+                div NL: #{item.priceNewAdult.toLocaleString("vi-VN")} đ
+                div TE: #{item.priceNewChildren.toLocaleString("vi-VN")} đ
+                div EB: #{item.priceNewBaby.toLocaleString("vi-VN")} đ
+              td.text-left
+                div NL: #{item.stockAdult}
+                div TE: #{item.stockChildren}
+                div EB: #{item.stockBaby}
+              td.text-center #{item.position}
+
+              td.text-center
+                if (item.status == "active")
+                  .tag.tag-green Hoạt động
+                else if (item.status == "inactive")
+                  .tag.tag-red Tạm dừng
+
+              td.text-left
+                if (item.createdByFullName)
+                  div #{item.createdByFullName}
+                  div.inner-small #{item.createdAtFormat}
+              td.text-left
+                if (item.updatedByFullName)
+                  div #{item.updatedByFullName}
+                  div.inner-small #{item.updatedAtFormat}
+              td.text-left
+                .box-actions
+                  a(
+                    href=`/${pathAdmin}/tour/edit/${item._id}`
+                    class="inner-edit"
+                  )
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  button(
+                    class="inner-remove"
+                    button-delete
+                    data-api=`/${pathAdmin}/tour/delete/${item._id}`
+                    )
+                    <i class="fa-solid fa-trash-can"></i>
+  //- End Section 6
+
+  //- Section 7
+  .section-7
+    span(class="inner-label") Hiển thị 1 - 9 của 78
+    select(class="inner-pagination")
+      option Trang 1
+      option Trang 2
+      option Tran 3
+  //- End Section 7

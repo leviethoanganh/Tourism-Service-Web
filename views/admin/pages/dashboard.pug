@@ -1,0 +1,92 @@
+extends ../layouts/default.pug
+
+block main
+  if (pers.includes("dashboard-view"))
+    h1.box-title Tổng quan
+
+    //- Section 1
+    .section-1
+      .inner-item
+        .inner-icon
+          img(src="/admin/assets/images/section-1-icon-1.svg")
+        .inner-content
+          .inner-title Tài khoản quản trị
+          .inner-number #{overview.totalAdmin.toLocaleString("vi-VN")}
+      .inner-item
+        .inner-icon
+          img(src="/admin/assets/images/section-1-icon-2.svg")
+        .inner-content
+          .inner-title Đơn hàng
+          .inner-number #{overview.totalOrder.toLocaleString("vi-VN")}
+      .inner-item
+        .inner-icon
+          img(src="/admin/assets/images/section-1-icon-3.svg")
+        .inner-content
+          .inner-title Doanh thu
+          .inner-number #{overview.totalRevenue.toLocaleString("vi-VN")} đ
+    //- End Section 1
+
+    //- Section 2
+    .section-2
+      .inner-head
+        h2.inner-title Biểu đồ doanh thu
+        input.inner-filter(type="month")
+      .inner-chart
+        canvas(id="revenue-chart")
+    //- End Section 2
+
+    //- Section 3
+    .section-3
+      h2.inner-title-main Đơn hàng mới
+
+      .table-1
+        table
+          thead
+            tr
+              th.text-left Mã
+              th.text-left Thông tin khách
+              th.text-left Danh sách tour
+              th.text-left Thanh toán
+              th.text-left Trạng thái
+              th.text-right Ngày đặt
+          tbody
+            tr
+              td.text-left
+                .text-primary OD000001
+              td.text-left
+                div Họ tên: Lê Văn A
+                div SĐT: 0123456789
+                div Ghi chú: Test...
+              td.text-left
+                .tour-list
+                  .tour-item
+                    img(src="/admin/assets/images/tour-1.png" class="inner-image")
+                    .inner-content
+                      .inner-name Tour Hạ Long
+                      .inner-desc
+                        div Người lớn: 3 x 1,500,000đ
+                        div Trẻ em: 2 x 1,300,000đ
+                        div Em bé: 2 x 1,000,000đ
+                  .tour-item
+                    img(src="/admin/assets/images/tour-1.png" class="inner-image")
+                    .inner-content
+                      .inner-name Tour Hạ Long
+                      .inner-desc
+                        div Người lớn: 3 x 1,500,000đ
+                        div Trẻ em: 2 x 1,300,000đ
+                        div Em bé: 2 x 1,000,000đ
+              td.text-left
+                div Tổng tiền: 10,000,000đ
+                div Giảm: 400,000đ
+                div Mã giảm: TOURMUAHE2024
+                div Thanh toán: 9,600,000đ
+                div PTTT: Ví Momo
+                div TTTT: Đã thanh toán
+              td.text-left
+                .tag.tag-orange Khởi tạo
+                //- .tag.tag-green Đã duyệt
+                //- .tag.tag-red Đã hủy
+              td.text-right
+                div 16:20
+                div 01/01/2024
+    //- End Section 3

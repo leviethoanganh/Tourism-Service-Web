@@ -1,0 +1,10 @@
+mixin options(list, level = 0, parent = "")
+    each item in list
+        - const prefix = Array(level).fill("--").join("")
+        option(
+            value=item.id
+            selected=(item.id == parent ? true : false)
+        ) #{prefix} #{item.name}
+        
+        if (item.children && item.children.length > 0)
+            +options(item.children, level + 1, parent)

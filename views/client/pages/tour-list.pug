@@ -1,0 +1,114 @@
+extends ../layouts/default.pug
+include ../mixins/breadcrumb.pug
+include ../mixins/product-item.pug
+
+block main
+  // Breadcrumb
+  +breadcrumb(categoryDetail)
+  // End Breadcrumb
+
+  // Section 9
+  .section-9
+    .container
+      .inner-wrap
+        .inner-left
+          // Box Filter
+          .box-filter
+            .inner-filter-list
+              .inner-head
+                .inner-title Bộ Lọc
+                i.fa-solid.fa-filter
+              .inner-group
+                .inner-label Điểm đi
+                select(name="locationFrom")
+                  option(value="") -- Chọn điểm đi --
+                  each item in cityList
+                    option(value=item.id) #{item.name}
+              .inner-group
+                .inner-label Điểm đến
+                select(name="locationTo")
+                  option(value="") -- Chọn điểm đến --
+                  each item in cityList
+                    option(value=item.name) #{item.name}
+              .inner-group
+                .inner-label Ngày khởi hành
+                input(type="date" name="departureDate" )
+              .inner-group
+                .inner-label Số Lượng Hành Khách
+                .inner-input-list
+                  .inner-input-item
+                    .inner-label Người lớn:
+                    input(
+                      value="0" 
+                      type="number"
+                      name="stockAdult"
+                      )
+                  .inner-input-item
+                    .inner-label Trẻ em:
+                    input(
+                      value="0" 
+                      type="number"
+                      name="stockChildren"                      
+                      )
+                  .inner-input-item
+                    .inner-label Em bé:
+                    input(
+                      value="0" 
+                      type="number"
+                      name="stockBaby"                      
+                      )
+              .inner-group
+                .inner-label Mức giá
+                select(name="price")
+                  option(value="") -- Chọn khoảng giá --
+                  option(value="0-999999 ") Dưới 1tr
+                  option(value="1000000-3000000") Từ 1tr đến 3tr
+                  option(value="3000000-6000000") Từ 3tr đến 6tr
+                  option(value="6000000-10000000") Từ 6tr đến 10tr
+                  option(value="10000000-15999999") Trên 1tr
+              button.inner-button Áp Dụng
+          // End Box Filter
+          .inner-overlay
+        .inner-right
+          .inner-info-1
+            h2.inner-title #{categoryDetail.name}
+            .inner-desc
+              | #{categoryDetail.description}
+          .inner-info-2
+            .inner-sort
+              .inner-label Sắp xếp:
+              button
+                | Giá tăng dần
+                i.fa-solid.fa-circle-arrow-up
+              button
+                | Giá giảm dần
+                i.fa-solid.fa-circle-arrow-down
+              button.active
+                | Khuyến Mại Hot
+                i.fa-solid.fa-tag
+              button
+                | Xem Nhiều
+                i.fa-solid.fa-eye
+            .inner-total-item
+              | Tất cả:
+              b 101 Tour
+            button.inner-button-filter
+              | Bộ Lọc
+              i.fa-solid.fa-filter
+          .inner-list-tour
+            if (tourList.length > 0)
+              each item in tourList
+                +product-item(item)
+            else
+              p Không có dữ liệu.
+          .box-pagination
+            .inner-list-button
+              button
+                i.fa-solid.fa-angles-left
+              button.active 1
+              button 2
+              button 3
+              button 4
+              button
+                i.fa-solid.fa-angles-right
+  // End Section 9

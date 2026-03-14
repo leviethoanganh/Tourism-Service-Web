@@ -1,0 +1,76 @@
+extends ../layouts/default.pug
+include ../mixins/checkbox.pug
+
+
+block main
+  h1.box-title Nhóm quyền 
+
+  //- Section 5
+  .section-5
+    .inner-wrap
+      .inner-change-status
+        .inner-item
+          select
+            option(value="") -- Hành động --
+            option(value="") Hoạt động
+            option(value="") Dừng hoạt động
+            option(value="") Xóa
+        .inner-item
+          button Áp dụng
+      .inner-search
+        <i class="fa-solid fa-magnifying-glass"></i>
+        input(type="text" placeholder="Tìm kiếm")
+      .inner-button-create
+        a(href=`/${pathAdmin}/setting/role/create`) + Tạo mới
+  //- End Section 5
+
+  //- Section 6
+  .section-6
+    .table-2
+      table
+        thead
+          tr
+            th.text-left
+              +checkbox-30("", "")
+            th.text-left Tên nhóm quyền
+            th.text-left Mô tả ngắn
+            th.text-left Tạo bởi
+            th.text-left Cập nhật bởi
+            th.text-left Hành động
+        tbody
+          each item in roleList
+            tr
+              td.text-left
+                +checkbox-30("", "")
+              td.text-left #{item.name}
+              td.text-left #{item.description}
+              td.text-left
+                if (item.createdByFullName)
+                  div #{item.createdByFullName}
+                  div.inner-small #{item.createdAtFormat}
+              td.text-left
+                if (item.updatedByFullName)
+                  div #{item.updatedByFullName}
+                  div.inner-small #{item.updatedAtFormat}
+
+              td.text-left
+                .box-actions
+                  a(href=`/${pathAdmin}/setting/role/edit/${item.id}`
+                      class="inner-edit")
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  button(
+                    class="inner-remove"
+                    button-delete
+                    data-api=`/${pathAdmin}/setting/role/delete/${item.id}`
+                    )
+                    <i class="fa-solid fa-trash-can"></i>
+  //- End Section 6
+
+  //- Section 7
+  .section-7
+    span(class="inner-label") Hiển thị 1 - 9 của 78
+    select(class="inner-pagination")
+      option Trang 1
+      option Trang 2
+      option Tran 3
+  //- End Section 7

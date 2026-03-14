@@ -1,0 +1,52 @@
+mixin product-item(item)
+  if item
+    - const priceAdult = item.priceAdult || 0;
+    - const priceNewAdult = item.priceNewAdult || 0;
+    - let discount = 0;
+    if priceAdult > 0
+      - discount = Math.floor(((priceAdult - priceNewAdult) / priceAdult) * 100);
+
+    .product-item
+      .inner-image
+        a(href=`/tours/detail/${item.slug}`)
+          img(
+            src=(item.avatar || "/client/assets/images/default-tour.png") 
+            alt=item.title
+          )
+      
+      if discount > 0
+        .inner-discount
+          i.fa-solid.fa-bolt
+          |  Giảm -#{discount}%
+
+      .inner-content
+        h3.inner-title
+          a(href=`/tours/detail/${item.slug}`) #{item.name || "Tên tour đang cập nhật"}
+        
+        .inner-prices
+          .inner-price-old
+            | #{priceAdult.toLocaleString("vi-VN")}
+            span.inner-unit đ
+          .inner-price-new
+            | #{priceNewAdult.toLocaleString("vi-VN")}
+            span.inner-unit đ
+        
+        .inner-desc
+          if item.code
+            div Mã Tour: #[span #{item.code}]
+          div Ngày Khởi Hành: #[span #{item.departureDateFormat || "Liên hệ"}]
+          div Thời Gian: #[span #{item.time || "Đang cập nhật"}]
+      
+        .inner-meta
+          .inner-rating
+            .inner-stars
+              - for (var i = 0; i < 5; i++)
+                if i < (item.rating || 5)
+                  i.fa-solid.fa-star
+                else
+                  i.fa-regular.fa-star
+            .inner-number (#{item.rating || 5})
+          
+          .inner-stock
+            .inner-label Số chỗ còn:
+            .inner-number #{item.stockAdult || 0}

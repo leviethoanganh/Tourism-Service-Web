@@ -1,0 +1,108 @@
+extends ../layouts/default.pug
+include ../mixins/checkbox.pug
+
+
+block main
+  h1.box-title Quản lý đơn hang
+
+  //- Section 4
+  .section-4
+    .inner-wrap
+      .inner-item.inner-label
+        <i class="fa-solid fa-filter"></i> Bộ lọc
+      .inner-item
+        select
+          option(value="") Trạng thái
+          option(value="") Hoạt động
+          option(value="") Tạm dừng
+      .inner-item.inner-date
+        input(type="date")
+        span -
+        input(type="date")
+      .inner-item
+        select
+          option(value="") Phương thức thanh toán
+          option(value="") Tiền mặt
+          option(value="") Chuyển khoản
+          option(value="") Ví Momo
+      .inner-item
+        select
+          option(value="") Trạng thái thanh toán
+          option(value="") Chưa thanh toán
+          option(value="") Đã thanh toán
+      .inner-item.inner-reset
+        <i class="fa-solid fa-rotate-left"></i>
+  //- End Section 4
+
+  //- Section 5
+  .section-5
+    .inner-wrap
+      .inner-search
+        <i class="fa-solid fa-magnifying-glass"></i>
+        input(type="text" placeholder="Tìm kiếm")
+  //- End Section 5
+
+  //- Section 6
+  .section-6
+    .table-2
+      table
+        thead
+          tr
+            th.text-left Mã
+            th.text-left Thông tin khách
+            th.text-left Danh sách tour
+            th.text-left Thanh toán
+            th.text-left Trạng thái
+            th.text-right Ngày đặt
+            th.text-left Hành động
+        tbody
+          each orderDetail in orderList
+            tr
+              td.text-left
+                .text-primary #{orderDetail.code}
+              td.text-left
+                div Họ tên: #{orderDetail.fullName}
+                div SĐT: #{orderDetail.phone}
+                div Ghi chú: #{orderDetail.note}
+              td.text-left
+                .tour-list
+                  each item in orderDetail.items
+                    .tour-item
+                      img(src=item.avatar class="inner-image")
+                      .inner-content
+                          .inner-name #{item.name}
+                          .inner-desc
+                              div Người lớn: #{item.quantityAdult} x #{item.priceNewAdult.toLocaleString("vi-VN")}đ
+                              div Trẻ em: #{item.quantityChildren} x #{item.priceNewChildren.toLocaleString("vi-VN")}đ
+                              div Em bé: #{item.quantityBaby} x #{item.priceNewBaby.toLocaleString("vi-VN")}đ
+            
+              td.text-left
+                div Tạm tính: #{orderDetail.subTotal.toLocaleString("vi-VN")} đ
+                div Giảm: -#{orderDetail.discount.toLocaleString("vi-VN")} đ
+                //- div Mã giảm: TOURMUAHE2024
+                div Thanh toán: #{orderDetail.total.toLocaleString("vi-VN")} đ
+                div PTTT: #{orderDetail.paymentMethodName}
+                div TTTT: #{orderDetail.paymentStatusName}
+              td.text-left
+                div(class=`tag tag-${orderDetail.statusDetail.color}`) #{orderDetail.statusDetail.label}
+              //- .tag.tag-green Đã duyệt
+              //- .tag.tag-red Đã hủy
+              td.text-right
+                div #{orderDetail.createdAtTime}
+                div #{orderDetail.createdAtDate}
+              td.text-left
+                .box-actions
+                  a(href= `/${pathAdmin}/order/edit/${orderDetail.id}` class="inner-edit")
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  a(href="#" class="inner-remove")
+                    <i class="fa-solid fa-trash-can"></i>
+  //- End Section 6
+
+  //- Section 7
+  .section-7
+    span(class="inner-label") Hiển thị 1 - 9 của 78
+    select(class="inner-pagination")
+      option Trang 1
+      option Trang 2
+      option Tran 3
+  //- End Section 7

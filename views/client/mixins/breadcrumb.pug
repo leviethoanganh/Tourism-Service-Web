@@ -1,0 +1,23 @@
+mixin breadcrumb(categoryDetail, tourDetail)
+  // Chỉ hiển thị breadcrumb nếu có dữ liệu tour
+  if (tourDetail)
+    .breadcrumb
+      .inner-image
+        img(
+          src=tourDetail.avatar
+          alt=tourDetail.name
+        )
+      .inner-content
+        .container
+          .inner-wrap
+            h1.inner-title #{tourDetail.name}
+            nav.inner-links
+              a(href="/") Trang Chủ
+              
+              if (categoryDetail)
+                i.fa-solid.fa-angles-right
+                a(href=`/category/${categoryDetail.slug}`) #{categoryDetail.name}
+              
+              i.fa-solid.fa-angles-right
+              // Sửa lại đường dẫn cho đúng logic của Tour
+              a(href=`/tours/detail/${tourDetail.slug}`) #{tourDetail.name}
