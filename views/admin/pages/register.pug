@@ -1,18 +1,18 @@
 extends ../layouts/account.pug
 include ../mixins/checkbox.pug
 
-block main 
+block main
   .form-account
-    h1.inner-title Đăng ký
-    .inner-desc Tạo một tài khoản để tiếp tục
+    h1.inner-title Register
+    .inner-desc Create an account to continue
     form(class="inner-form" id="registerForm")
       .inner-group
-        label.inner-label(for="fullName") Họ tên *
+        label.inner-label(for="fullName") Full Name *
         input(
           type="text"
           id="fullName"
           name="fullName"
-          placeholder="Ví dụ: Lê Văn A"
+          placeholder="e.g. Le Van A"
           class="inner-control"
         )
       .inner-group
@@ -21,11 +21,11 @@ block main
           type="email"
           id="email"
           name="email"
-          placeholder="Ví dụ: levana@gmail.com"
+          placeholder="e.g. levana@gmail.com"
           class="inner-control"
         )
       .inner-group
-        label.inner-label(for="password") Mật khẩu *
+        label.inner-label(for="password") Password *
         input(
           type="password"
           id="password"
@@ -35,8 +35,8 @@ block main
       .inner-meta
         .inner-check
           +checkbox-30("agree", "agree")
-          label(for="agree") Tôi chấp nhận các điều khoản và điều kiện *
-      button.inner-button Đăng Ký
+          label(for="agree") I accept the terms and conditions *
+      button.inner-button Register
       .inner-more
-        span Bạn đã có tài khoản?
-        a(href=`/${pathAdmin}/account/login`) Đăng nhập
+        span Already have an account?
+        a(href=`/${pathAdmin}/account/login`) Login

@@ -3,7 +3,7 @@ include ../mixins/checkbox.pug
 
 
 block main
-  h1.box-title Nhóm quyền 
+  h1.box-title Role Groups
 
   //- Section 5
   .section-5
@@ -11,17 +11,17 @@ block main
       .inner-change-status
         .inner-item
           select
-            option(value="") -- Hành động --
-            option(value="") Hoạt động
-            option(value="") Dừng hoạt động
-            option(value="") Xóa
+            option(value="") -- Action --
+            option(value="") Active
+            option(value="") Inactive
+            option(value="") Delete
         .inner-item
-          button Áp dụng
+          button Apply
       .inner-search
         <i class="fa-solid fa-magnifying-glass"></i>
-        input(type="text" placeholder="Tìm kiếm")
+        input(type="text" placeholder="Search")
       .inner-button-create
-        a(href=`/${pathAdmin}/setting/role/create`) + Tạo mới
+        a(href=`/${pathAdmin}/setting/role/create`) + Create New
   //- End Section 5
 
   //- Section 6
@@ -32,11 +32,11 @@ block main
           tr
             th.text-left
               +checkbox-30("", "")
-            th.text-left Tên nhóm quyền
-            th.text-left Mô tả ngắn
-            th.text-left Tạo bởi
-            th.text-left Cập nhật bởi
-            th.text-left Hành động
+            th.text-left Role Name
+            th.text-left Description
+            th.text-left Created By
+            th.text-left Updated By
+            th.text-left Actions
         tbody
           each item in roleList
             tr
@@ -68,9 +68,9 @@ block main
 
   //- Section 7
   .section-7
-    span(class="inner-label") Hiển thị 1 - 9 của 78
+    span(class="inner-label") Showing 1 - 9 of 78
     select(class="inner-pagination")
-      option Trang 1
-      option Trang 2
-      option Tran 3
+      option Page 1
+      option Page 2
+      option Page 3
   //- End Section 7

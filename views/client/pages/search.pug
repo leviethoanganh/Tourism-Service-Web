@@ -5,11 +5,11 @@ block main
   // Section 4
   .section-4(style="padding-top: 60px;")
     .container
-      h2.box-title Kết quả tìm kiếm
+      h2.box-title Search Results
       .inner-wrap
         if tourList && tourList.length > 0
           each item in tourList
             +product-item(item)
         else
-          p Không tìm thấy kết quả.
+          p No results found.
   // End Section 4

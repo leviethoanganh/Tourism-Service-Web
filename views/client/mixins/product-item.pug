@@ -10,33 +10,33 @@ mixin product-item(item)
       .inner-image
         a(href=`/tours/detail/${item.slug}`)
           img(
-            src=(item.avatar || "/client/assets/images/default-tour.png") 
+            src=(item.avatar || "/client/assets/images/default-tour.png")
             alt=item.title
           )
-      
+
       if discount > 0
         .inner-discount
           i.fa-solid.fa-bolt
-          |  Giảm -#{discount}%
+          |  Sale -#{discount}%
 
       .inner-content
         h3.inner-title
-          a(href=`/tours/detail/${item.slug}`) #{item.name || "Tên tour đang cập nhật"}
-        
+          a(href=`/tours/detail/${item.slug}`) #{item.name || "Tour name updating"}
+
         .inner-prices
           .inner-price-old
-            | #{priceAdult.toLocaleString("vi-VN")}
-            span.inner-unit đ
+            | #{priceAdult.toLocaleString("en-US")}
+            span.inner-unit  VND
           .inner-price-new
-            | #{priceNewAdult.toLocaleString("vi-VN")}
-            span.inner-unit đ
-        
+            | #{priceNewAdult.toLocaleString("en-US")}
+            span.inner-unit  VND
+
         .inner-desc
           if item.code
-            div Mã Tour: #[span #{item.code}]
-          div Ngày Khởi Hành: #[span #{item.departureDateFormat || "Liên hệ"}]
-          div Thời Gian: #[span #{item.time || "Đang cập nhật"}]
-      
+            div Tour Code: #[span #{item.code}]
+          div Departure Date: #[span #{item.departureDateFormat || "Contact us"}]
+          div Duration: #[span #{item.time || "Updating"}]
+
         .inner-meta
           .inner-rating
             .inner-stars
@@ -46,7 +46,7 @@ mixin product-item(item)
                 else
                   i.fa-regular.fa-star
             .inner-number (#{item.rating || 5})
-          
+
           .inner-stock
-            .inner-label Số chỗ còn:
+            .inner-label Seats left:
             .inner-number #{item.stockAdult || 0}

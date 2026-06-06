@@ -3,44 +3,47 @@ include ../mixins/checkbox.pug
 
 
 block main
-  h1.box-title Quản lý đơn hang
+  h1.box-title Order Management
 
-  //- Section 4
-  .section-4
-    .inner-wrap
-      .inner-item.inner-label
-        <i class="fa-solid fa-filter"></i> Bộ lọc
-      .inner-item
-        select
-          option(value="") Trạng thái
-          option(value="") Hoạt động
-          option(value="") Tạm dừng
-      .inner-item.inner-date
-        input(type="date")
-        span -
-        input(type="date")
-      .inner-item
-        select
-          option(value="") Phương thức thanh toán
-          option(value="") Tiền mặt
-          option(value="") Chuyển khoản
-          option(value="") Ví Momo
-      .inner-item
-        select
-          option(value="") Trạng thái thanh toán
-          option(value="") Chưa thanh toán
-          option(value="") Đã thanh toán
-      .inner-item.inner-reset
-        <i class="fa-solid fa-rotate-left"></i>
-  //- End Section 4
+  //- Section 4 + 5: Filter & Search — bọc chung trong 1 form GET
+  form(method="GET" action=`/${pathAdmin}/order/list`)
+    //- Section 4
+    .section-4
+      .inner-wrap
+        .inner-item.inner-label
+          <i class="fa-solid fa-filter"></i> Filter
+        .inner-item
+          select(name="status" onchange="this.form.submit()")
+            option(value="") Status
+            each item in statusList
+              option(value=item.value selected=(query.status == item.value)) #{item.label}
+        .inner-item.inner-date
+          input(type="date" name="startDate" value=query.startDate onchange="this.form.submit()")
+          span -
+          input(type="date" name="endDate" value=query.endDate onchange="this.form.submit()")
+        .inner-item
+          select(name="paymentMethod" onchange="this.form.submit()")
+            option(value="") Payment Method
+            each item in paymentMethodList
+              option(value=item.value selected=(query.paymentMethod == item.value)) #{item.label}
+        .inner-item
+          select(name="paymentStatus" onchange="this.form.submit()")
+            option(value="") Payment Status
+            each item in paymentStatusList
+              option(value=item.value selected=(query.paymentStatus == item.value)) #{item.label}
+        .inner-item.inner-reset
+          a(href=`/${pathAdmin}/order/list`)
+            <i class="fa-solid fa-rotate-left"></i>
+    //- End Section 4
 
-  //- Section 5
-  .section-5
-    .inner-wrap
-      .inner-search
-        <i class="fa-solid fa-magnifying-glass"></i>
-        input(type="text" placeholder="Tìm kiếm")
-  //- End Section 5
+    //- Section 5
+    .section-5
+      .inner-wrap
+        .inner-search
+          <i class="fa-solid fa-magnifying-glass"></i>
+          input(type="text" name="keyword" placeholder="Search" value=query.keyword)
+    //- End Section 5
+  //- End form
 
   //- Section 6
   .section-6
@@ -48,22 +51,22 @@ block main
       table
         thead
           tr
-            th.text-left Mã
-            th.text-left Thông tin khách
-            th.text-left Danh sách tour
-            th.text-left Thanh toán
-            th.text-left Trạng thái
-            th.text-right Ngày đặt
-            th.text-left Hành động
+            th.text-left Code
+            th.text-left Customer Info
+            th.text-left Tour List
+            th.text-left Payment
+            th.text-left Status
+            th.text-right Order Date
+            th.text-left Actions
         tbody
           each orderDetail in orderList
             tr
               td.text-left
                 .text-primary #{orderDetail.code}
               td.text-left
-                div Họ tên: #{orderDetail.fullName}
-                div SĐT: #{orderDetail.phone}
-                div Ghi chú: #{orderDetail.note}
+                div Full Name: #{orderDetail.fullName}
+                div Phone: #{orderDetail.phone}
+                div Note: #{orderDetail.note}
               td.text-left
                 .tour-list
                   each item in orderDetail.items
@@ -72,27 +75,28 @@ block main
                       .inner-content
                           .inner-name #{item.name}
                           .inner-desc
-                              div Người lớn: #{item.quantityAdult} x #{item.priceNewAdult.toLocaleString("vi-VN")}đ
-                              div Trẻ em: #{item.quantityChildren} x #{item.priceNewChildren.toLocaleString("vi-VN")}đ
-                              div Em bé: #{item.quantityBaby} x #{item.priceNewBaby.toLocaleString("vi-VN")}đ
-            
+                              div Adult: #{item.quantityAdult} x #{item.priceNewAdult.toLocaleString("en-US")} VND
+                              div Children: #{item.quantityChildren} x #{item.priceNewChildren.toLocaleString("en-US")} VND
+                              div Baby: #{item.quantityBaby} x #{item.priceNewBaby.toLocaleString("en-US")} VND
+
               td.text-left
-                div Tạm tính: #{orderDetail.subTotal.toLocaleString("vi-VN")} đ
-                div Giảm: -#{orderDetail.discount.toLocaleString("vi-VN")} đ
-                //- div Mã giảm: TOURMUAHE2024
-                div Thanh toán: #{orderDetail.total.toLocaleString("vi-VN")} đ
-                div PTTT: #{orderDetail.paymentMethodName}
-                div TTTT: #{orderDetail.paymentStatusName}
+                div Subtotal: #{orderDetail.subTotal.toLocaleString("en-US")} VND
+                div Discount: -#{orderDetail.discount.toLocaleString("en-US")} VND
+                //- div Coupon: TOURMUAHE2024
+                div Total: #{orderDetail.total.toLocaleString("en-US")} VND
+                div Method: #{orderDetail.paymentMethodName}
+                div Payment: #{orderDetail.paymentStatusName}
               td.text-left
-                div(class=`tag tag-${orderDetail.statusDetail.color}`) #{orderDetail.statusDetail.label}
-              //- .tag.tag-green Đã duyệt
-              //- .tag.tag-red Đã hủy
+                if orderDetail.statusDetail
+                  div(class=`tag tag-${orderDetail.statusDetail.color}`) #{orderDetail.statusDetail.label}
+                else
+                  div.tag #{orderDetail.status}
               td.text-right
                 div #{orderDetail.createdAtTime}
                 div #{orderDetail.createdAtDate}
               td.text-left
                 .box-actions
-                  a(href= `/${pathAdmin}/order/edit/${orderDetail.id}` class="inner-edit")
+                  a(href=`/${pathAdmin}/order/edit/${orderDetail.id}` class="inner-edit")
                     <i class="fa-solid fa-pen-to-square"></i>
                   a(href="#" class="inner-remove")
                     <i class="fa-solid fa-trash-can"></i>
@@ -100,9 +104,8 @@ block main
 
   //- Section 7
   .section-7
-    span(class="inner-label") Hiển thị 1 - 9 của 78
-    select(class="inner-pagination")
-      option Trang 1
-      option Trang 2
-      option Tran 3
+    span(class="inner-label") Showing #{pagination.skip + 1} - #{pagination.skip + orderList.length} of #{pagination.totalRecord}
+    select(class="inner-pagination" box-pagination)
+      - for (let i = 1; i <= pagination.totalPage; i++)
+        option(value=i) Page #{i}
   //- End Section 7

@@ -71,7 +71,7 @@ module.exports.list = async (req, res) => {
 
         // Trả kết quả về giao diện
         res.render("client/pages/search", {
-            pageTitle: "Kết quả tìm kiếm",
+            pageTitle: "Search Results",
             tourList: tourList
         });
 

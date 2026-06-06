@@ -3,7 +3,7 @@ include ../mixins/options.pug
 
 block main
     if (pers.includes("category-edit"))
-        h1.box-title Chỉnh sửa danh mục
+        h1.box-title Edit Category
 
         .section-8
             form(id="category-edit-form")
@@ -11,51 +11,51 @@ block main
                 .inner-group(style="display: none;")
                     label.inner-label(for="id") Id *
                     input(
-                        type="text" 
-                        id="id" 
-                        name="id" 
+                        type="text"
+                        id="id"
+                        name="id"
                         value=categoryDetail.id
                     )
 
                 .inner-group
-                    label.inner-label(for="name") Tên danh mục *
+                    label.inner-label(for="name") Category Name *
                     input(
-                        type="text" 
-                        id="name" 
-                        name="name" 
+                        type="text"
+                        id="name"
+                        name="name"
                         value=categoryDetail.name
                     )
 
                 .inner-group
-                    label.inner-label(for="parent") Danh mục cha
+                    label.inner-label(for="parent") Parent Category
                     select(id="parent" name="parent")
-                        option(value="") -- Chọn danh mục --
+                        option(value="") -- Select category --
                         if(categoryList)
                             +options(categoryList, 0, categoryDetail.parent)
 
                 .inner-group
-                    label.inner-label(for="position") Vị trí
+                    label.inner-label(for="position") Position
                     input(
-                        type="number" 
-                        id="position" 
-                        name="position" 
+                        type="number"
+                        id="position"
+                        name="position"
                         value=categoryDetail.position
                     )
 
                 .inner-group
-                    label.inner-label(for="status") Trạng thái
+                    label.inner-label(for="status") Status
                     select(id="status" name="status")
                         option(
                             value="active"
                             selected=(categoryDetail.status === "active")
-                        ) Hoạt động
+                        ) Active
                         option(
                             value="inactive"
                             selected=(categoryDetail.status === "inactive")
-                        ) Tạm dừng
+                        ) Inactive
 
                 .inner-group.inner-two-col
-                    label.inner-label(for="avatar") Ảnh đại diện
+                    label.inner-label(for="avatar") Avatar
                     div(class="inner-upload-image")
                         input(
                             type="file"
@@ -66,7 +66,7 @@ block main
                         )
 
                 .inner-group.inner-two-col
-                    label.inner-label(for="description") Mô tả
+                    label.inner-label(for="description") Description
                     textarea(
                         id="description"
                         name="description"
@@ -74,7 +74,7 @@ block main
                     ) #{categoryDetail.description}
 
                 .inner-button.inner-two-col
-                    button(type="submit") Cập nhật
+                    button(type="submit") Update
 
             .inner-back
-                a(href=`/${pathAdmin}/category/list`) Quay lại danh sách
+                a(href=`/${pathAdmin}/category/list`) Back to list

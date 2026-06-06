@@ -4,25 +4,25 @@ block main
   .container
     .section-11(style="padding-top: 20px;")
       .inner-wrap
-        h4 Cảm ơn quý khách đã đặt tour! Chúng tôi sẽ liên hệ lại với quý khách trong thời gian sớm nhất.
-        
+        h4 Thank you for booking your tour! We will contact you as soon as possible.
+
         .inner-head
-          .inner-title Thông tin đơn hàng
-          
-        p Mã đơn hàng: #{orderDetail.code}
-        p Tên khách hàng: #{orderDetail.fullName}
-        p Số điện thoại: #{orderDetail.phone}
-        p Ghi chú: #{orderDetail.note}
-        p Phương thức thanh toán: #{orderDetail.paymentMethodName}
-        p Trạng thái thanh toán: #{orderDetail.paymentStatusName}
-        p Trạng thái đơn hàng: #{orderDetail.statusName}
-        p Ngày đặt: #{orderDetail.createdAtFormat}
+          .inner-title Order Information
+
+        p Order Code: #{orderDetail.code}
+        p Customer Name: #{orderDetail.fullName}
+        p Phone Number: #{orderDetail.phone}
+        p Note: #{orderDetail.note}
+        p Payment Method: #{orderDetail.paymentMethodName}
+        p Payment Status: #{orderDetail.paymentStatusName}
+        p Order Status: #{orderDetail.statusName}
+        p Order Date: #{orderDetail.createdAtFormat}
 
     .section-11(style="padding-top: 20px;")
       .inner-wrap
         .inner-head
-          .inner-title Danh sách tour
-          
+          .inner-title Tour List
+
         .inner-tour-list
           each item in orderDetail.items
             // Tour Item
@@ -30,49 +30,49 @@ block main
               .inner-product
                 .inner-image
                   img(
-                    alt="" 
+                    alt=""
                     src=item.avatar
                   )
                 .inner-content
                   .inner-title #{item.name}
                   .inner-meta
                     .inner-meta-item
-                      | Ngày Khởi Hành: 
+                      | Departure Date:
                       b #{item.departureDateFormat}
                     .inner-meta-item
-                      | Khởi Hành Tại: 
+                      | Departure From:
                       b #{item.locationFromName}
-                      
+
               .inner-quantity
-                label.inner-label Số Lượng Hành Khách
+                label.inner-label Passenger Count
                 .inner-list
                   .inner-item
-                    .inner-item-label Người lớn:
+                    .inner-item-label Adult:
                     .inner-item-price
                       span #{item.quantityAdult}
-                      span  x 
-                      span.inner-highlight #{item.priceNewAdult.toLocaleString("vi-VN")}đ
+                      span  x
+                      span.inner-highlight #{item.priceNewAdult.toLocaleString("en-US")} VND
                   .inner-item
-                    .inner-item-label Trẻ em:
+                    .inner-item-label Children:
                     .inner-item-price
                       span #{item.quantityChildren}
-                      span  x 
-                      span.inner-highlight #{item.priceNewChildren.toLocaleString("vi-VN")}đ
+                      span  x
+                      span.inner-highlight #{item.priceNewChildren.toLocaleString("en-US")} VND
                   .inner-item
-                    .inner-item-label Em bé:
+                    .inner-item-label Baby:
                     .inner-item-price
                       span #{item.quantityBaby}
-                      span  x 
-                      span.inner-highlight #{item.priceNewBaby.toLocaleString("vi-VN")}đ
+                      span  x
+                      span.inner-highlight #{item.priceNewBaby.toLocaleString("en-US")} VND
             // End Tour Item
 
         .inner-list-price
           .inner-item
-            .inner-label Tạm tính:
-            .inner-price #{orderDetail.subTotal.toLocaleString("vi-VN")}đ
+            .inner-label Subtotal:
+            .inner-price #{orderDetail.subTotal.toLocaleString("en-US")} VND
           .inner-item
-            .inner-label Giảm:
-            .inner-price -#{orderDetail.discount.toLocaleString("vi-VN")}đ
+            .inner-label Discount:
+            .inner-price -#{orderDetail.discount.toLocaleString("en-US")} VND
           .inner-item
-            .inner-label Thanh toán:
-            .inner-price-highlight #{orderDetail.total.toLocaleString("vi-VN")}đ
+            .inner-label Total:
+            .inner-price-highlight #{orderDetail.total.toLocaleString("en-US")} VND

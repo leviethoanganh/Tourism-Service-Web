@@ -5,8 +5,8 @@ module.exports.createPost = async (req, res, next) => {
         name: Joi.string()
             .required()
             .messages({
-                "string.empty": "Vui lòng nhập tên danh mục!",
-                "any.required": "Tên danh mục là bắt buộc!"
+                "string.empty": "Please enter the category name!",
+                "any.required": "Category name is required!"
         }),
         parent: Joi.string().allow(''),
         position: Joi.alternatives().try(Joi.number(), Joi.string().allow('')).optional(), // Nếu position là số, nên dùng Joi.number()
@@ -37,14 +37,14 @@ module.exports.changeMultiPatch = async (req, res, next) => {
             .min(1) // Đảm bảo mảng có ít nhất 1 phần tử
             .required()
             .messages({
-                "array.min": "Vui lòng chọn ít nhất 1 bản ghi!",
-                "any.required": "Vui lòng chọn ít nhất 1 bản ghi!"
+                "array.min": "Please select at least 1 record!",
+                "any.required": "Please select at least 1 record!"
             }),
         option: Joi.string()
             .required()
             .messages({
-                "string.empty": "Vui lòng chọn hành động để áp dụng!",
-                "any.required": "Vui lòng chọn hành động để áp dụng!"
+                "string.empty": "Please select an action to apply!",
+                "any.required": "Please select an action to apply!"
             }),
     });
 

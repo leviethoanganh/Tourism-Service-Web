@@ -3,42 +3,47 @@ include ../mixins/checkbox.pug
 
 
 block main
-  h1.box-title Quản lý người dùng
+  h1.box-title User Management
 
-  //- Section 4
-  .section-4
-    .inner-wrap
-      .inner-item.inner-label
-        <i class="fa-solid fa-filter"></i> Bộ lọc
-      .inner-item
-        select
-          option(value="") Trạng thái
-          option(value="") Hoạt động
-          option(value="") Tạm dừng
-      .inner-item.inner-date
-        input(type="date")
-        span -
-        input(type="date")
-      .inner-item.inner-reset
-        <i class="fa-solid fa-rotate-left"></i>
-  //- End Section 4
+  //- Section 4 + search: bọc chung trong 1 form GET
+  form(method="GET" action=`/${pathAdmin}/user/list`)
+    //- Section 4
+    .section-4
+      .inner-wrap
+        .inner-item.inner-label
+          <i class="fa-solid fa-filter"></i> Filter
+        .inner-item
+          select(name="status" onchange="this.form.submit()")
+            option(value="") Status
+            option(value="active" selected=(query.status == "active")) Active
+            option(value="inactive" selected=(query.status == "inactive")) Inactive
+            option(value="initial" selected=(query.status == "initial")) Pending
+        .inner-item.inner-date
+          input(type="date" name="startDate" value=query.startDate onchange="this.form.submit()")
+          span -
+          input(type="date" name="endDate" value=query.endDate onchange="this.form.submit()")
+        .inner-item.inner-reset
+          a(href=`/${pathAdmin}/user/list`)
+            <i class="fa-solid fa-rotate-left"></i>
+    //- End Section 4
 
-  //- Section 5
-  .section-5
-    .inner-wrap
-      .inner-change-status
-        .inner-item
-          select
-            option(value="") -- Hành động --
-            option(value="") Hoạt động
-            option(value="") Dừng hoạt động
-            option(value="") Xóa
-        .inner-item
-          button Áp dụng
-      .inner-search
-        <i class="fa-solid fa-magnifying-glass"></i>
-        input(type="text" placeholder="Tìm kiếm")
-  //- End Section 5
+    //- Section 5
+    .section-5
+      .inner-wrap
+        .inner-change-status
+          .inner-item
+            select
+              option(value="") -- Action --
+              option(value="active") Active
+              option(value="inactive") Inactive
+              option(value="delete") Delete
+          .inner-item
+            button(type="button") Apply
+        .inner-search
+          <i class="fa-solid fa-magnifying-glass"></i>
+          input(type="text" name="keyword" placeholder="Search" value=query.keyword)
+    //- End Section 5
+  //- End form
 
   //- Section 6
   .section-6
@@ -48,38 +53,45 @@ block main
           tr
             th.text-left
               +checkbox-30("", "")
-            th.text-left Họ tên
-            th.text-center Ảnh đại diện
-            Email
-            th.text-left Số điện thoại
-            th.text-left Địa chỉ
-            th.text-center Trạng thái
-            th.text-left Hành động
+            th.text-left Full Name
+            th.text-center Avatar
+            th.text-left Email
+            th.text-left Phone Number
+            th.text-left Address
+            th.text-center Status
+            th.text-left Registered At
+            th.text-left Actions
         tbody
-          tr
-            td.text-left
-              +checkbox-30("", "")
-            td.text-left Lê Văn A
-            td.text-center
-              img(src="/admin/assets/images/tour-1.png" class="inner-avatar")
-            td.text-left levana@gmail.com
-            td.text-left 01234567890
-            td.text-left Số 123, đường ABC,...
-            td.text-center
-              .tag.tag-orange Khởi tạo
-            td.text-left
-              .box-actions
-                a(href="#" class="inner-edit")
-                  <i class="fa-solid fa-pen-to-square"></i>
-                a(href="#" class="inner-remove")
-                  <i class="fa-solid fa-trash-can"></i>
+          each item in userList
+            tr
+              td.text-left
+                +checkbox-30("", item.id)
+              td.text-left #{item.fullName}
+              td.text-center
+                img(src=(item.avatar || "/admin/assets/images/user-default.png") class="inner-avatar")
+              td.text-left #{item.email}
+              td.text-left #{item.phone}
+              td.text-left #{item.address}
+              td.text-center
+                if item.status == "active"
+                  .tag.tag-green Active
+                else if item.status == "inactive"
+                  .tag.tag-red Inactive
+                else
+                  .tag.tag-orange Pending
+              td.text-left #{item.createdAtFormat}
+              td.text-left
+                .box-actions
+                  a(href="#" class="inner-edit")
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  a(href="#" class="inner-remove")
+                    <i class="fa-solid fa-trash-can"></i>
   //- End Section 6
 
   //- Section 7
   .section-7
-    span(class="inner-label") Hiển thị 1 - 9 của 78
-    select(class="inner-pagination")
-      option Trang 1
-      option Trang 2
-      option Tran 3
+    span(class="inner-label") Showing #{pagination.skip + 1} - #{pagination.skip + userList.length} of #{pagination.totalRecord}
+    select(class="inner-pagination" box-pagination)
+      - for (let i = 1; i <= pagination.totalPage; i++)
+        option(value=i) Page #{i}
   //- End Section 7

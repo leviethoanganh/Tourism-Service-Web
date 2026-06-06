@@ -2,21 +2,21 @@ extends ../layouts/default.pug
 
 
 block main
-  h1.box-title Thông tin website
+  h1.box-title Website Information
 
   .section-8
     form(id="setting-website-info-form")
       .inner-group
-        label.inner-label(for="websiteName") Tên website *
+        label.inner-label(for="websiteName") Website Name *
         input(type="text" id="websiteName" name="websiteName" value=settingWebsiteInfo.websiteName)
       .inner-group
-        label.inner-label(for="phone") Số điện thoại
+        label.inner-label(for="phone") Phone Number
         input(type="text" id="phone" name="phone" value=settingWebsiteInfo.phone)
       .inner-group
         label.inner-label(for="email") Email
         input(type="email" id="email" name="email" value=settingWebsiteInfo.email)
       .inner-group
-        label.inner-label(for="address")
+        label.inner-label(for="address") Address
         input(type="text" id="address" name="address" value=settingWebsiteInfo.address)
       .inner-group
         label.inner-label(for="logo") Logo
@@ -39,6 +39,6 @@ block main
             image-default=settingWebsiteInfo.favicon
             )
       .inner-button.inner-two-col
-        button Cập nhật
+        button Update
     .inner-back
-      a(href=`/${pathAdmin}/setting/list`) Quay lại danh sách
+      a(href=`/${pathAdmin}/setting/list`) Back to list

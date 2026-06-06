@@ -8,14 +8,68 @@ const  CryptoJS  =  require ('crypto-js');
 // [GET] /admin/orders
 module.exports.list = async (req, res) => {
     try {
-        // 1. Lấy danh sách đơn hàng chưa bị xóa, sắp xếp mới nhất lên đầu
-        const orderList = await Order.find({
-            deleted: false
-        }).sort({
-            createdAt: "desc"
-        });
+        // 1. Khởi tạo điều kiện tìm kiếm mặc định
+        const find = { deleted: false };
 
-        // 2. Duyệt qua từng đơn hàng để chuyển đổi dữ liệu hiển thị
+        // 2. Lọc theo trạng thái đơn hàng (pending / completed / cancelled)
+        if (req.query.status) {
+            find.status = req.query.status;
+        }
+
+        // 3. Lọc theo phương thức thanh toán (money / bank / momo / zalopay)
+        if (req.query.paymentMethod) {
+            find.paymentMethod = req.query.paymentMethod;
+        }
+
+        // 4. Lọc theo trạng thái thanh toán (unpaid / paid)
+        if (req.query.paymentStatus) {
+            find.paymentStatus = req.query.paymentStatus;
+        }
+
+        // 5. Lọc theo khoảng thời gian tạo đơn hàng
+        const filterDate = {};
+        if (req.query.startDate) {
+            filterDate.$gte = moment(req.query.startDate).startOf("day").toDate();
+        }
+        if (req.query.endDate) {
+            filterDate.$lte = moment(req.query.endDate).endOf("day").toDate();
+        }
+        if (Object.keys(filterDate).length > 0) {
+            find.createdAt = filterDate;
+        }
+
+        // 6. Tìm kiếm theo từ khóa trên fullName, phone, code
+        if (req.query.keyword) {
+            const regex = new RegExp(req.query.keyword.trim(), "i");
+            find.$or = [
+                { fullName: regex },
+                { phone: regex },
+                { code: regex }
+            ];
+        }
+
+        // 7. Phân trang
+        const limitItems = 5;
+        const page = parseInt(req.query.page) || 1;
+        const totalRecord = await Order.countDocuments(find);
+        const totalPage = Math.ceil(totalRecord / limitItems);
+        const skip = (page - 1) * limitItems;
+
+        const pagination = {
+            currentPage: page,
+            totalPage: totalPage,
+            totalRecord: totalRecord,
+            limitItems: limitItems,
+            skip: skip
+        };
+
+        // 8. Lấy danh sách đơn hàng theo điều kiện lọc, có phân trang
+        const orderList = await Order.find(find)
+            .sort({ createdAt: "desc" })
+            .limit(limitItems)
+            .skip(skip);
+
+        // 8. Duyệt qua từng đơn hàng để chuyển đổi dữ liệu hiển thị
         for (const orderDetail of orderList) {
             // Tìm tên phương thức thanh toán tương ứng từ config
             const method = paymentMethodList.find(item => item.value == orderDetail.paymentMethod);
@@ -33,10 +87,15 @@ module.exports.list = async (req, res) => {
             orderDetail.createdAtDate = moment(orderDetail.createdAt).format("DD/MM/YYYY");
         }
 
-        // 3. Render giao diện quản lý đơn hàng
+        // 9. Render giao diện quản lý đơn hàng, truyền thêm lists, query và pagination
         res.render('admin/pages/order-list', {
-            pageTitle: "Quản lý đơn hàng",
-            orderList: orderList
+            pageTitle: "Order Management",
+            orderList: orderList,
+            statusList: statusList,
+            paymentMethodList: paymentMethodList,
+            paymentStatusList: paymentStatusList,
+            query: req.query,
+            pagination: pagination
         });
 
     } catch (error) {
@@ -81,7 +140,7 @@ module.exports.edit = async (req, res) => {
 
         // 4. Trả về giao diện chỉnh sửa đơn hàng
         res.render('admin/pages/order-edit', {
-            pageTitle: `Đơn hàng: ${orderDetail.code}`,
+            pageTitle: `Order: ${orderDetail.code}`,
             paymentMethodList: paymentMethodList,
             paymentStatusList: paymentStatusList,
             statusList: statusList,
@@ -107,7 +166,7 @@ module.exports.editPatch = async (req, res) => {
         if (!orderDetail) {
             return res.json({
                 code: "error",
-                message: "Đơn hàng không tồn tại!"
+                message: "Order not found!"
             });
         }
 
@@ -119,13 +178,13 @@ module.exports.editPatch = async (req, res) => {
 
         res.json({
             code: "success",
-            message: "Đã cập nhật đơn hàng!"
+            message: "Order updated successfully!"
         });
 
     } catch (error) {
         res.json({
             code: "error",
-            message: "Cập nhật thất bại!"
+            message: "Update failed!"
         });
     }
 };

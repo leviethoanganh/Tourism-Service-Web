@@ -2,14 +2,14 @@ extends ../layouts/default.pug
 include ../mixins/checkbox.pug
 
 
-block main 
-  h1.box-title Thông tin liên hệ
+block main
+  h1.box-title Contact Information
 
   //- Section 4
   .section-4
     .inner-wrap
       .inner-item.inner-label
-        <i class="fa-solid fa-filter"></i> Bộ lọc
+        <i class="fa-solid fa-filter"></i> Filter
       .inner-item.inner-date
         input(type="date")
         span -
@@ -24,15 +24,15 @@ block main
       .inner-change-status
         .inner-item
           select
-            option(value="") -- Hành động --
-            option(value="") Hoạt động
-            option(value="") Dừng hoạt động
-            option(value="") Xóa
+            option(value="") -- Action --
+            option(value="") Active
+            option(value="") Inactive
+            option(value="") Delete
         .inner-item
-          button Áp dụng
+          button Apply
       .inner-search
         <i class="fa-solid fa-magnifying-glass"></i>
-        input(type="text" placeholder="Tìm kiếm")
+        input(type="text" placeholder="Search")
   //- End Section 5
 
   //- Section 6
@@ -44,8 +44,8 @@ block main
             th.text-left
               +checkbox-30("", "")
             Email
-            th.text-left Ngày tạo
-            th.text-left Hành động
+            th.text-left Created At
+            th.text-left Actions
         tbody
           tr
             td.text-left
@@ -60,9 +60,9 @@ block main
 
   //- Section 7
   .section-7
-    span(class="inner-label") Hiển thị 1 - 9 của 78
+    span(class="inner-label") Showing 1 - 9 of 78
     select(class="inner-pagination")
-      option Trang 1
-      option Trang 2
-      option Tran 3
+      option Page 1
+      option Page 2
+      option Page 3
   //- End Section 7

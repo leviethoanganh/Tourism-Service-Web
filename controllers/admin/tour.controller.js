@@ -8,28 +8,85 @@ const AccountAdmin = require("../../models/account.admin.model");
 const moment = require("moment");
 
 module.exports.list = async (req, res) => {
-    // 1. Thiết lập điều kiện tìm kiếm mặc định
-    const find = {
-        deleted: false
-    };
-
     try {
-        // 2. Lấy danh sách Tour và sắp xếp theo vị trí giảm dần
-        const tourList = await Tour.find(find).sort({ position: "desc" });
+        // 1. Thiết lập điều kiện tìm kiếm mặc định
+        const find = { deleted: false };
 
-        // 3. Duyệt qua từng Tour để lấy thông tin người tạo/người sửa
+        // 2. Lọc theo trạng thái (active / inactive)
+        if (req.query.status) {
+            find.status = req.query.status;
+        }
+
+        // 3. Lọc theo người tạo (ID của AccountAdmin)
+        if (req.query.createdBy) {
+            find.createdBy = req.query.createdBy;
+        }
+
+        // 4. Lọc theo danh mục
+        if (req.query.category) {
+            find.category = req.query.category;
+        }
+
+        // 5. Lọc theo khoảng thời gian tạo
+        const filterDate = {};
+        if (req.query.startDate) {
+            filterDate.$gte = moment(req.query.startDate).startOf("day").toDate();
+        }
+        if (req.query.endDate) {
+            filterDate.$lte = moment(req.query.endDate).endOf("day").toDate();
+        }
+        if (Object.keys(filterDate).length > 0) {
+            find.createdAt = filterDate;
+        }
+
+        // 6. Lọc theo khoảng giá (priceNewAdult)
+        const priceRanges = {
+            "under-1m": { $lt: 1000000 },
+            "1m-2m":    { $gte: 1000000, $lte: 2000000 },
+            "2m-6m":    { $gte: 2000000, $lte: 6000000 },
+            "over-6m":  { $gt: 6000000 }
+        };
+        if (req.query.priceRange && priceRanges[req.query.priceRange]) {
+            find.priceNewAdult = priceRanges[req.query.priceRange];
+        }
+
+        // 7. Tìm kiếm theo từ khóa trên tên tour
+        if (req.query.keyword) {
+            const regex = new RegExp(req.query.keyword.trim(), "i");
+            find.name = regex;
+        }
+
+        // 8. Phân trang
+        const limitItems = 6;
+        const page = parseInt(req.query.page) || 1;
+        const totalRecord = await Tour.countDocuments(find);
+        const totalPage = Math.ceil(totalRecord / limitItems);
+        const skip = (page - 1) * limitItems;
+
+        const pagination = {
+            currentPage: page,
+            totalPage: totalPage,
+            totalRecord: totalRecord,
+            limitItems: limitItems,
+            skip: skip
+        };
+
+        // 9. Lấy danh sách Tour theo điều kiện lọc, có phân trang
+        const tourList = await Tour.find(find)
+            .sort({ position: "desc" })
+            .limit(limitItems)
+            .skip(skip);
+
+        // 10. Duyệt qua từng Tour để lấy thông tin người tạo/người sửa
         for (const item of tourList) {
             // Xử lý thông tin người tạo
             if (item.createdBy) {
-                const infoAccount = await AccountAdmin.findOne({
-                    _id: item.createdBy
-                });
-                
+                const infoAccount = await AccountAdmin.findOne({ _id: item.createdBy });
                 if (infoAccount) {
                     item.createdByFullName = infoAccount.fullName;
                 }
             }
-            
+
             // Format ngày tạo
             if (item.createdAt) {
                 item.createdAtFormat = moment(item.createdAt).format("HH:mm - DD/MM/YYYY");
@@ -37,25 +94,30 @@ module.exports.list = async (req, res) => {
 
             // Xử lý thông tin người cập nhật
             if (item.updatedBy) {
-                const infoAccount = await AccountAdmin.findOne({
-                    _id: item.updatedBy
-                });
-
+                const infoAccount = await AccountAdmin.findOne({ _id: item.updatedBy });
                 if (infoAccount) {
                     item.updatedByFullName = infoAccount.fullName;
                 }
             }
-            
+
             // Format ngày cập nhật
             if (item.updatedAt) {
                 item.updatedAtFormat = moment(item.updatedAt).format("HH:mm - DD/MM/YYYY");
             }
         }
 
-        // 4. Trả về giao diện (hoặc JSON tùy theo logic của bạn)
+        // 11. Lấy danh sách admin và danh mục để render dropdown filter
+        const accountAdminList = await AccountAdmin.find({ deleted: false }).select("id fullName");
+        const categoryList = await Category.find({ deleted: false }).select("id name");
+
+        // 12. Render giao diện, truyền thêm lists, query và pagination
         res.render("admin/pages/tour-list", {
-            pageTitle: "Danh sách Tour",
-            tourList: tourList
+            pageTitle: "Tour List",
+            tourList: tourList,
+            accountAdminList: accountAdminList,
+            categoryList: categoryList,
+            query: req.query,
+            pagination: pagination
         });
 
     } catch (error) {
@@ -74,7 +136,7 @@ module.exports.create = async (req, res) => {
     const cityList = await City.find({});
 
     res.render('admin/pages/tour-create', {
-        pageTitle: "Tạo tour",
+        pageTitle: "Create Tour",
         categoryList: categoryTree,
         cityList: cityList
     });
@@ -152,12 +214,12 @@ module.exports.createPost = async (req, res) => {
 
         res.json({
             code: "success",
-            message: "Đã tạo tour thành công!"
+            message: "Tour created successfully!"
         });
     } catch (error) {
         res.json({
             code: "error",
-            message: "Tạo tour thất bại!"
+            message: "Failed to create tour!"
         });
     }
 };
@@ -195,7 +257,7 @@ module.exports.edit = async (req, res) => {
 
         // 5. Render giao diện chỉnh sửa với đầy đủ dữ liệu cần thiết
         res.render('admin/pages/tour-edit', {
-            pageTitle: "Chỉnh sửa tour",
+            pageTitle: "Edit Tour",
             categoryList: categoryTree,
             tourDetail: tourDetail,
             cityList: cityList
@@ -221,7 +283,7 @@ module.exports.editPatch = async (req, res) => {
         if (!tourDetail) {
             return res.json({
                 code: "error",
-                message: "Tour không tồn tại!"
+                message: "Tour not found!"
             });
         }
 
@@ -298,14 +360,14 @@ module.exports.editPatch = async (req, res) => {
 
         res.json({
             code: "success",
-            message: "Đã cập nhật tour thành công!"
+            message: "Tour updated successfully!"
         });
 
     } catch (error) {
         console.error("Lỗi cập nhật tour:", error);
         res.json({
             code: "error",
-            message: "Cập nhật tour thất bại!"
+            message: "Failed to update tour!"
         });
     }
 };
@@ -324,7 +386,7 @@ module.exports.deletePatch = async (req, res) => {
         if (!tourDetail) {
             return res.json({
                 code: "error",
-                message: "Tour không tồn tại!"
+                message: "Tour not found!"
             });
         }
 
@@ -345,14 +407,14 @@ module.exports.deletePatch = async (req, res) => {
         // 3. Phản hồi kết quả về phía Client (Frontend)
         res.json({
             code: "success",
-            message: "Đã xóa tour thành công!"
+            message: "Tour deleted successfully!"
         });
 
     } catch (error) {
         console.error("Lỗi xóa tour:", error);
         res.json({
             code: "error",
-            message: "Xóa tour thất bại!"
+            message: "Failed to delete tour!"
         });
     }
 };
@@ -408,7 +470,7 @@ module.exports.trash = async (req, res) => {
 
         // 4. Render giao diện thùng rác
         res.render('admin/pages/tour-trash', {
-            pageTitle: "Thùng rác tour",
+            pageTitle: "Tour Trash",
             tourList: tourList
         });
 
@@ -432,7 +494,7 @@ module.exports.undoPatch = async (req, res) => {
         if (!tourDetail) {
             return res.json({
                 code: "error",
-                message: "Tour không tồn tại trong thùng rác!"
+                message: "Tour not found in trash!"
             });
         }
 
@@ -455,14 +517,14 @@ module.exports.undoPatch = async (req, res) => {
         // 3. Phản hồi kết quả về phía Client (Frontend)
         res.json({
             code: "success",
-            message: "Đã khôi phục tour thành công!"
+            message: "Tour restored successfully!"
         });
 
     } catch (error) {
         console.error("Lỗi khôi phục tour:", error);
         res.json({
             code: "error",
-            message: "Khôi phục tour thất bại!"
+            message: "Failed to restore tour!"
         });
     }
 };
@@ -481,7 +543,7 @@ module.exports.undoPatch = async (req, res) => {
         if (!tourDetail) {
             return res.json({
                 code: "error",
-                message: "Tour không tồn tại trong thùng rác!"
+                message: "Tour not found in trash!"
             });
         }
 
@@ -504,14 +566,14 @@ module.exports.undoPatch = async (req, res) => {
         // 3. Phản hồi kết quả về phía Client (Frontend)
         res.json({
             code: "success",
-            message: "Đã khôi phục tour thành công!"
+            message: "Tour restored successfully!"
         });
 
     } catch (error) {
         console.error("Lỗi khôi phục tour:", error);
         res.json({
             code: "error",
-            message: "Khôi phục tour thất bại!"
+            message: "Failed to restore tour!"
         });
     }
 };
@@ -530,7 +592,7 @@ module.exports.destroyDel = async (req, res) => {
         if (!tourDetail) {
             return res.json({
                 code: "error",
-                message: "Tour không tồn tại trong thùng rác!"
+                message: "Tour not found in trash!"
             });
         }
 
@@ -543,14 +605,14 @@ module.exports.destroyDel = async (req, res) => {
         // 3. Phản hồi kết quả về phía Client (Frontend)
         res.json({
             code: "success",
-            message: "Đã xóa vĩnh viễn tour thành công!"
+            message: "Tour permanently deleted successfully!"
         });
 
     } catch (error) {
         console.error("Lỗi xóa vĩnh viễn tour:", error);
         res.json({
             code: "error",
-            message: "Xóa vĩnh viễn tour thất bại!"
+            message: "Failed to permanently delete tour!"
         });
     }
 };

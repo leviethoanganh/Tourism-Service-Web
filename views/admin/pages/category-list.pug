@@ -1,23 +1,23 @@
 extends ../layouts/default.pug
 include ../mixins/checkbox.pug
 
-block main 
+block main
   if (pers.includes("category-view"))
-    h1.box-title Quản lý danh mục
+    h1.box-title Category Management
 
     //- Section 4
     .section-4
       .inner-wrap
         .inner-item.inner-label
-          <i class="fa-solid fa-filter"></i> Bộ lọc
+          <i class="fa-solid fa-filter"></i> Filter
         .inner-item
           select(filter-status)
-            option(value="") Trạng thái
-            option(value="active") Hoạt động
-            option(value="inactive") Tạm dừng
+            option(value="") Status
+            option(value="active") Active
+            option(value="inactive") Inactive
         .inner-item
           select(filter-created-by)
-            option(value="") Người tạo
+            option(value="") Created By
             each item in accountAdminList
               option(value= item.id) #{item.fullName}
 
@@ -35,18 +35,18 @@ block main
         .inner-change-status
           .inner-item
             select
-              option(value="") -- Hành động --
-              option(value="active") Hoạt động
-              option(value="inactive") Dừng hoạt động
-              option(value="delete") Xóa
+              option(value="") -- Action --
+              option(value="active") Active
+              option(value="inactive") Inactive
+              option(value="delete") Delete
           .inner-item
-            button Áp dụng
+            button Apply
         .inner-search
           <i class="fa-solid fa-magnifying-glass"></i>
-          input(type="text" placeholder="Tìm kiếm" search)
+          input(type="text" placeholder="Search" search)
         if (pers.includes("category-create"))
           .inner-button-create
-            a(href=`/${pathAdmin}/category/create`) + Tạo mới
+            a(href=`/${pathAdmin}/category/create`) + Create New
     //- End Section 5
 
     //- Section 6
@@ -57,13 +57,13 @@ block main
             tr
               th.text-left
                 +checkbox-30("checkAll", "checkAll")
-              th.text-left Tên danh mục
-              th.text-center Ảnh đại diện
-              th.text-center Vị trí
-              th.text-center Trạng thái
-              th.text-left Tạo bởi
-              th.text-left Cập nhật bởi
-              th.text-left Hành động
+              th.text-left Category Name
+              th.text-center Avatar
+              th.text-center Position
+              th.text-center Status
+              th.text-left Created By
+              th.text-left Updated By
+              th.text-left Actions
           tbody
             each item in categoryList
               tr
@@ -75,9 +75,9 @@ block main
                 td.text-center #{item.position}
                 td.text-center
                   if (item.status == "active")
-                    .tag.tag-green Hoạt động
+                    .tag.tag-green Active
                   else if (item.status == "inactive")
-                    .tag.tag-red Tạm dừng
+                    .tag.tag-red Inactive
                 td.text-left
                   if (item.createdByFullName)
                     div #{item.createdByFullName}
@@ -88,7 +88,7 @@ block main
                     div.inner-small #{item.updatedAtFormat}
                 td.text-left
                   .box-actions
-                    if (pers.includes("category-edit"))                  
+                    if (pers.includes("category-edit"))
                       a(href=`/${pathAdmin}/category/edit/${item.id}` class="inner-edit")
                         <i class="fa-solid fa-pen-to-square"></i>
                     if (pers.includes("category-delete"))
@@ -99,14 +99,14 @@ block main
                       )
                         <i class="fa-solid fa-trash-can"></i>
 
-            
+
     //- End Section 6
 
     //- Section 7
     .section-7
-      span(class="inner-label") Hiển thị #{pagination.skip +1 } - #{pagination.skip + categoryList.length} it #{pagination.totalRecord}
+      span(class="inner-label") Showing #{pagination.skip +1 } - #{pagination.skip + categoryList.length} of #{pagination.totalRecord}
       select(class="inner-pagination" box-pagination)
         - for (let i = 1; i <= pagination.totalPage; i++)
-          option(value=i) Trang #{i}
+          option(value=i) Page #{i}
 
     //- End Section 7

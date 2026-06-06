@@ -3,7 +3,7 @@ include ../mixins/checkbox.pug
 
 
 block main
-  h1.box-title Thùng rác tour
+  h1.box-title Tour Trash
 
   //- Section 5
   .section-5
@@ -11,15 +11,15 @@ block main
       .inner-change-status
         .inner-item
           select
-            option(value="") -- Hành động --
-            option(value="") Hoạt động
-            option(value="") Dừng hoạt động
-            option(value="") Xóa
+            option(value="") -- Action --
+            option(value="") Active
+            option(value="") Inactive
+            option(value="") Delete
         .inner-item
-          button Áp dụng
+          button Apply
       .inner-search
         <i class="fa-solid fa-magnifying-glass"></i>
-        input(type="text" placeholder="Tìm kiếm")
+        input(type="text" placeholder="Search")
   //- End Section 5
 
   //- Section 6
@@ -30,49 +30,49 @@ block main
           tr
             th.text-left
               +checkbox-30("", "")
-            th.text-left Tên tour
-            th.text-center Ảnh đại diện
-            th.text-left Giá
-            th.text-left Còn lại
-            th.text-center Vị trí
-            th.text-center Trạng thái
-            th.text-left Tạo bởi
-            th.text-left Xóa bởi
-            th.text-left Hành động
+            th.text-left Tour Name
+            th.text-center Avatar
+            th.text-left Price
+            th.text-left Remaining
+            th.text-center Position
+            th.text-center Status
+            th.text-left Created By
+            th.text-left Deleted By
+            th.text-left Actions
         tbody
           each item in tourList
             tr
               td.text-left
                 +checkbox-30("", "")
-              
+
               //- Hiển thị tên tour từ database
               td.text-left #{item.name}
-              
+
               //- Hiển thị ảnh đại diện động
               td.text-center
                 img(src=item.avatar class="inner-avatar")
-              
+
               //- Hiển thị giá tour đã được định dạng
               td.text-left
-                div NL: #{item.priceNewAdult.toLocaleString("vi-VN")} đ
-                div TE: #{item.priceNewChildren.toLocaleString("vi-VN")} đ
-                div EB: #{item.priceNewBaby.toLocaleString("vi-VN")} đ
-              
+                div Adult: #{item.priceNewAdult.toLocaleString("en-US")} VND
+                div Children: #{item.priceNewChildren.toLocaleString("en-US")} VND
+                div Baby: #{item.priceNewBaby.toLocaleString("en-US")} VND
+
               //- Hiển thị số lượng tồn kho
               td.text-left
-                div NL: #{item.stockAdult}
-                div TE: #{item.stockChildren}
-                div EB: #{item.stockBaby}
-              
+                div Adult: #{item.stockAdult}
+                div Children: #{item.stockChildren}
+                div Baby: #{item.stockBaby}
+
               //- Hiển thị vị trí sắp xếp
               td.text-center #{item.position}
 
               //- Hiển thị trạng thái bằng Tag màu
               td.text-center
                 if (item.status == "active")
-                  .tag.tag-green Hoạt động
+                  .tag.tag-green Active
                 else if (item.status == "inactive")
-                  .tag.tag-red Tạm dừng
+                  .tag.tag-red Inactive
 
               //- Hiển thị thông tin người tạo
               td.text-left
@@ -108,9 +108,9 @@ block main
 
   //- Section 7
   .section-7
-    span(class="inner-label") Hiển thị 1 - 9 của 78
+    span(class="inner-label") Showing 1 - 9 of 78
     select(class="inner-pagination")
-      option Trang 1
-      option Trang 2
-      option Tran 3
+      option Page 1
+      option Page 2
+      option Page 3
   //- End Section 7

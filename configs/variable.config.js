@@ -2,43 +2,43 @@ module.exports.pathAdmin = "admin";
 
 module.exports.permissionList = [
     {
-        label: "Xem trang Tổng quan",
+        label: "View Dashboard",
         value: "dashboard-view"
     },
     {
-        label: "Xem danh mục",
+        label: "View Categories",
         value: "category-view"
     },
     {
-        label: "Tạo danh mục",
+        label: "Create Category",
         value: "category-create"
     },
     {
-        label: "Sửa danh mục",
+        label: "Edit Category",
         value: "category-edit"
     },
     {
-        label: "Xóa danh mục",
+        label: "Delete Category",
         value: "category-delete"
     },
     {
-        label: "Xem tour",
+        label: "View Tours",
         value: "tour-view"
     },
     {
-        label: "Tạo tour",
+        label: "Create Tour",
         value: "tour-create"
     },
     {
-        label: "Sửa tour",
+        label: "Edit Tour",
         value: "tour-edit"
     },
     {
-        label: "Xóa tour",
+        label: "Delete Tour",
         value: "tour-delete"
     },
     {
-        label: "Thùng rác tour",
+        label: "Tour Trash",
         value: "tour-trash"
     }
 ];
@@ -46,11 +46,11 @@ module.exports.permissionList = [
 
 module.exports.paymentMethodList = [
     {
-        label: "Tiền mặt",
+        label: "Cash",
         value: "money"
     },
     {
-        label: "Chuyển khoản",
+        label: "Bank Transfer",
         value: "bank"
     },
     {
@@ -65,28 +65,28 @@ module.exports.paymentMethodList = [
 
 module.exports.paymentStatusList = [
     {
-        label: "Chưa thanh toán",
+        label: "Unpaid",
         value: "unpaid"
     },
     {
-        label: "Đã thanh toán",
+        label: "Paid",
         value: "paid"
     },
 ]
 
 module.exports.statusList = [
     {
-        label: "Khởi tạo",
+        label: "Pending",
         value: "initial",
         color: "orange"
     },
     {
-        label: "Đã hoàn thành",
+        label: "Completed",
         value: "done",
         color: "green"
     },
     {
-        label: "Đã hủy",
+        label: "Cancelled",
         value: "cancel",
         color: "red"
     },

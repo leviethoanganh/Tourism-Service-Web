@@ -101,7 +101,7 @@ module.exports.list = async (req, res) => {
 
     // 6. Render giao diện
     res.render('admin/pages/category-list', {
-        pageTitle: "Quản lý danh mục",
+        pageTitle: "Category Management",
         categoryList: categoryList,
         accountAdminList: accountAdminList,
         pagination: pagination // Gửi object pagination sang file .pug
@@ -118,7 +118,7 @@ module.exports.create = async (req, res) => {
 
     // 3. Gửi dữ liệu cây qua file Pug để hiển thị
     res.render('admin/pages/category-create', {
-        pageTitle: "Tạo danh mục",
+        pageTitle: "Create Category",
         categoryList: categoryTree
     });
 };
@@ -131,7 +131,7 @@ module.exports.createPost = async (req, res) => {
         if (!req.pers.includes("category-create")) {
             res.json({
                 code: "error",
-                message: "Không có quyền truy cập!"
+                message: "Access denied!"
             });
             return;
         }
@@ -170,12 +170,12 @@ module.exports.createPost = async (req, res) => {
 
         res.json({
             code: "success",
-            message: "Đã tạo danh mục thành công!"
+            message: "Category created successfully!"
         });
     } catch (error) {
         res.json({
         code: "error",
-        message: "Có lỗi xảy ra!",
+        message: "An error occurred!",
         error: error.message
         });
     }
@@ -207,7 +207,7 @@ module.exports.edit = async (req, res) => {
 
         // 3. Render giao diện chỉnh sửa
         res.render('admin/pages/category-edit', {
-            pageTitle: "Chỉnh sửa danh mục",
+            pageTitle: "Edit Category",
             categoryList: categoryTree,
             categoryDetail: categoryDetail
         });
@@ -222,7 +222,7 @@ module.exports.editPatch = async (req, res) => {
         if (!req.pers.includes("category-edit")) {
             res.json({
                 code: "error",
-                message: "Không có quyền truy cập!"
+                message: "Access denied!"
             });
             return;
         }
@@ -237,7 +237,7 @@ module.exports.editPatch = async (req, res) => {
         if (!categoryDetail) {
             return res.json({
                 code: "error",
-                message: "Danh mục không tồn tại!"
+                message: "Category not found!"
             });
         }
 
@@ -275,14 +275,14 @@ module.exports.editPatch = async (req, res) => {
 
         res.json({
             code: "success",
-            message: "Đã cập nhật danh mục thành công!"
+            message: "Category updated successfully!"
         });
 
     } catch (error) {
         console.error("Lỗi EditPatch:", error);
         res.json({
             code: "error",
-            message: "Có lỗi xảy ra trong quá trình cập nhật!"
+            message: "An error occurred while updating!"
         });
     }
 };
@@ -293,7 +293,7 @@ module.exports.deletePatch = async (req, res) => {
         if (!req.pers.includes("category-delete")) {
             res.json({
                 code: "error",
-                message: "Không có quyền truy cập!"
+                message: "Access denied!"
             });
             return;
         }
@@ -308,7 +308,7 @@ module.exports.deletePatch = async (req, res) => {
         if (!categoryDetail) {
             return res.json({
                 code: "error",
-                message: "Danh mục không tồn tại!"
+                message: "Category not found!"
             });
         }
 
@@ -327,14 +327,14 @@ module.exports.deletePatch = async (req, res) => {
 
         res.json({
             code: "success",
-            message: "Đã xóa danh mục thành công!"
+            message: "Category deleted successfully!"
         });
 
     } catch (error) {
         console.error("Lỗi DeletePatch:", error);
         res.json({
             code: "error",
-            message: "Có lỗi xảy ra trong quá trình xóa!"
+            message: "An error occurred while deleting!"
         });
     }
 };
@@ -360,7 +360,7 @@ module.exports.changeMultiPatch = async (req, res) => {
                 );
                 res.json({
                     code: "success",
-                    message: "Đã cập nhật trạng thái thành công!"
+                    message: "Status updated successfully!"
                 });
                 break;
 
@@ -378,21 +378,21 @@ module.exports.changeMultiPatch = async (req, res) => {
                 );
                 res.json({
                     code: "success",
-                    message: "Đã xóa các bản ghi thành công!"
+                    message: "Records deleted successfully!"
                 });
                 break;
 
             default:
                 res.json({
                     code: "error",
-                    message: "Dữ liệu không hợp lệ!"
+                    message: "Invalid data!"
                 });
                 break;
         }
     } catch (error) {
         res.json({
             code: "error",
-            message: "Có lỗi xảy ra, vui lòng thử lại!"
+            message: "An error occurred, please try again!"
         });
     }
 };

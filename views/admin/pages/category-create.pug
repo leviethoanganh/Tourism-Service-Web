@@ -1,36 +1,36 @@
 extends ../layouts/default.pug
 include ../mixins/options.pug
 
-block main 
+block main
   if (pers.includes("category-create"))
-    h1.box-title Tạo danh mục
+    h1.box-title Create Category
 
     .section-8
       form(id="category-create-form")
         .inner-group
-          label.inner-label(for="name") Tên danh mục *
+          label.inner-label(for="name") Category Name *
           input(type="text" id="name" name="name")
         .inner-group
-          label.inner-label(for="parent") Danh mục cha
+          label.inner-label(for="parent") Parent Category
           select(id="parent" name="parent")
-            option(value="") -- Chọn danh mục --
+            option(value="") -- Select category --
             +options(categoryList)
         .inner-group
-          label.inner-label(for="position") See you
+          label.inner-label(for="position") Position
           input(type="number" id="position" name="position")
         .inner-group
-          label.inner-label(for="status") Trạng thái
+          label.inner-label(for="status") Status
           select(id="status" name="status")
-            option(value="active") Hoạt động
-            option(value="inactive") Tạm dừng
+            option(value="active") Active
+            option(value="inactive") Inactive
         .inner-group.inner-two-col
-          label.inner-label(for="avatar") Ảnh đại diện
+          label.inner-label(for="avatar") Avatar
           div(class="inner-upload-image")
             input(type="file" id="avatar" name="avatar" filepond-image)
         .inner-group.inner-two-col
-          label.inner-label(for="description") Mô tả
+          label.inner-label(for="description") Description
           textarea(id="description" name="description" textarea-mce)
         .inner-button.inner-two-col
-          button Tạo mới
+          button Create
       .inner-back
-        a(href=`/${pathAdmin}/category/list`) Quay lại danh sách
+        a(href=`/${pathAdmin}/category/list`) Back to list

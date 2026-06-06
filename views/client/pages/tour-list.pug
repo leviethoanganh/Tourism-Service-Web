@@ -16,57 +16,57 @@ block main
           .box-filter
             .inner-filter-list
               .inner-head
-                .inner-title Bộ Lọc
+                .inner-title Filter
                 i.fa-solid.fa-filter
               .inner-group
-                .inner-label Điểm đi
+                .inner-label Departure From
                 select(name="locationFrom")
-                  option(value="") -- Chọn điểm đi --
+                  option(value="") -- Select departure --
                   each item in cityList
                     option(value=item.id) #{item.name}
               .inner-group
-                .inner-label Điểm đến
+                .inner-label Destination
                 select(name="locationTo")
-                  option(value="") -- Chọn điểm đến --
+                  option(value="") -- Select destination --
                   each item in cityList
                     option(value=item.name) #{item.name}
               .inner-group
-                .inner-label Ngày khởi hành
+                .inner-label Departure Date
                 input(type="date" name="departureDate" )
               .inner-group
-                .inner-label Số Lượng Hành Khách
+                .inner-label Passenger Count
                 .inner-input-list
                   .inner-input-item
-                    .inner-label Người lớn:
+                    .inner-label Adult:
                     input(
-                      value="0" 
+                      value="0"
                       type="number"
                       name="stockAdult"
                       )
                   .inner-input-item
-                    .inner-label Trẻ em:
+                    .inner-label Children:
                     input(
-                      value="0" 
+                      value="0"
                       type="number"
-                      name="stockChildren"                      
+                      name="stockChildren"
                       )
                   .inner-input-item
-                    .inner-label Em bé:
+                    .inner-label Baby:
                     input(
-                      value="0" 
+                      value="0"
                       type="number"
-                      name="stockBaby"                      
+                      name="stockBaby"
                       )
               .inner-group
-                .inner-label Mức giá
+                .inner-label Price Range
                 select(name="price")
-                  option(value="") -- Chọn khoảng giá --
-                  option(value="0-999999 ") Dưới 1tr
-                  option(value="1000000-3000000") Từ 1tr đến 3tr
-                  option(value="3000000-6000000") Từ 3tr đến 6tr
-                  option(value="6000000-10000000") Từ 6tr đến 10tr
-                  option(value="10000000-15999999") Trên 1tr
-              button.inner-button Áp Dụng
+                  option(value="") -- Select price range --
+                  option(value="0-999999 ") Under 1M
+                  option(value="1000000-3000000") 1M to 3M
+                  option(value="3000000-6000000") 3M to 6M
+                  option(value="6000000-10000000") 6M to 10M
+                  option(value="10000000-15999999") Over 10M
+              button.inner-button Apply
           // End Box Filter
           .inner-overlay
         .inner-right
@@ -76,31 +76,31 @@ block main
               | #{categoryDetail.description}
           .inner-info-2
             .inner-sort
-              .inner-label Sắp xếp:
+              .inner-label Sort by:
               button
-                | Giá tăng dần
+                | Price: Low to High
                 i.fa-solid.fa-circle-arrow-up
               button
-                | Giá giảm dần
+                | Price: High to Low
                 i.fa-solid.fa-circle-arrow-down
               button.active
-                | Khuyến Mại Hot
+                | Hot Deals
                 i.fa-solid.fa-tag
               button
-                | Xem Nhiều
+                | Most Viewed
                 i.fa-solid.fa-eye
             .inner-total-item
-              | Tất cả:
-              b 101 Tour
+              | All:
+              b 101 Tours
             button.inner-button-filter
-              | Bộ Lọc
+              | Filter
               i.fa-solid.fa-filter
           .inner-list-tour
             if (tourList.length > 0)
               each item in tourList
                 +product-item(item)
             else
-              p Không có dữ liệu.
+              p No data available.
           .box-pagination
             .inner-list-button
               button

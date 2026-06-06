@@ -3,63 +3,67 @@ include ../mixins/checkbox.pug
 
 
 block main
-  h1.box-title Quản lý tour
+  h1.box-title Tour Management
 
-  //- Section 4
-  .section-4
-    .inner-wrap
-      .inner-item.inner-label
-        <i class="fa-solid fa-filter"></i> Bộ lọc
-      .inner-item
-        select
-          option(value="") Trạng thái
-          option(value="") Hoạt động
-          option(value="") Tạm dừng
-      .inner-item
-        select
-          option(value="") Người tạo
-          option(value="") Lê Văn A
-          option(value="") Lê Văn B
-      .inner-item.inner-date
-        input(type="date")
-        span -
-        input(type="date")
-      .inner-item
-        select
-          option(value="") Danh mục
-          option(value="") Danh mục 1
-          option(value="") Danh mục 2
-      .inner-item
-        select
-          option(value="") Mức giá
-          option(value="") Dưới 1tr
-          option(value="") Từ 1tr đến 2tr
-          option(value="") Từ 2tr đến 6tr
-          option(value="") Trên 6tr
-      .inner-item.inner-reset
-        <i class="fa-solid fa-rotate-left"></i>
-  //- End Section 4
+  //- Section 4 + search: bọc trong 1 form GET để filter
+  form(method="GET" action=`/${pathAdmin}/tour/list`)
+    //- Section 4
+    .section-4
+      .inner-wrap
+        .inner-item.inner-label
+          <i class="fa-solid fa-filter"></i> Filter
+        .inner-item
+          select(name="status" onchange="this.form.submit()")
+            option(value="") Status
+            option(value="active" selected=(query.status == "active")) Active
+            option(value="inactive" selected=(query.status == "inactive")) Inactive
+        .inner-item
+          select(name="createdBy" onchange="this.form.submit()")
+            option(value="") Created By
+            each item in accountAdminList
+              option(value=item.id selected=(query.createdBy == item.id)) #{item.fullName}
+        .inner-item.inner-date
+          input(type="date" name="startDate" value=query.startDate onchange="this.form.submit()")
+          span -
+          input(type="date" name="endDate" value=query.endDate onchange="this.form.submit()")
+        .inner-item
+          select(name="category" onchange="this.form.submit()")
+            option(value="") Category
+            each item in categoryList
+              option(value=item.id selected=(query.category == item.id)) #{item.name}
+        .inner-item
+          select(name="priceRange" onchange="this.form.submit()")
+            option(value="") Price Range
+            option(value="under-1m" selected=(query.priceRange == "under-1m")) Under 1M
+            option(value="1m-2m" selected=(query.priceRange == "1m-2m")) 1M to 2M
+            option(value="2m-6m" selected=(query.priceRange == "2m-6m")) 2M to 6M
+            option(value="over-6m" selected=(query.priceRange == "over-6m")) Over 6M
+        .inner-item.inner-reset
+          a(href=`/${pathAdmin}/tour/list`)
+            <i class="fa-solid fa-rotate-left"></i>
+    //- End Section 4
 
-  //- Section 5
-  .section-5
-    .inner-wrap
-      .inner-change-status
-        .inner-item
-          select
-            option(value="") -- Hành động --
-            option(value="") Hoạt động
-            option(value="") Dừng hoạt động
-            option(value="") Xóa
-        .inner-item
-          button Áp dụng
-      .inner-search
-        <i class="fa-solid fa-magnifying-glass"></i>
-        input(type="text" placeholder="Tìm kiếm")
-      .inner-button-create
-        a(href=`/${pathAdmin}/tour/create`) + Tạo mới
-      .inner-button-trash
-        a(href=`/${pathAdmin}/tour/trash`) Thùng rác
-  //- End Section 5
+    //- Section 5
+    .section-5
+      .inner-wrap
+        .inner-change-status
+          .inner-item
+            select
+              option(value="") -- Action --
+              option(value="active") Active
+              option(value="inactive") Inactive
+              option(value="delete") Delete
+          .inner-item
+            button(type="button") Apply
+        .inner-search
+          <i class="fa-solid fa-magnifying-glass"></i>
+          input(type="text" name="keyword" placeholder="Search" value=query.keyword)
+        .inner-button-create
+          a(href=`/${pathAdmin}/tour/create`) + Create New
+        .inner-button-trash
+          a(href=`/${pathAdmin}/tour/trash`) Trash
+    //- End Section 5
+  //- End form
 
   //- Section 6
   .section-6
@@ -69,17 +73,17 @@ block main
           tr
             th.text-left
               +checkbox-30("", "")
-            th.text-left Tên tour
-            th.text-center Ảnh đại diện
-            th.text-left Giá
-            th.text-left Còn lại
-            th.text-center Vị trí
-            th.text-center Trạng thái
-            th.text-left Tạo bởi
-            th.text-left Cập nhật bởi
-            th.text-left Hành động
+            th.text-left Tour Name
+            th.text-center Avatar
+            th.text-left Price
+            th.text-left Remaining
+            th.text-center Position
+            th.text-center Status
+            th.text-left Created By
+            th.text-left Updated By
+            th.text-left Actions
         tbody
-          each item in tourList          
+          each item in tourList
             tr
               td.text-left
                 +checkbox-30("", "")
@@ -87,20 +91,20 @@ block main
               td.text-center
                 img(src= item.avatar class="inner-avatar")
               td.text-left
-                div NL: #{item.priceNewAdult.toLocaleString("vi-VN")} đ
-                div TE: #{item.priceNewChildren.toLocaleString("vi-VN")} đ
-                div EB: #{item.priceNewBaby.toLocaleString("vi-VN")} đ
+                div Adult: #{item.priceNewAdult.toLocaleString("en-US")} VND
+                div Children: #{item.priceNewChildren.toLocaleString("en-US")} VND
+                div Baby: #{item.priceNewBaby.toLocaleString("en-US")} VND
               td.text-left
-                div NL: #{item.stockAdult}
-                div TE: #{item.stockChildren}
-                div EB: #{item.stockBaby}
+                div Adult: #{item.stockAdult}
+                div Children: #{item.stockChildren}
+                div Baby: #{item.stockBaby}
               td.text-center #{item.position}
 
               td.text-center
                 if (item.status == "active")
-                  .tag.tag-green Hoạt động
+                  .tag.tag-green Active
                 else if (item.status == "inactive")
-                  .tag.tag-red Tạm dừng
+                  .tag.tag-red Inactive
 
               td.text-left
                 if (item.createdByFullName)
@@ -127,9 +131,8 @@ block main
 
   //- Section 7
   .section-7
-    span(class="inner-label") Hiển thị 1 - 9 của 78
-    select(class="inner-pagination")
-      option Trang 1
-      option Trang 2
-      option Tran 3
+    span(class="inner-label") Showing #{pagination.skip + 1} - #{pagination.skip + tourList.length} of #{pagination.totalRecord}
+    select(class="inner-pagination" box-pagination)
+      - for (let i = 1; i <= pagination.totalPage; i++)
+        option(value=i) Page #{i}
   //- End Section 7

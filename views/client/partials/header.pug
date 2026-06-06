@@ -4,7 +4,7 @@ header.header
     .inner-wrap
       button.inner-button-menu
         img(
-          alt="" 
+          alt=""
           src="/client/assets/images/icon-menu.png"
           )
       a.inner-logo(href="/")
@@ -15,7 +15,7 @@ header.header
       nav.inner-menu
         ul
           li
-            a.active(href="/") Trang Chủ
+            a.active(href="/") Home
           each item in categoryList
               a(href=`/category/${item.slug}`) #{item.name}
               if (item.children && item.children.length > 0)
@@ -23,20 +23,20 @@ header.header
                 ul.inner-sub
                   each itemChild in item.children
                     li
-                      a(href=`/category/${itemChild.slug}`) #{itemChild.name}                  
+                      a(href=`/category/${itemChild.slug}`) #{itemChild.name}
           li
-            a(href="#") Tin Tức
+            a(href="#") News
           li
-            a(href="#") Liên Hệ
+            a(href="#") Contact
         .inner-overlay
       a.inner-cart(href="/cart")
         img(
-          alt="" 
+          alt=""
           src="/client/assets/images/icon-cart.png"
           )
         span
           img(
-            alt="" 
+            alt=""
             src="/client/assets/images/icon-arrow-left.png"
             )
           div(mini-cart) 0

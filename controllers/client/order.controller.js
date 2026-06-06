@@ -26,7 +26,7 @@ module.exports.createPost = async (req, res) => {
             if (!tourDetail) {
                 res.json({
                     code: "error",
-                    message: `Tour với ID ${item.tourId} không tồn tại hoặc đã bị xóa/hủy. Vui lòng kiểm tra lại giỏ hàng!`
+                    message: `Tour with ID ${item.tourId} does not exist or has been deleted/cancelled. Please review your cart!`
                 });
                 return;
             }
@@ -94,7 +94,7 @@ module.exports.createPost = async (req, res) => {
         // Trả về phản hồi thành công cùng ID đơn hàng để Frontend chuyển hướng
         res.json({
             code: "success",
-            message: "Đặt hàng thành công!",
+            message: "Order placed successfully!",
             orderCode: orderCode,
             orderId: newRecord.id
         });
@@ -103,7 +103,7 @@ module.exports.createPost = async (req, res) => {
         console.error("Lỗi thực thi đặt hàng:", error);
         res.json({
             code: "error",
-            message: "Đặt hàng thất bại! Vui lòng thử lại sau."
+            message: "Order failed! Please try again later."
         });
     }
 };
@@ -155,7 +155,7 @@ module.exports.success = async (req, res) => {
         }
 
         res.render('client/pages/order-success', {
-            pageTitle: "Đặt hàng thành công",
+            pageTitle: "Order Placed Successfully",
             orderDetail: orderDetail
         });
 
@@ -207,7 +207,7 @@ module.exports.paymentZaloPay = async (req, res) => {
             item: JSON.stringify(items),
             embed_data: JSON.stringify(embed_data),
             amount: orderDetail.total, // Tổng tiền lấy từ Database
-            description: `Thanh toán đơn hàng ${orderCode}`,
+            description: `Payment for order ${orderCode}`,
             bank_code: "", // Để trống để khách chọn phương thức trên trang ZaloPay
         };
 

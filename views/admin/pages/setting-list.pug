@@ -1,22 +1,22 @@
 extends ../layouts/default.pug
 
 block main
-  h1.box-title Cài đặt chung
+  h1.box-title General Settings
 
   //- Section 9
   .section-9
     a(href=`/${pathAdmin}/setting/website-info` class="inner-item")
       .inner-icon
         i(class="fa-solid fa-info")
-      .inner-text Thông tin website
-    
+      .inner-text Website Information
+
     a(href=`/${pathAdmin}/setting/account-admin/list` class="inner-item")
       .inner-icon
         i(class="fa-solid fa-user-tie")
-      .inner-text Tài khoản quản trị
-    
+      .inner-text Admin Accounts
+
     a(href=`/${pathAdmin}/setting/role/list` class="inner-item")
       .inner-icon
         i(class="fa-solid fa-user-gear")
-      .inner-text Nhóm quyền
+      .inner-text Role Groups
   //- End Section 9

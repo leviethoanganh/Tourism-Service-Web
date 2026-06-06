@@ -21,7 +21,7 @@ module.exports.loginPost = async (req, res) => {
     if (!existAccount) {
         res.json({
             code: "error",
-            message: "Email không tồn tại trong hệ thống!"
+            message: "Email does not exist in the system!"
         });
         return;
     }
@@ -31,7 +31,7 @@ module.exports.loginPost = async (req, res) => {
     if (!isPasswordValid) {
             res.json({
             code: "error",
-            message: "Mật khẩu không đúng!"
+            message: "Incorrect password!"
         });
         return;
     }
@@ -40,7 +40,7 @@ module.exports.loginPost = async (req, res) => {
     if (existAccount.status != "active") {
             res.json({
             code: "error",
-            message: "Tài khoản chưa được kích hoạt!"
+            message: "Account is not activated!"
         });
         return;
     }
@@ -68,7 +68,7 @@ module.exports.loginPost = async (req, res) => {
     // Phản hồi thành công
     res.json({
         code: "success",
-        message: "Đăng nhập thành công!"
+        message: "Login successful!"
     });
 };
 
@@ -87,7 +87,7 @@ module.exports.registerPost = async (req, res) => {
     if(existAccount){
         res.json({
             code: "error",
-            message: "Email đã tồn tại trong hệ thống!"
+            message: "Email already exists in the system!"
         });
         return ;
     }
@@ -101,7 +101,7 @@ module.exports.registerPost = async (req, res) => {
 
     res.json({
         code: "success",
-        message: "Đăng ký thành công!"
+        message: "Registration successful!"
     })
 
 }
@@ -134,7 +134,7 @@ module.exports.forgotPasswordPost = async (req, res) => {
         if (!existAccount) {
             return res.json({
                 code: "error",
-                message: "Email không tồn tại trong hệ thống hoặc tài khoản bị khóa!"
+                message: "Email not found or account is locked!"
             });
         }
 
@@ -144,7 +144,7 @@ module.exports.forgotPasswordPost = async (req, res) => {
         if (existEmailInForgotPassword) {
             return res.json({
                 code: "error",
-                message: "Vui lòng đợi 5 phút trước khi yêu cầu mã mới!"
+                message: "Please wait 5 minutes before requesting a new code!"
             });
         }
 
@@ -162,22 +162,22 @@ module.exports.forgotPasswordPost = async (req, res) => {
         await record.save();
 
         // 6. Gửi mã OTP qua email
-        const subject = "Mã OTP lấy lại mật khẩu";
-        const content = `Mã OTP của bạn là: <b>${otp}</b>. Mã có hiệu lực trong 5 phút. Vui lòng không cung cấp mã này cho bất kỳ ai.`;
+        const subject = "Password recovery OTP code";
+        const content = `Your OTP code is: <b>${otp}</b>. The code is valid for 5 minutes. Please do not share this code with anyone.`;
         
         // Đảm bảo hàm sendMail đã được cấu hình đúng
     //    sendMail(email, subject, content);
 
         res.json({
             code: "success",
-            message: "Mã OTP đã được gửi qua email của bạn!"
+            message: "OTP code has been sent to your email!"
         });
 
     } catch (error) {
         console.error("Forgot Password Error:", error);
         res.json({
         code: "error",
-        message: "Đã có lỗi xảy ra, vui lòng thử lại!"
+        message: "An error occurred, please try again!"
         });
     }
 };
@@ -202,7 +202,7 @@ module.exports.otpPasswordPost = async (req, res) => {
         if (!existAccount) {
             return res.json({
                 code: "error",
-                message: "Email không tồn tại trong hệ thống!"
+                message: "Email does not exist in the system!"
             });
         }
 
@@ -215,7 +215,7 @@ module.exports.otpPasswordPost = async (req, res) => {
         if (!existRecordInForgotPassword) {
             return res.json({
                 code: "error",
-                message: "Mã OTP không hợp lệ hoặc đã hết hạn!"
+                message: "Invalid or expired OTP code!"
             });
         }
 
@@ -242,14 +242,14 @@ module.exports.otpPasswordPost = async (req, res) => {
         // 6. Trả về thông báo thành công
         res.json({
             code: "success",
-            message: "Xác nhận mã OTP thành công!"
+            message: "OTP verified successfully!"
         });
 
     } catch (error) {
             console.error("OTP Error:", error);
             res.json({
             code: "error",
-            message: "Đã có lỗi xảy ra, vui lòng thử lại!"
+            message: "An error occurred, please try again!"
         });
     }
 };
@@ -282,14 +282,14 @@ module.exports.resetPasswordPost = async (req, res) => {
         // 4. Trả về phản hồi thành công
         res.json({
             code: "success",
-            message: "Đã đổi mật khẩu thành công!"
+            message: "Password changed successfully!"
         });
 
     } catch (error) {
         console.error("Reset Password Error:", error);
         res.json({
             code: "error",
-            message: "Đã có lỗi xảy ra, vui lòng thử lại!"
+            message: "An error occurred, please try again!"
         });
     }
 };

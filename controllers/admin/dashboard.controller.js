@@ -29,7 +29,7 @@ module.exports.dashboard = async (req, res) => {
 
         // 4. Render giao diện bảng điều khiển
         res.render('admin/pages/dashboard', {
-            pageTitle: "Tổng quan",
+            pageTitle: "Dashboard",
             overview: overview
         });
 
@@ -107,7 +107,7 @@ module.exports.revenueChartPost = async (req, res) => {
         console.error("Lỗi lấy dữ liệu biểu đồ:", error);
         res.json({
             code: "error",
-            message: "Không thể lấy dữ liệu doanh thu"
+            message: "Unable to retrieve revenue data"
         });
     }
 };

@@ -1,7 +1,7 @@
 extends ../layouts/default.pug
 
 block main
-    h1.box-title Chỉnh sửa tài khoản quản trị
+    h1.box-title Edit Admin Account
 
     .section-8
         form(id="setting-account-admin-edit-form")
@@ -9,41 +9,41 @@ block main
             .inner-group(style="display: none;")
                 label.inner-label(for="id") Id *
                 input(
-                    type="text" 
-                    id="id" 
-                    name="id" 
+                    type="text"
+                    id="id"
+                    name="id"
                     value=account.id
                 )
 
             .inner-group
-                label.inner-label(for="fullName") Họ tên *
+                label.inner-label(for="fullName") Full Name *
                 input(
-                    type="text" 
-                    id="fullName" 
-                    name="fullName" 
+                    type="text"
+                    id="fullName"
+                    name="fullName"
                     value=account.fullName
                 )
 
             .inner-group
                 label.inner-label(for="email") Email *
                 input(
-                    type="email" 
-                    id="email" 
-                    name="email" 
+                    type="email"
+                    id="email"
+                    name="email"
                     value=account.email
                 )
 
             .inner-group
-                label.inner-label(for="phone") Số điện thoại
+                label.inner-label(for="phone") Phone Number
                 input(
-                    type="text" 
-                    id="phone" 
-                    name="phone" 
+                    type="text"
+                    id="phone"
+                    name="phone"
                     value=account.phone
                 )
 
             .inner-group
-                label.inner-label(for="role") Nhóm quyền
+                label.inner-label(for="role") Role Group
                 select(id="role" name="role")
                     each item in roleList
                         option(
@@ -52,52 +52,52 @@ block main
                         ) #{item.name}
 
             .inner-group
-                label.inner-label(for="positionCompany") Chức vụ *
+                label.inner-label(for="positionCompany") Position *
                 input(
-                    type="text" 
-                    id="positionCompany" 
-                    name="positionCompany" 
+                    type="text"
+                    id="positionCompany"
+                    name="positionCompany"
                     value=account.positionCompany
                 )
 
             .inner-group
-                label.inner-label(for="status") Trạng thái
+                label.inner-label(for="status") Status
                 select(id="status" name="status")
                     option(
                         value="initial"
                         selected=(account.status == "initial")
-                    ) Khởi tạo
+                    ) Pending
                     option(
                         value="active"
                         selected=(account.status == "active")
-                    ) Hoạt động
+                    ) Active
                     option(
                         value="inactive"
                         selected=(account.status == "inactive")
-                    ) Tạm dừng
+                    ) Inactive
 
             .inner-group
-                label.inner-label(for="password") Mật khẩu mới
+                label.inner-label(for="password") New Password
                 input(
-                    type="text" 
-                    id="password" 
+                    type="text"
+                    id="password"
                     name="password"
-                    placeholder="Để trống nếu không muốn đổi mật khẩu"
+                    placeholder="Leave blank to keep current password"
                 )
 
             .inner-group.inner-two-col
-                label.inner-label(for="avatar") Ảnh đại diện
+                label.inner-label(for="avatar") Avatar
                 div(class="inner-upload-image")
                     input(
-                        type="file" 
-                        id="avatar" 
-                        name="avatar" 
-                        filepond-image 
+                        type="file"
+                        id="avatar"
+                        name="avatar"
+                        filepond-image
                         image-default=account.avatar
                     )
 
             .inner-button.inner-two-col
-                button Cập nhật
+                button Update
 
         .inner-back
-            a(href=`/${pathAdmin}/setting/account-admin/list`) Quay lại danh sách
+            a(href=`/${pathAdmin}/setting/account-admin/list`) Back to list

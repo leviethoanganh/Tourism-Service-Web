@@ -5,7 +5,7 @@ const moment = require('moment');
 // [GET] /cart
 module.exports.cart = (req, res) => {
     res.render('client/pages/cart', {
-        pageTitle: "Giỏ hàng"
+        pageTitle: "Shopping Cart"
     });
 };
 
@@ -69,13 +69,13 @@ module.exports.render = async (req, res) => {
         // 4. Trả về dữ liệu chi tiết cho Frontend
         res.json({
             code: "success",
-            message: "Lấy dữ liệu giỏ hàng thành công!",
+            message: "Cart data retrieved successfully!",
             cart: cartDetails
         });
     } catch (error) {
         res.json({
             code: "error",
-            message: "Có lỗi xảy ra khi lấy dữ liệu giỏ hàng!"
+            message: "An error occurred while retrieving cart data!"
         });
     }
 };

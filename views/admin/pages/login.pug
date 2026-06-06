@@ -2,10 +2,10 @@ extends ../layouts/account.pug
 include ../mixins/checkbox.pug
 
 
-block main 
+block main
   .form-account
-    h1.inner-title Đăng nhập
-    .inner-desc Vui lòng nhập email và mật khẩu để tiếp tục
+    h1.inner-title Login
+    .inner-desc Please enter your email and password to continue
     form(class="inner-form" id="loginForm")
       .inner-group
         label.inner-label(for="email") Email *
@@ -13,11 +13,11 @@ block main
           type="email"
           id="email"
           name="email"
-          placeholder="Ví dụ: levana@gmail.com"
+          placeholder="e.g. levana@gmail.com"
           class="inner-control"
         )
       .inner-group
-        label.inner-label(for="password") Mật khẩu *
+        label.inner-label(for="password") Password *
         input(
           type="password"
           id="password"
@@ -27,9 +27,9 @@ block main
       .inner-meta
         .inner-check
           +checkbox-30("rememberPassword", "rememberPassword")
-          label(for="rememberPassword") Nhớ mật khẩu
-        a(href=`/${pathAdmin}/account/forgot-password` class="inner-link") Quên mật khẩu?
-      button.inner-button Đăng Nhập
+          label(for="rememberPassword") Remember me
+        a(href=`/${pathAdmin}/account/forgot-password` class="inner-link") Forgot password?
+      button.inner-button Login
       .inner-more
-        span Bạn chưa có tài khoản?
-        a(href=`/${pathAdmin}/account/register`) Tạo tài khoản
+        span Don't have an account?
+        a(href=`/${pathAdmin}/account/register`) Create account

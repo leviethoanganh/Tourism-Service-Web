@@ -8,7 +8,7 @@ const  SettingWebsiteInfo  =  require("../../models/setting-website-infor.model"
 
 module.exports.list = (req, res) => {
     res.render('admin/pages/setting-list', {
-        pageTitle: "Cài đặt chung"
+        pageTitle: "General Settings"
     });
 };
 
@@ -18,7 +18,7 @@ module.exports.websiteInfo = async (req, res) => {
 
     // 2. Trả về giao diện và truyền dữ liệu sang view
     res.render("admin/pages/setting-website-info", {
-        pageTitle: "Thông tin website",
+        pageTitle: "Website Information",
         settingWebsiteInfo: settingWebsiteInfo,
     });
 };
@@ -62,13 +62,13 @@ module.exports.websiteInfoPatch = async (req, res) => {
 
         res.json({
             code: "success",
-            message: "Cập nhật thông tin website thành công!",
+            message: "Website information updated successfully!",
         });
     } catch (error) {
         console.error("Lỗi cập nhật website info:", error);
         res.json({
             code: "error",
-            message: "Có lỗi xảy ra, vui lòng thử lại sau!",
+            message: "An error occurred, please try again later!",
         });
     }
 };
@@ -97,7 +97,7 @@ module.exports.accountAdminList = async (req, res) => {
 
     // 3. Render giao diện và truyền dữ liệu sang file Pug
     res.render('admin/pages/setting-account-admin-list', {
-        pageTitle: "Tài khoản quản trị",
+        pageTitle: "Admin Accounts",
         accountAdminList: accountAdminList
     });
 };
@@ -108,7 +108,7 @@ module.exports.accountAdminCreate = async (req, res) => {
     });
 
     res.render('admin/pages/setting-account-admin-create', {
-        pageTitle: "Tạo tài khoản quản trị",
+        pageTitle: "Create Admin Account",
         roleList: roleList
     });
 };
@@ -121,7 +121,7 @@ module.exports.accountAdminCreatePost = async (req, res) => {
     if (existEmail) {
         res.json({
             code: "error",
-            message: "Email đã tồn tại trong hệ thống!"
+            message: "Email already exists in the system!"
         });
         return;
     }
@@ -150,7 +150,7 @@ module.exports.accountAdminCreatePost = async (req, res) => {
 
     res.json({
         code: "success",
-        message: "Đã tạo tài khoản quản trị!"
+        message: "Admin account created successfully!"
     });
 };
 
@@ -173,7 +173,7 @@ module.exports.accountAdminEdit = async (req, res) => {
         });
 
         res.render('admin/pages/setting-account-admin-edit', {
-            pageTitle: "Chỉnh sửa tài khoản quản trị",
+            pageTitle: "Edit Admin Account",
             roleList: roleList,
             accountDetail: accountDetail
         });
@@ -194,7 +194,7 @@ module.exports.accountAdminEditPatch = async (req, res) => {
         if (!accountDetail) {
             return res.json({
                 code: "error",
-                message: "Tài khoản không tồn tại!"
+                message: "Account not found!"
             });
         }
 
@@ -207,7 +207,7 @@ module.exports.accountAdminEditPatch = async (req, res) => {
         if (existEmail) {
             return res.json({
                 code: "error",
-                message: "Email đã tồn tại trong hệ thống!"
+                message: "Email already exists in the system!"
             });
         }
 
@@ -242,12 +242,12 @@ module.exports.accountAdminEditPatch = async (req, res) => {
 
         res.json({
             code: "success",
-            message: "Đã cập nhật tài khoản quản trị!"
+            message: "Admin account updated successfully!"
         });
     } catch (error) {
         res.json({
             code: "error",
-            message: "Cập nhật thất bại!"
+            message: "Update failed!"
         });
     }
 };
@@ -300,14 +300,14 @@ module.exports.roleList = async (req, res) => {
 
     // 4. Render giao diện và truyền dữ liệu
     res.render('admin/pages/setting-role-list', {
-        pageTitle: "Nhóm quyền",
+        pageTitle: "Roles",
         roleList: roleList
     });
 };
 
 module.exports.roleCreate = (req, res) => {
     res.render('admin/pages/setting-role-create', {
-    pageTitle :  "Tạo nhóm quyền",
+    pageTitle :  "Create Role",
     permissionList :  permissionList
     });
 };
@@ -326,13 +326,13 @@ module.exports.roleCreatePost = async (req, res) => {
         // 4. Trả về kết quả JSON cho phía Frontend
         res.json({
             code: "success",
-            message: "Đã tạo nhóm quyền thành công!"
+            message: "Role created successfully!"
         });
     } catch (error) {
         // Xử lý nếu có lỗi xảy ra (ví dụ: trùng tên, lỗi kết nối...)
         res.json({
             code: "error",
-            message: "Tạo nhóm quyền thất bại!"
+            message: "Failed to create role!"
         });
     }
 };
@@ -356,7 +356,7 @@ module.exports.roleEdit = async (req, res) => {
 
         // 3. Render giao diện và truyền dữ liệu cần thiết
         res.render('admin/pages/setting-role-edit', {
-            pageTitle: "Chỉnh sửa nhóm quyền",
+            pageTitle: "Edit Role",
             permissionList: permissionList,
             roleDetail: roleDetail
         });
@@ -380,7 +380,7 @@ module.exports.roleEditPatch = async (req, res) => {
         if (!roleDetail) {
             return res.json({
                 code: "error",
-                message: "Dữ liệu không hợp lệ!"
+                message: "Invalid data!"
             });
         }
 
@@ -398,13 +398,13 @@ module.exports.roleEditPatch = async (req, res) => {
         // 3. Phản hồi kết quả về phía Client
         res.json({
             code: "success",
-            message: "Cập nhật thành công!"
+            message: "Updated successfully!"
         });
     } catch (error) {
         // Trả về lỗi nếu quá trình cập nhật thất bại
         res.json({
             code: "error",
-            message: "Cập nhật thất bại!"
+            message: "Update failed!"
         });
     }
 };

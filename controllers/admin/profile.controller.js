@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 
 module.exports.edit = (req, res) => {
     res.render('admin/pages/profile-edit', {
-        pageTitle: "Thông tin cá nhân"
+        pageTitle: "My Profile"
     });
 };
 
@@ -18,7 +18,7 @@ module.exports.editPatch = async (req, res) => {
     if (existEmail) {
         res.json({
             code: "error",
-            message: "Email đã tồn tại trong hệ thống!"
+            message: "Email already exists in the system!"
         });
         return;
     }
@@ -62,13 +62,13 @@ module.exports.editPatch = async (req, res) => {
 
     res.json({
         code: "success",
-        message: "Đã cập nhật tài khoản quản trị!"
+        message: "Admin account updated successfully!"
     });
 };
 
 module.exports.changePassword = (req, res) => {
     res.render('admin/pages/profile-change-password', {
-        pageTitle: "Đổi mật khẩu"
+        pageTitle: "Change Password"
     });
 };
 
@@ -86,7 +86,7 @@ module.exports.changePasswordPatch = async (req, res) => {
 
     res.json({
         code: "success",
-        message: "Đã đổi mật khẩu thành công!"
+        message: "Password changed successfully!"
     });
 };
 

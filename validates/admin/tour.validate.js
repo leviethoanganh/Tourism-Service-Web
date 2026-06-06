@@ -6,8 +6,8 @@ module.exports.createPost = (req, res, next) => {
         name: Joi.string()
             .required()
             .messages({
-                "string.empty": "Vui lòng nhập tên tour!",
-                "any.required": "Vui lòng nhập tên tour!"
+                "string.empty": "Please enter the tour name!",
+                "any.required": "Please enter the tour name!"
             }),
         // Cho phép các trường dưới đây là chuỗi rỗng nếu người dùng không nhập
         category: Joi.string().allow(''),

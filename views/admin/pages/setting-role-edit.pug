@@ -2,22 +2,22 @@ extends ../layouts/default.pug
 include ../mixins/checkbox.pug
 
 block main
-    h1.box-title Chỉnh sửa nhóm quyền
+    h1.box-title Edit Role Group
 
     .section-8
         form(id="setting-role-edit-form")
-            //- Trường ID ẩn để phục vụ việc gửi request PATCH 
+            //- Trường ID ẩn để phục vụ việc gửi request PATCH
             .inner-group(style="display: none;")
                 label.inner-label(for="id") Id *
                 input(
-                    type="text" 
-                    id="id" 
-                    name="id" 
+                    type="text"
+                    id="id"
+                    name="id"
                     value=roleDetail.id
                 )
 
             .inner-group
-                label.inner-label(for="name") Tên nhóm quyền *
+                label.inner-label(for="name") Role Name *
                 input(
                     type="text"
                     id="name"
@@ -26,7 +26,7 @@ block main
                 )
 
             .inner-group
-                label.inner-label(for="description") Mô tả ngắn
+                label.inner-label(for="description") Description
                 input(
                     type="text"
                     id="description"
@@ -35,7 +35,7 @@ block main
                 )
 
             .inner-group
-                label.inner-label Phân quyền
+                label.inner-label Permissions
                 .inner-checkbox-list
                     //- Duyệt qua danh sách quyền hệ thống để tạo checkbox [cite: 48]
                     each item, index in permissionList
@@ -49,7 +49,7 @@ block main
                             label(for=`permissions-${index}`) #{item.label}
 
             .inner-button.inner-two-col
-                button(type="submit") Cập nhật
+                button(type="submit") Update
 
         .inner-back
-            a(href=`/${pathAdmin}/setting/role/list`) Quay lại danh sách
+            a(href=`/${pathAdmin}/setting/role/list`) Back to list

@@ -7,16 +7,16 @@ module.exports.registerPost = async (req, res, next) => {
         .max(50)
         .required()
         .messages({
-            "string.empty": "Vui lòng nhập họ tên!",
-            "string.min": "Vui lòng nhập ít nhất 5 ký tự!",
-            "string.max": "Vui lòng nhập tối đa 50 ký tự!",
+            "string.empty": "Please enter your full name!",
+            "string.min": "Please enter at least 5 characters!",
+            "string.max": "Please enter at most 50 characters!",
         }),
         email: Joi.string()
         .email()
         .required()
         .messages({
-            "string.empty": "Vui lòng nhập email!",
-            "string.email": "Email không đúng định dạng!",
+            "string.empty": "Please enter your email!",
+            "string.email": "Invalid email format!",
         }),
         password: Joi.string()
         .min(8)
@@ -29,12 +29,12 @@ module.exports.registerPost = async (req, res, next) => {
         })
         .required()
         .messages({
-            "string.empty": "Vui lòng nhập mật khẩu!",
-            "string.min": "Mật khẩu phải có ít nhất 8 ký tự!",
-            "password.lowercase": "Mật khẩu phải chứa ký tự thường!",
-            "password.uppercase": "Mật khẩu phải chứa ký tự hoa!",
-            "password.number": "Mật khẩu phải chứa chữ số!",
-            "password.special": "Mật khẩu phải chứa ký tự đặc biệt!",
+            "string.empty": "Please enter your password!",
+            "string.min": "Password must be at least 8 characters!",
+            "password.lowercase": "Password must contain a lowercase letter!",
+            "password.uppercase": "Password must contain an uppercase letter!",
+            "password.number": "Password must contain a number!",
+            "password.special": "Password must contain a special character!",
         }),
     });
 
@@ -59,16 +59,16 @@ module.exports.validateLogin = (req, res, next) => {
             .email()
             .required()
             .messages({
-                "string.empty": "Vui lòng nhập email!",
-                "string.email": "Email không đúng định dạng!",
-                "any.required": "Email là bắt buộc!"
+                "string.empty": "Please enter your email!",
+                "string.email": "Invalid email format!",
+                "any.required": "Email is required!"
             }),
         password: Joi
             .string()
             .required()
             .messages({
-                "string.empty": "Vui lòng nhập mật khẩu!",
-                "any.required": "Mật khẩu là bắt buộc!"
+                "string.empty": "Please enter your password!",
+                "any.required": "Password is required!"
             }),
         rememberPassword :  Joi . boolean ()
     });
@@ -94,9 +94,9 @@ module.exports.forgotPasswordPost = async (req, res, next) => {
         .email()
         .required()
         .messages({
-            "string.empty": "Vui lòng nhập email!",
-            "string.email": "Email không đúng định dạng!",
-            "any.required": "Email là bắt buộc!"
+            "string.empty": "Please enter your email!",
+            "string.email": "Invalid email format!",
+            "any.required": "Email is required!"
         }),
     });
 
@@ -120,15 +120,15 @@ module.exports.otpPasswordPost = async (req, res, next) => {
         .email()
         .required()
         .messages({
-            "string.empty": "Vui lòng gửi kèm email!",
-            "string.email": "Email không đúng định dạng!",
-            "any.required": "Email là bắt buộc!"
+            "string.empty": "Please include your email!",
+            "string.email": "Invalid email format!",
+            "any.required": "Email is required!"
         }),
         otp: Joi.string()
         .required()
         .messages({
-            "string.empty": "Vui lòng nhập mã OTP!",
-            "any.required": "Mã OTP là bắt buộc!"
+            "string.empty": "Please enter the OTP code!",
+            "any.required": "OTP code is required!"
         }),
     });
 
@@ -167,19 +167,19 @@ module.exports.resetPasswordPost = async (req, res, next) => {
         })
         .required()
         .messages({
-            "string.empty": "Vui lòng nhập mật khẩu!",
-            "string.min": "Mật khẩu phải có ít nhất 8 ký tự!",
-            "password.lowercase": "Mật khẩu phải chứa ít nhất một ký tự thường!",
-            "password.uppercase": "Mật khẩu phải chứa ít nhất một ký tự hoa!",
-            "password.number": "Mật khẩu phải chứa ít nhất một chữ số!",
-            "password.special": "Mật khẩu phải chứa ít nhất một ký tự đặc biệt!",
-            "any.required": "Mật khẩu là bắt buộc!"
+            "string.empty": "Please enter your password!",
+            "string.min": "Password must be at least 8 characters!",
+            "password.lowercase": "Password must contain at least one lowercase letter!",
+            "password.uppercase": "Password must contain at least one uppercase letter!",
+            "password.number": "Password must contain at least one number!",
+            "password.special": "Password must contain at least one special character!",
+            "any.required": "Password is required!"
         }),
         // Bạn nên thêm confirmPassword vào đây nếu form của bạn có trường xác nhận lại mật khẩu
         confirmPassword: Joi.string()
         .valid(Joi.ref('password'))
         .messages({
-            "any.only": "Xác nhận mật khẩu không khớp!"
+            "any.only": "Passwords do not match!"
         })
     });
 

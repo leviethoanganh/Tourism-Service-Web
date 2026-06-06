@@ -12,12 +12,12 @@ mixin breadcrumb(categoryDetail, tourDetail)
           .inner-wrap
             h1.inner-title #{tourDetail.name}
             nav.inner-links
-              a(href="/") Trang Chủ
-              
+              a(href="/") Home
+
               if (categoryDetail)
                 i.fa-solid.fa-angles-right
                 a(href=`/category/${categoryDetail.slug}`) #{categoryDetail.name}
-              
+
               i.fa-solid.fa-angles-right
               // Sửa lại đường dẫn cho đúng logic của Tour
               a(href=`/tours/detail/${tourDetail.slug}`) #{tourDetail.name}

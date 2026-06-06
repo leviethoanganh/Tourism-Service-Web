@@ -2,7 +2,7 @@ extends ../layouts/default.pug
 
 block main
   if (pers.includes("dashboard-view"))
-    h1.box-title Tổng quan
+    h1.box-title Dashboard
 
     //- Section 1
     .section-1
@@ -10,26 +10,26 @@ block main
         .inner-icon
           img(src="/admin/assets/images/section-1-icon-1.svg")
         .inner-content
-          .inner-title Tài khoản quản trị
-          .inner-number #{overview.totalAdmin.toLocaleString("vi-VN")}
+          .inner-title Admin Accounts
+          .inner-number #{overview.totalAdmin.toLocaleString("en-US")}
       .inner-item
         .inner-icon
           img(src="/admin/assets/images/section-1-icon-2.svg")
         .inner-content
-          .inner-title Đơn hàng
-          .inner-number #{overview.totalOrder.toLocaleString("vi-VN")}
+          .inner-title Orders
+          .inner-number #{overview.totalOrder.toLocaleString("en-US")}
       .inner-item
         .inner-icon
           img(src="/admin/assets/images/section-1-icon-3.svg")
         .inner-content
-          .inner-title Doanh thu
-          .inner-number #{overview.totalRevenue.toLocaleString("vi-VN")} đ
+          .inner-title Revenue
+          .inner-number #{overview.totalRevenue.toLocaleString("en-US")} VND
     //- End Section 1
 
     //- Section 2
     .section-2
       .inner-head
-        h2.inner-title Biểu đồ doanh thu
+        h2.inner-title Revenue Chart
         input.inner-filter(type="month")
       .inner-chart
         canvas(id="revenue-chart")
@@ -37,55 +37,55 @@ block main
 
     //- Section 3
     .section-3
-      h2.inner-title-main Đơn hàng mới
+      h2.inner-title-main New Orders
 
       .table-1
         table
           thead
             tr
-              th.text-left Mã
-              th.text-left Thông tin khách
-              th.text-left Danh sách tour
-              th.text-left Thanh toán
-              th.text-left Trạng thái
-              th.text-right Ngày đặt
+              th.text-left Code
+              th.text-left Customer Info
+              th.text-left Tour List
+              th.text-left Payment
+              th.text-left Status
+              th.text-right Order Date
           tbody
             tr
               td.text-left
                 .text-primary OD000001
               td.text-left
-                div Họ tên: Lê Văn A
-                div SĐT: 0123456789
-                div Ghi chú: Test...
+                div Full Name: Le Van A
+                div Phone: 0123456789
+                div Note: Test...
               td.text-left
                 .tour-list
                   .tour-item
                     img(src="/admin/assets/images/tour-1.png" class="inner-image")
                     .inner-content
-                      .inner-name Tour Hạ Long
+                      .inner-name Ha Long Tour
                       .inner-desc
-                        div Người lớn: 3 x 1,500,000đ
-                        div Trẻ em: 2 x 1,300,000đ
-                        div Em bé: 2 x 1,000,000đ
+                        div Adult: 3 x 1,500,000 VND
+                        div Children: 2 x 1,300,000 VND
+                        div Baby: 2 x 1,000,000 VND
                   .tour-item
                     img(src="/admin/assets/images/tour-1.png" class="inner-image")
                     .inner-content
-                      .inner-name Tour Hạ Long
+                      .inner-name Ha Long Tour
                       .inner-desc
-                        div Người lớn: 3 x 1,500,000đ
-                        div Trẻ em: 2 x 1,300,000đ
-                        div Em bé: 2 x 1,000,000đ
+                        div Adult: 3 x 1,500,000 VND
+                        div Children: 2 x 1,300,000 VND
+                        div Baby: 2 x 1,000,000 VND
               td.text-left
-                div Tổng tiền: 10,000,000đ
-                div Giảm: 400,000đ
-                div Mã giảm: TOURMUAHE2024
-                div Thanh toán: 9,600,000đ
-                div PTTT: Ví Momo
-                div TTTT: Đã thanh toán
+                div Subtotal: 10,000,000 VND
+                div Discount: 400,000 VND
+                div Coupon: TOURMUAHE2024
+                div Total: 9,600,000 VND
+                div Method: MoMo Wallet
+                div Payment: Paid
               td.text-left
-                .tag.tag-orange Khởi tạo
-                //- .tag.tag-green Đã duyệt
-                //- .tag.tag-red Đã hủy
+                .tag.tag-orange Pending
+                //- .tag.tag-green Completed
+                //- .tag.tag-red Cancelled
               td.text-right
                 div 16:20
                 div 01/01/2024

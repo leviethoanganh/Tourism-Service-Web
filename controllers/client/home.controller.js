@@ -78,7 +78,7 @@ module.exports.list = async (req, res) => {
         }
     }
     res.render('client/pages/home', {
-        pageTitle: "Trang chủ",
+        pageTitle: "Home",
         tourListSection2: tourListSection2,
         tourListSection4: tourListSection4,
         tourListSection6: tourListSection6

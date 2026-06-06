@@ -5,6 +5,6 @@ module.exports.imagePost = (req, res) => {
     if (req.file && req.file.path) {
         res.json({ location: req.file.path });
     } else {
-        res.status(400).json({ error: "Upload thất bại!" });
+        res.status(400).json({ error: "Upload failed!" });
     }
 };
