@@ -1,85 +1,130 @@
-# 🌍 Tourism Service Management App
+# Tourism Service Web
 
-A robust Full-Stack web application designed to streamline tourism service management. Built with the **MVC (Model-View-Controller)** architecture, this platform provides a seamless experience for managing tours, user authentications, and integrated travel services.
+A full-stack tourism booking web application built with Node.js and Express. It provides a public-facing site for browsing and booking tours, and a protected admin panel for managing all content.
 
----
+## Tech Stack
 
-## 🚀 Key Features
+| Layer | Technology |
+|---|---|
+| Runtime | Node.js |
+| Framework | Express 5 |
+| Database | MongoDB Atlas (Mongoose) |
+| View Engine | Pug (server-side rendering) |
+| Authentication | JWT stored in cookies |
+| Image Upload | Multer + Cloudinary |
+| Validation | Joi |
+| Email | Nodemailer |
+| Slug generation | mongoose-slug-updater |
 
-* **User Authentication:** Secure Sign-up and Login using **JWT (JSON Web Tokens)** and **bcrypt** for password hashing.
-* **Tour Management:** Full CRUD operations for tour packages, including categories, pricing, and descriptions.
-* **Media Management:** Optimized image uploads and storage integration via **Cloudinary API**.
-* **Email Services:** Automated notifications and password resets powered by **Nodemailer**.
-* **Security:** Middleware-based authorization to protect sensitive routes and administrative actions.
-* **Data Validation:** Strict server-side validation for all incoming data to ensure system integrity.
+## Features
 
----
+### Client (Public)
+- Browse featured tours on the homepage
+- Filter and search tours by category, price range, keyword, and departure city
+- View tour detail with full schedule, locations, and pricing (adult / children / baby)
+- Add tours to cart and place orders
+- Multiple payment methods: Cash, Bank Transfer, VNPay, ZaloPay
 
-## 🛠 Tech Stack
+### Admin Panel (`/admin`)
+- JWT-protected with role-based access control (RBAC)
+- **Tours** — create, edit, soft-delete, restore from trash, permanently delete
+- **Categories** — hierarchical category tree management
+- **Orders** — view and update order/payment status
+- **Users** — manage registered customer accounts
+- **Settings** — manage admin accounts, roles & permissions, and website info
+- **Profile** — update personal info and change password
+- **Forgot password** — OTP-based reset via email
 
-* **Backend:** Node.js, Express.js
-* **Database:** MongoDB with Mongoose ODM
-* **View Engine:** Pug / EJS (Template Engine)
-* **Authentication:** Passport.js / JWT
-* **Infrastructure:** Cloudinary (Images), MongoDB Atlas (Cloud Database)
-* **Package Manager:** Yarn / NPM
+## Project Structure
 
----
+```
+tourism-app/
+├── configs/          # Database connection and shared constants
+├── controllers/
+│   ├── admin/        # Admin panel controllers
+│   └── client/       # Public site controllers
+├── helpers/          # Utility functions (category tree, mail, Cloudinary, OTP)
+├── middlewares/
+│   ├── admin/        # JWT auth middleware
+│   └── client/       # Website info, category, city middlewares
+├── models/           # Mongoose schemas (Tour, Order, User, Role, etc.)
+├── public/
+│   ├── admin/        # Admin static assets (CSS, JS, images)
+│   └── client/       # Client static assets (CSS, JS, images)
+├── routers/
+│   ├── admin/        # Admin routes
+│   └── client/       # Client routes
+├── seeds/            # Database seed scripts
+├── validates/        # Joi validation schemas
+├── views/
+│   ├── admin/        # Admin Pug templates
+│   └── client/       # Client Pug templates
+└── index.js          # App entry point
+```
 
-## 📂 Project Structure
+## Getting Started
 
-```text
-├── configs/        # System configurations (DB, Cloudinary, etc.)
-├── controllers/    # Business logic & request handling
-├── helpers/        # Utility functions (Slug generators, formatters)
-├── middlewares/    # Authentication & Permission guards
-├── models/         # MongoDB Schemas & Data models
-├── public/         # Static assets (CSS, Client-side JS, Images)
-├── routers/        # API and Web route definitions
-├── validates/      # Input validation logic
-├── views/          # Front-end templates
+### Prerequisites
 
+- Node.js >= 18
+- A [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) cluster
+- A [Cloudinary](https://cloudinary.com/) account
+- An email account for Nodemailer (e.g. Gmail App Password)
 
-⚙️ Installation & Setup Guide
-Follow these steps to get your local development environment running:
+### Installation
 
-1. Clone the Project
-Open your terminal (PowerShell/CMD) and run:
+```bash
+git clone https://github.com/leviethoanganh/Tourism-Service-Web.git
+cd Tourism-Service-Web
+npm install
+```
 
-PowerShell
-git clone [https://github.com/leviethoanganh/Tourism-Service-App.git](https://github.com/leviethoanganh/Tourism-Service-App.git)
-cd "tourism app"
-2. Install Dependencies
-Ensure you have Yarn installed, then run:
+### Environment Variables
 
-PowerShell
-yarn install
-3. Environment Configuration
-Create a file named .env in the root directory and add the following configurations (Replace with your actual credentials):
+Create a `.env` file in the project root:
 
-Đoạn mã
-PORT=3000
-DATABASE=your_mongodb_connection_string
-JWT_SECRET=YOUR_SECRET_KEY
-EMAIL_USERNAME=your-email@gmail.com
-EMAIL_PASSWORD=your-app-password
-CLOUDINARY_NAME=your-cloud-name
-CLOUDINARY_API_KEY=your-api-key
-CLOUDINARY_API_SECRET=your-api-secret
-4. Launch the Application
-Start the server in development mode:
+```env
+DATABASE=<MongoDB Atlas connection string>
+JWT_SECRET=<your JWT secret>
+EMAIL_USERNAME=<sender email address>
+EMAIL_PASSWORD=<sender email password or app password>
+CLOUDINARY_NAME=<your Cloudinary cloud name>
+CLOUDINARY_API_KEY=<your Cloudinary API key>
+CLOUDINARY_API_SECRET=<your Cloudinary API secret>
+```
 
-PowerShell
-# This will run the start script defined in your package.json
-yarn start
-Once started, open your browser and navigate to: http://localhost:3000
+> **Never commit the `.env` file.** It is already listed in `.gitignore`.
 
-📧 Contact & Support
-Author: Le Viet Hoang Anh
+### Run
 
-Email: leviethoanganh0912200@gmail.com
+```bash
+npm start
+```
 
-GitHub: leviethoanganh
-cd "tourism app"
-├── .env            # Environment variables (Hidden)
-└── index.js        # Application entry point
+The server starts on [http://localhost:3000](http://localhost:3000).
+The admin panel is available at [http://localhost:3000/admin](http://localhost:3000/admin).
+
+## Admin Permissions
+
+The RBAC system supports the following granular permissions:
+
+| Permission | Value |
+|---|---|
+| View Dashboard | `dashboard-view` |
+| View / Create / Edit / Delete Category | `category-view` / `category-create` / `category-edit` / `category-delete` |
+| View / Create / Edit / Delete Tour | `tour-view` / `tour-create` / `tour-edit` / `tour-delete` |
+| Tour Trash (restore / destroy) | `tour-trash` |
+
+## Order Statuses
+
+| Field | Values |
+|---|---|
+| Order status | `initial` (Pending) / `done` (Completed) / `cancel` (Cancelled) |
+| Payment status | `unpaid` / `paid` |
+| Payment methods | `money` / `bank` / `vnpay` / `zalopay` |
+
+## Contact
+
+**Author:** Le Viet Hoang Anh  
+**Email:** leviethoanganh0912200@gmail.com  
+**GitHub:** [leviethoanganh](https://github.com/leviethoanganh)
