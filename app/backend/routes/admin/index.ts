@@ -37,13 +37,13 @@ router.get("/tours/:id", verifyToken, tourController.getDetail);
 router.post(
   "/tours",
   verifyToken,
-  upload.fields([{ name: "avatar", maxCount: 1 }, { name: "images", maxCount: 10 }]),
+  cloudinaryUpload.fields([{ name: "avatar", maxCount: 1 }, { name: "images", maxCount: 10 }]),
   tourController.createPost
 );
 router.patch(
   "/tours/:id",
   verifyToken,
-  upload.fields([{ name: "avatar", maxCount: 1 }, { name: "images", maxCount: 10 }]),
+  cloudinaryUpload.fields([{ name: "avatar", maxCount: 1 }, { name: "images", maxCount: 10 }]),
   tourController.editPatch
 );
 router.patch("/tours/:id/delete", verifyToken, tourController.deletePatch);

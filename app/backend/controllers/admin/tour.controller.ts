@@ -91,15 +91,12 @@ export const createPost = async (req: AuthRequest, res: Response): Promise<void>
     if (req.files) {
       const files = req.files as Record<string, Express.Multer.File[]>;
       if (files["avatar"]?.[0]) {
-        const f = files["avatar"][0];
-        req.body.avatar = `data:${f.mimetype};base64,${f.buffer.toString("base64")}`;
+        req.body.avatar = files["avatar"][0].path;
       } else {
         req.body.avatar = "";
       }
       if (files["images"]?.length > 0) {
-        req.body.images = files["images"].map(
-          (f) => `data:${f.mimetype};base64,${f.buffer.toString("base64")}`
-        );
+        req.body.images = files["images"].map((f) => f.path);
       } else {
         req.body.images = [];
       }
@@ -167,13 +164,10 @@ export const editPatch = async (req: AuthRequest, res: Response): Promise<void> 
     if (req.files) {
       const files = req.files as Record<string, Express.Multer.File[]>;
       if (files["avatar"]?.[0]) {
-        const f = files["avatar"][0];
-        req.body.avatar = `data:${f.mimetype};base64,${f.buffer.toString("base64")}`;
+        req.body.avatar = files["avatar"][0].path;
       }
       if (files["images"]?.length > 0) {
-        req.body.images = files["images"].map(
-          (f) => `data:${f.mimetype};base64,${f.buffer.toString("base64")}`
-        );
+        req.body.images = files["images"].map((f) => f.path);
       }
     }
 
