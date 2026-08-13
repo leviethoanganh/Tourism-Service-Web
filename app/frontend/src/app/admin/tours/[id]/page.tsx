@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { adminTourService } from "@/services/admin.service";
 import { useRouter, useParams } from "next/navigation";
+import ScheduleEditor, { ScheduleItem } from "../_components/ScheduleEditor";
 
 export default function TourEditPage() {
   const { id } = useParams<{ id: string }>();
@@ -9,6 +10,7 @@ export default function TourEditPage() {
 
   const [formData, setFormData]         = useState<any>({});
   const [locations, setLocations]       = useState<string[]>([]);
+  const [schedules, setSchedules]       = useState<ScheduleItem[]>([]);
   const [categoryList, setCategoryList] = useState<any[]>([]);
   const [cityList, setCityList]         = useState<any[]>([]);
   const [avatar, setAvatar]             = useState<File | null>(null);
@@ -34,6 +36,7 @@ export default function TourEditPage() {
         currentAvatar: t.avatar ?? "",
       });
       setLocations(t.locations ?? []);
+      setSchedules(t.schedules ?? []);
       setCategoryList(fd.categoryList ?? []);
       setCityList(fd.cityList ?? []);
     }).catch(() => {}).finally(() => setLoading(false));
@@ -50,6 +53,7 @@ export default function TourEditPage() {
       const fd = new FormData();
       Object.entries(formData).forEach(([k, v]) => { if (k !== "currentAvatar") fd.append(k, v as string); });
       fd.append("locations", JSON.stringify(locations));
+      fd.append("schedules", JSON.stringify(schedules));
       if (avatar) fd.append("avatar", avatar);
       if (images) Array.from(images).forEach(img => fd.append("images", img));
       const res = await adminTourService.update(id, fd);
@@ -151,6 +155,7 @@ export default function TourEditPage() {
             <label className="inner-label" htmlFor="information">Tour Information</label>
             <textarea id="information" value={formData.information ?? ""} onChange={e => set("information", e.target.value)} />
           </div>
+          <ScheduleEditor value={schedules} onChange={setSchedules} />
           <div className="inner-button inner-two-col">
             <button type="submit" disabled={saving}>{saving ? "Saving..." : "Save Changes"}</button>
           </div>
