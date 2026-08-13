@@ -6,6 +6,7 @@ import ForgotPassword from "../../models/forgot-password.model";
 import { generateRandomNumber } from "../../helpers/generate.helper";
 import { sendMail } from "../../helpers/mail.helper";
 import { AuthRequest } from "../../interfaces";
+import { authCookieOptions } from "../../helpers/cookie.helper";
 
 export const loginPost = async (req: Request, res: Response): Promise<void> => {
   const { email, password, rememberPassword } = req.body;
@@ -33,12 +34,11 @@ export const loginPost = async (req: Request, res: Response): Promise<void> => {
     { expiresIn: rememberPassword ? "7d" : "1d" }
   );
 
-  res.cookie("token", token, {
-    maxAge: rememberPassword ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    secure: false,
-    sameSite: "strict",
-  });
+  res.cookie(
+    "token",
+    token,
+    authCookieOptions(rememberPassword ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000)
+  );
 
   res.json({ code: "success", message: "Login successful!", token });
 };
@@ -119,12 +119,7 @@ export const otpPasswordPost = async (req: Request, res: Response): Promise<void
       { expiresIn: "1d" }
     );
 
-    res.cookie("token", token, {
-      maxAge: 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      secure: false,
-      sameSite: "strict",
-    });
+    res.cookie("token", token, authCookieOptions(24 * 60 * 60 * 1000));
 
     res.json({ code: "success", message: "OTP verified successfully!" });
   } catch (error) {
@@ -146,7 +141,7 @@ export const resetPasswordPost = async (req: AuthRequest, res: Response): Promis
 };
 
 export const logout = (req: Request, res: Response): void => {
-  res.clearCookie("token");
+  res.clearCookie("token", authCookieOptions());
   res.json({ code: "success", message: "Logged out successfully!" });
 };
 

@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import AccountAdmin from "../models/account-admin.model";
 import Role from "../models/role.model";
 import { AuthRequest } from "../interfaces";
+import { authCookieOptions } from "../helpers/cookie.helper";
 
 export const verifyToken = async (
   req: AuthRequest,
@@ -35,7 +36,7 @@ export const verifyToken = async (
     }).select("-password");
 
     if (!existAccount) {
-      res.clearCookie("token");
+      res.clearCookie("token", authCookieOptions());
       res.status(401).json({ code: "error", message: "Account not found or inactive." });
       return;
     }
@@ -51,7 +52,7 @@ export const verifyToken = async (
     req.account = existAccount as any;
     next();
   } catch (error) {
-    res.clearCookie("token");
+    res.clearCookie("token", authCookieOptions());
     res.status(401).json({ code: "error", message: "Invalid or expired token." });
   }
 };
