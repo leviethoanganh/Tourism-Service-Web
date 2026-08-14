@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { settingService } from "@/services/setting.service";
 import ContactContent from "./_ContactContent";
+import T from "@/components/shared/T";
 
 export const metadata: Metadata = {
   title: "Contact Us – Tourism Service",
@@ -23,11 +24,11 @@ export default async function ContactPage() {
         <div className="inner-content">
           <div className="container">
             <div className="inner-wrap">
-              <h1 className="inner-title">Contact Us</h1>
+              <h1 className="inner-title"><T ns="contact" k="title" /></h1>
               <nav className="inner-links">
-                <a href="/">Home</a>
+                <a href="/"><T ns="header" k="home" /></a>
                 <i className="fa-solid fa-angles-right"></i>
-                <a href="/contact">Contact</a>
+                <a href="/contact"><T ns="header" k="contact" /></a>
               </nav>
             </div>
           </div>

@@ -5,8 +5,10 @@ import { tourService } from "@/services/tour.service";
 import { settingService } from "@/services/setting.service";
 import { Tour, City } from "@/types";
 import TourCard from "@/components/tour/TourCard";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function SearchContent() {
+  const { t } = useTranslation();
   const searchParamsHook = useSearchParams();
   const [cities, setCities] = useState<City[]>([]);
   const [results, setResults] = useState<Tour[]>([]);
@@ -54,34 +56,34 @@ export default function SearchContent() {
             <div className="box-filter">
               <div className="inner-filter-list">
                 <div className="inner-head">
-                  <div className="inner-title">Filter</div>
+                  <div className="inner-title">{t.filter.title}</div>
                   <i className="fa-solid fa-filter"></i>
                 </div>
                 <div className="inner-group">
-                  <div className="inner-label">Departure From</div>
+                  <div className="inner-label">{t.filter.departureFrom}</div>
                   <select
                     name="locationFrom"
                     value={form.locationFrom}
                     onChange={(e) => setForm({ ...form, locationFrom: e.target.value })}
                   >
-                    <option value="">-- Select departure --</option>
+                    <option value="">{t.search.selectDeparturePlaceholder}</option>
                     {cities.map((c) => (
                       <option key={c._id} value={c._id}>{c.name}</option>
                     ))}
                   </select>
                 </div>
                 <div className="inner-group">
-                  <div className="inner-label">Destination</div>
+                  <div className="inner-label">{t.filter.destination}</div>
                   <input
                     type="text"
                     name="locationTo"
-                    placeholder="Enter destination..."
+                    placeholder={t.search.enterDestinationPlaceholder}
                     value={form.locationTo}
                     onChange={(e) => setForm({ ...form, locationTo: e.target.value })}
                   />
                 </div>
                 <div className="inner-group">
-                  <div className="inner-label">Departure Date</div>
+                  <div className="inner-label">{t.common.departureDate}</div>
                   <input
                     type="date"
                     name="departureDate"
@@ -90,10 +92,10 @@ export default function SearchContent() {
                   />
                 </div>
                 <div className="inner-group">
-                  <div className="inner-label">Passenger Count</div>
+                  <div className="inner-label">{t.filter.passengerCount}</div>
                   <div className="inner-input-list">
                     <div className="inner-input-item">
-                      <div className="inner-label">Adult:</div>
+                      <div className="inner-label">{t.common.adult}:</div>
                       <input
                         type="number"
                         value={form.stockAdult}
@@ -101,7 +103,7 @@ export default function SearchContent() {
                       />
                     </div>
                     <div className="inner-input-item">
-                      <div className="inner-label">Children:</div>
+                      <div className="inner-label">{t.common.children}:</div>
                       <input
                         type="number"
                         value={form.stockChildren}
@@ -111,17 +113,17 @@ export default function SearchContent() {
                   </div>
                 </div>
                 <div className="inner-group">
-                  <div className="inner-label">Price Range</div>
+                  <div className="inner-label">{t.filter.priceRange}</div>
                   <select
                     value={form.price}
                     onChange={(e) => setForm({ ...form, price: e.target.value })}
                   >
-                    <option value="">-- Select price range --</option>
-                    <option value="0-999999">Under 1M</option>
-                    <option value="1000000-3000000">1M to 3M</option>
-                    <option value="3000000-6000000">3M to 6M</option>
-                    <option value="6000000-10000000">6M to 10M</option>
-                    <option value="10000000-15999999">Over 10M</option>
+                    <option value="">{t.search.selectPriceRangePlaceholder}</option>
+                    <option value="0-999999">{t.filter.priceUnder1M}</option>
+                    <option value="1000000-3000000">{t.filter.price1to3M}</option>
+                    <option value="3000000-6000000">{t.filter.price3to6M}</option>
+                    <option value="6000000-10000000">{t.filter.price6to10M}</option>
+                    <option value="10000000-15999999">{t.filter.priceOver10M}</option>
                   </select>
                 </div>
                 <button
@@ -129,7 +131,7 @@ export default function SearchContent() {
                   onClick={() => { doSearch(); setShowFilter(false); }}
                   disabled={loading}
                 >
-                  {loading ? "Searching..." : "Apply"}
+                  {loading ? t.search.searching : t.common.apply}
                 </button>
               </div>
             </div>
@@ -139,25 +141,25 @@ export default function SearchContent() {
           {/* Right */}
           <div className="inner-right">
             <div className="inner-info-1">
-              <h2 className="inner-title">Search Tours</h2>
+              <h2 className="inner-title">{t.search.searchToursTitle}</h2>
             </div>
             <div className="inner-info-2">
               <div className="inner-sort">
-                <div className="inner-label">Results:</div>
+                <div className="inner-label">{t.search.results}</div>
               </div>
               {searched && (
                 <div className="inner-total-item">
-                  Found: <b>{results.length} Tours</b>
+                  {t.search.found} <b>{results.length} {t.toolbar.toursSuffix}</b>
                 </div>
               )}
               <button className="inner-button-filter" onClick={() => setShowFilter(true)}>
-                Filter
+                {t.filter.title}
                 <i className="fa-solid fa-filter"></i>
               </button>
             </div>
 
             {searched && results.length === 0 && (
-              <p>No tours found matching your criteria.</p>
+              <p>{t.toolbar.noToursFound}</p>
             )}
             {results.length > 0 && (
               <div className="inner-list-tour">

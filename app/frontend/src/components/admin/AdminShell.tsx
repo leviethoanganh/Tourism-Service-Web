@@ -3,22 +3,25 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { adminAuthService } from "@/services/admin.service";
-
-const menu1 = [
-  { href: "/admin/dashboard",  icon: "fa-gauge-high",       label: "Dashboard" },
-  { href: "/admin/categories", icon: "fa-table-cells-large", label: "Category Management" },
-  { href: "/admin/tours",      icon: "fa-table-list",        label: "Tour Management" },
-  { href: "/admin/orders",     icon: "fa-list-check",        label: "Order Management" },
-  { href: "/admin/users",      icon: "fa-user",              label: "User Management" },
-  { href: "/admin/contacts",   icon: "fa-user-group",        label: "Contact Info" },
-];
-
-const menu2 = [
-  { href: "/admin/settings", icon: "fa-gear",      label: "General Settings" },
-  { href: "/admin/profile",  icon: "fa-user-gear", label: "My Profile" },
-];
+import { useTranslation } from "@/hooks/useTranslation";
+import LanguageToggle from "@/components/shared/LanguageToggle";
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {
+  const { t } = useTranslation();
+  const menu1 = [
+    { href: "/admin/dashboard",  icon: "fa-gauge-high",       label: t.adminShell.dashboard },
+    { href: "/admin/categories", icon: "fa-table-cells-large", label: t.adminShell.categoryManagement },
+    { href: "/admin/tours",      icon: "fa-table-list",        label: t.adminShell.tourManagement },
+    { href: "/admin/orders",     icon: "fa-list-check",        label: t.adminShell.orderManagement },
+    { href: "/admin/users",      icon: "fa-user",              label: t.adminShell.userManagement },
+    { href: "/admin/contacts",   icon: "fa-user-group",        label: t.adminShell.contactInfo },
+  ];
+
+  const menu2 = [
+    { href: "/admin/settings", icon: "fa-gear",      label: t.adminShell.generalSettings },
+    { href: "/admin/profile",  icon: "fa-user-gear", label: t.adminShell.myProfile },
+  ];
+
   const router   = useRouter();
   const pathname = usePathname();
   const isAuth   = pathname.startsWith("/admin/auth/");
@@ -48,7 +51,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         height: "100vh", background: "#F5F6FA",
         fontFamily: "'Nunito Sans', sans-serif", fontSize: 16, color: "#888",
       }}>
-        Loading...
+        {t.adminShell.loading}
       </div>
     );
   }
@@ -86,6 +89,8 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         </div>
 
         <div className="inner-wrap">
+          <LanguageToggle />
+
           <div className="inner-notify">
             <i className="fa-regular fa-bell" style={{ fontSize: 22, color: "#404040" }} />
           </div>
@@ -95,7 +100,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             <div className="inner-text">
               <div className="inner-name">{account.fullName}</div>
               <div className="inner-role">
-                {account.roleName ?? account.role?.name ?? "Admin"}
+                {account.roleName ?? account.role?.name ?? t.adminShell.defaultRole}
               </div>
             </div>
           </Link>
@@ -146,7 +151,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
               style={{ cursor: "pointer" }}
               onClick={handleLogout}
             >
-              <i className="fa-solid fa-power-off" /> Logout
+              <i className="fa-solid fa-power-off" /> {t.adminShell.logout}
             </a>
           </li>
         </ul>

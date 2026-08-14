@@ -4,8 +4,11 @@ import { useCartStore } from "@/store/cart.store";
 import { useEffect, useRef, useState } from "react";
 import { settingService } from "@/services/setting.service";
 import { WebsiteInfo, Category } from "@/types";
+import { useTranslation } from "@/hooks/useTranslation";
+import LanguageToggle from "@/components/shared/LanguageToggle";
 
 export default function Header() {
+  const { t } = useTranslation();
   const totalItems = useCartStore((s) => s.totalItems);
   const [siteInfo, setSiteInfo] = useState<WebsiteInfo | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -68,7 +71,7 @@ export default function Header() {
             <nav className="inner-menu" ref={menuRef}>
               <ul>
                 <li>
-                  <Link className="active" href="/">Home</Link>
+                  <Link className="active" href="/">{t.header.home}</Link>
                 </li>
                 {categories.map((item) => (
                   <li key={item._id}>
@@ -87,11 +90,13 @@ export default function Header() {
                     )}
                   </li>
                 ))}
-                <li><Link href="#">News</Link></li>
-                <li><Link href="/contact">Contact</Link></li>
+                <li><Link href="#">{t.header.news}</Link></li>
+                <li><Link href="/contact">{t.header.contact}</Link></li>
               </ul>
               <div className="inner-overlay" onClick={closeMenu}></div>
             </nav>
+
+            <LanguageToggle />
 
             <Link className="inner-cart" href="/cart">
               <img alt="" src="/client/assets/images/icon-cart.png" />

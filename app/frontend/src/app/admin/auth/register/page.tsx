@@ -1,8 +1,11 @@
 "use client";
 import { useState } from "react";
 import { adminAuthService } from "@/services/admin.service";
+import { useTranslation } from "@/hooks/useTranslation";
+import LanguageToggle from "@/components/shared/LanguageToggle";
 
 export default function RegisterPage() {
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     fullName: "", email: "", password: "", agree: false,
   });
@@ -12,7 +15,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.agree) {
-      setError("You must accept the terms and conditions.");
+      setError(t.adminAuth.mustAcceptTerms);
       return;
     }
     setLoading(true);
@@ -24,10 +27,10 @@ export default function RegisterPage() {
       if (res.code === "success") {
         window.location.href = "/admin/auth/register/pending";
       } else {
-        setError(res.message ?? "Registration failed");
+        setError(res.message ?? t.adminAuth.registrationFailed);
       }
     } catch {
-      setError("Connection error. Please try again.");
+      setError(t.adminAuth.connectionErrorRetry);
     } finally {
       setLoading(false);
     }
@@ -35,9 +38,12 @@ export default function RegisterPage() {
 
   return (
     <div className="page-account">
+      <div style={{ position: "absolute", top: 20, right: 20 }}>
+        <LanguageToggle />
+      </div>
       <div className="form-account">
-        <h1 className="inner-title">Register</h1>
-        <p className="inner-desc">Create an account to continue</p>
+        <h1 className="inner-title">{t.adminAuth.registerTitle}</h1>
+        <p className="inner-desc">{t.adminAuth.registerDesc}</p>
 
         {error && (
           <div style={{
@@ -51,12 +57,12 @@ export default function RegisterPage() {
 
         <form onSubmit={handleSubmit}>
           <div className="inner-group">
-            <label className="inner-label" htmlFor="fullName">Full Name *</label>
+            <label className="inner-label" htmlFor="fullName">{t.adminAccountForm.fullNameLabel}</label>
             <input
               id="fullName"
               type="text"
               className="inner-control"
-              placeholder="e.g. Le Van A"
+              placeholder={t.adminAccountForm.fullNamePlaceholder}
               value={form.fullName}
               onChange={e => setForm(p => ({ ...p, fullName: e.target.value }))}
               required
@@ -64,12 +70,12 @@ export default function RegisterPage() {
           </div>
 
           <div className="inner-group">
-            <label className="inner-label" htmlFor="email">Email *</label>
+            <label className="inner-label" htmlFor="email">{t.adminAccountForm.emailLabel}</label>
             <input
               id="email"
               type="email"
               className="inner-control"
-              placeholder="e.g. levana@gmail.com"
+              placeholder={t.adminAuth.registerEmailPlaceholder}
               value={form.email}
               onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
               required
@@ -77,12 +83,12 @@ export default function RegisterPage() {
           </div>
 
           <div className="inner-group">
-            <label className="inner-label" htmlFor="password">Password *</label>
+            <label className="inner-label" htmlFor="password">{t.adminAccountForm.passwordLabel}</label>
             <input
               id="password"
               type="password"
               className="inner-control"
-              placeholder="Enter password"
+              placeholder={t.adminAuth.passwordPlaceholderShort}
               value={form.password}
               onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
               required
@@ -97,18 +103,18 @@ export default function RegisterPage() {
                 checked={form.agree}
                 onChange={e => setForm(p => ({ ...p, agree: e.target.checked }))}
               />
-              <label htmlFor="agree">I accept the terms and conditions *</label>
+              <label htmlFor="agree">{t.adminAuth.acceptTerms}</label>
             </div>
           </div>
 
           <button type="submit" className="inner-button" disabled={loading}>
-            {loading ? "Registering..." : "Register"}
+            {loading ? t.adminAuth.registering : t.adminAuth.register}
           </button>
         </form>
 
         <div className="inner-more">
-          <span>Already have an account?</span>
-          <a href="/admin/auth/login">Login</a>
+          <span>{t.adminAuth.alreadyHaveAccount}</span>
+          <a href="/admin/auth/login">{t.adminAuth.login}</a>
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import TourCard from "@/components/tour/TourCard";
 import Pagination from "@/components/ui/Pagination";
 import TourListFilter from "@/components/tour/TourListFilter";
 import ToursToolbar from "@/components/tour/ToursToolbar";
+import T from "@/components/shared/T";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -59,7 +60,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             <div className="inner-wrap">
               <h1 className="inner-title">{title}</h1>
               <nav className="inner-links">
-                <a href="/">Home</a>
+                <a href="/"><T ns="header" k="home" /></a>
                 <i className="fa-solid fa-angles-right"></i>
                 <a href={`/category/${slug}`}>{title}</a>
               </nav>
@@ -93,7 +94,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
               </div>
 
               {tourList.length === 0 ? (
-                <p style={{ padding: "40px 0", color: "#888" }}>No tours found matching your criteria.</p>
+                <p style={{ padding: "40px 0", color: "#888" }}><T ns="toolbar" k="noToursFound" /></p>
               ) : (
                 <div className="inner-list-tour">
                   {tourList.map((tour) => (

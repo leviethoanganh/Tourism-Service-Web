@@ -2,8 +2,10 @@
 import { useEffect, useState } from "react";
 import { adminSettingService } from "@/services/admin.service";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function AccountCreatePage() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [roles,   setRoles]   = useState<any[]>([]);
   const [saving,  setSaving]  = useState(false);
@@ -28,14 +30,14 @@ export default function AccountCreatePage() {
       if (avatar) fd.append("avatar", avatar);
       const res = await adminSettingService.createAccount(fd);
       if (res.code === "success") router.push("/admin/settings/accounts");
-      else setMsg(res.message ?? "Error");
-    } catch { setMsg("Connection error."); }
+      else setMsg(res.message ?? t.adminCategoryForm.errorGeneric);
+    } catch { setMsg(t.common.connectionError); }
     finally { setSaving(false); }
   };
 
   return (
     <>
-      <h1 className="box-title">Create Admin Account</h1>
+      <h1 className="box-title">{t.adminAccountForm.createTitle}</h1>
       <div className="section-8">
         {msg && (
           <div style={{
@@ -45,46 +47,46 @@ export default function AccountCreatePage() {
         )}
         <form onSubmit={handleSubmit}>
           <div className="inner-group">
-            <label className="inner-label" htmlFor="fullName">Full Name *</label>
+            <label className="inner-label" htmlFor="fullName">{t.adminAccountForm.fullNameLabel}</label>
             <input id="fullName" type="text" value={form.fullName} required
-              onChange={e => setForm(p => ({ ...p, fullName: e.target.value }))} placeholder="e.g. Le Van A" />
+              onChange={e => setForm(p => ({ ...p, fullName: e.target.value }))} placeholder={t.adminAccountForm.fullNamePlaceholder} />
           </div>
           <div className="inner-group">
-            <label className="inner-label" htmlFor="email">Email *</label>
+            <label className="inner-label" htmlFor="email">{t.adminAccountForm.emailLabel}</label>
             <input id="email" type="email" value={form.email} required
-              onChange={e => setForm(p => ({ ...p, email: e.target.value }))} placeholder="e.g. admin@example.com" />
+              onChange={e => setForm(p => ({ ...p, email: e.target.value }))} placeholder={t.adminAccountForm.emailPlaceholder} />
           </div>
           <div className="inner-group">
-            <label className="inner-label" htmlFor="password">Password *</label>
+            <label className="inner-label" htmlFor="password">{t.adminAccountForm.passwordLabel}</label>
             <input id="password" type="password" value={form.password} required
               onChange={e => setForm(p => ({ ...p, password: e.target.value }))} />
           </div>
           <div className="inner-group">
-            <label className="inner-label" htmlFor="role">Role</label>
+            <label className="inner-label" htmlFor="role">{t.adminAccountForm.roleLabel}</label>
             <select id="role" value={form.role} onChange={e => setForm(p => ({ ...p, role: e.target.value }))}>
-              <option value="">-- Select role --</option>
+              <option value="">{t.adminAccountForm.selectRolePlaceholder}</option>
               {roles.map((r: any) => <option key={r._id} value={r._id}>{r.name}</option>)}
             </select>
           </div>
           <div className="inner-group">
-            <label className="inner-label" htmlFor="status">Status</label>
+            <label className="inner-label" htmlFor="status">{t.common.status}</label>
             <select id="status" value={form.status} onChange={e => setForm(p => ({ ...p, status: e.target.value }))}>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="initial">Pending Approval</option>
+              <option value="active">{t.common.active}</option>
+              <option value="inactive">{t.common.inactive}</option>
+              <option value="initial">{t.adminAccountForm.statusPendingApproval}</option>
             </select>
           </div>
           <div className="inner-group">
-            <label className="inner-label" htmlFor="avatar">Avatar</label>
+            <label className="inner-label" htmlFor="avatar">{t.adminCategoryForm.avatarLabel}</label>
             <input id="avatar" type="file" accept="image/*"
               onChange={e => setAvatar(e.target.files?.[0] ?? null)} style={{ height: "auto", padding: "12px 22px" }} />
           </div>
           <div className="inner-button inner-two-col">
-            <button type="submit" disabled={saving}>{saving ? "Creating..." : "Create"}</button>
+            <button type="submit" disabled={saving}>{saving ? t.common.creating : t.common.create}</button>
           </div>
         </form>
         <div className="inner-back">
-          <a href="/admin/settings/accounts">Back to list</a>
+          <a href="/admin/settings/accounts">{t.common.backToList}</a>
         </div>
       </div>
     </>

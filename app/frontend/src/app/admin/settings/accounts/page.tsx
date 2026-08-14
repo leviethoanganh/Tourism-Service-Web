@@ -2,8 +2,10 @@
 import { useEffect, useState } from "react";
 import { adminSettingService } from "@/services/admin.service";
 import Link from "next/link";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function AccountsPage() {
+  const { t } = useTranslation();
   const [accounts, setAccounts] = useState<any[]>([]);
   const [loading, setLoading]   = useState(true);
   const [search, setSearch]     = useState("");
@@ -24,38 +26,38 @@ export default function AccountsPage() {
 
   return (
     <>
-      <h1 className="box-title">Admin Accounts</h1>
+      <h1 className="box-title">{t.adminAccounts.title}</h1>
 
       <div className="section-5">
         <div className="inner-wrap">
           <div className="inner-search">
             <i className="fa-solid fa-magnifying-glass" />
-            <input type="text" placeholder="Search accounts..." value={search}
+            <input type="text" placeholder={t.adminAccounts.searchPlaceholder} value={search}
               onChange={e => setSearch(e.target.value)} />
           </div>
           <div className="inner-button-create">
-            <Link href="/admin/settings/accounts/create">+ Create New</Link>
+            <Link href="/admin/settings/accounts/create">{t.adminAccounts.createNew}</Link>
           </div>
         </div>
       </div>
 
       <div className="section-6">
-        {loading ? <p style={{ padding: 20 }}>Loading...</p> : (
+        {loading ? <p style={{ padding: 20 }}>{t.common.loading}</p> : (
           <div className="table-2">
             <table>
               <thead>
                 <tr>
-                  <th className="text-center">Avatar</th>
-                  <th className="text-left">Full Name</th>
-                  <th className="text-left">Email</th>
-                  <th className="text-left">Role</th>
-                  <th className="text-center">Status</th>
-                  <th className="text-left">Actions</th>
+                  <th className="text-center">{t.adminCategories.colAvatar}</th>
+                  <th className="text-left">{t.adminUsers.colFullName}</th>
+                  <th className="text-left">{t.adminUsers.colEmail}</th>
+                  <th className="text-left">{t.adminAccounts.colRole}</th>
+                  <th className="text-center">{t.common.status}</th>
+                  <th className="text-left">{t.common.actions}</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0
-                  ? <tr><td colSpan={6} className="text-center" style={{ padding: 30, color: "#bbb" }}>No accounts found</td></tr>
+                  ? <tr><td colSpan={6} className="text-center" style={{ padding: 30, color: "#bbb" }}>{t.adminAccounts.noAccountsFound}</td></tr>
                   : filtered.map((acc: any) => (
                     <tr key={acc._id}>
                       <td className="text-center">
@@ -69,7 +71,7 @@ export default function AccountsPage() {
                       <td className="text-left">{acc.roleName ?? acc.role?.name ?? "—"}</td>
                       <td className="text-center">
                         <span className={`tag ${acc.status === "active" ? "tag-green" : acc.status === "initial" ? "tag-orange" : "tag-red"}`}>
-                          {acc.status === "initial" ? "Pending" : acc.status}
+                          {acc.status === "initial" ? t.adminAccounts.statusPending : acc.status === "active" ? t.common.active : t.common.inactive}
                         </span>
                       </td>
                       <td className="text-left">

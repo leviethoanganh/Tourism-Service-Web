@@ -4,10 +4,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useCartStore } from "@/store/cart.store";
 import { orderService } from "@/services/order.service";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const fmt = (n: number) => n.toLocaleString("vi-VN");
 
 export default function CartPage() {
+  const { t } = useTranslation();
   const { items, removeItem, clearCart } = useCartStore();
   const router = useRouter();
 
@@ -30,7 +32,7 @@ export default function CartPage() {
 
   const handleSubmit = async () => {
     if (!form.fullName || !form.phone) {
-      alert("Please enter your full name and phone number!");
+      alert(t.cart.fullNamePhoneAlert);
       return;
     }
     setLoading(true);
@@ -40,7 +42,7 @@ export default function CartPage() {
         clearCart();
         router.push(`/order/success?orderCode=${result.orderCode}&phone=${form.phone}`);
       } else {
-        alert("Order failed, please try again!");
+        alert(t.cart.orderFailedAlert);
       }
     } finally {
       setLoading(false);
@@ -54,16 +56,16 @@ export default function CartPage() {
         <div className="container">
           <div className="inner-wrap">
             <div className="inner-head">
-              <div className="inner-title">Shopping Cart</div>
+              <div className="inner-title">{t.cart.shoppingCart}</div>
               <Link className="inner-back" href="/">
-                Continue Shopping
+                {t.cart.continueShopping}
                 <i className="fa-solid fa-angle-right"></i>
               </Link>
             </div>
 
             {items.length === 0 ? (
               <p style={{ textAlign: "center", padding: "40px 0", color: "#888" }}>
-                Your cart is empty.
+                {t.cart.emptyCart}
               </p>
             ) : (
               <>
@@ -89,16 +91,16 @@ export default function CartPage() {
                         </div>
                         <div className="inner-meta">
                           {item.departureDate && (
-                            <div>Departure Date: <b>{item.departureDate}</b></div>
+                            <div>{t.common.departureDate}: <b>{item.departureDate}</b></div>
                           )}
                         </div>
                       </div>
                     </div>
                     <div className="inner-quantity">
-                      <div className="inner-label">Passenger Count</div>
+                      <div className="inner-label">{t.filter.passengerCount}</div>
                       <div className="inner-list">
                         <div className="inner-item">
-                          <div className="inner-item-label">Adult:</div>
+                          <div className="inner-item-label">{t.common.adult}:</div>
                           <div className="inner-item-price">
                             <span>{item.quantityAdult}</span> x{" "}
                             <span className="inner-highlight">
@@ -107,7 +109,7 @@ export default function CartPage() {
                           </div>
                         </div>
                         <div className="inner-item">
-                          <div className="inner-item-label">Children:</div>
+                          <div className="inner-item-label">{t.common.children}:</div>
                           <div className="inner-item-price">
                             <span>{item.quantityChildren}</span> x{" "}
                             <span className="inner-highlight">
@@ -116,7 +118,7 @@ export default function CartPage() {
                           </div>
                         </div>
                         <div className="inner-item">
-                          <div className="inner-item-label">Baby:</div>
+                          <div className="inner-item-label">{t.common.baby}:</div>
                           <div className="inner-item-price">
                             <span>{item.quantityBaby}</span> x{" "}
                             <span className="inner-highlight">
@@ -133,15 +135,15 @@ export default function CartPage() {
 
             <div className="inner-list-price">
               <div className="inner-item">
-                <div className="inner-label">Subtotal:</div>
+                <div className="inner-label">{t.common.subtotal}:</div>
                 <div className="inner-price">{fmt(subTotal)} VND</div>
               </div>
               <div className="inner-item">
-                <div className="inner-label">Discount:</div>
+                <div className="inner-label">{t.common.discount}:</div>
                 <div className="inner-price">{fmt(discount)} VND</div>
               </div>
               <div className="inner-item">
-                <div className="inner-label">Total:</div>
+                <div className="inner-label">{t.common.total}:</div>
                 <div className="inner-price-highlight">{fmt(total)} VND</div>
               </div>
             </div>
@@ -154,12 +156,12 @@ export default function CartPage() {
       <div className="section-12">
         <div className="container">
           <div className="inner-wrap">
-            <div className="inner-title-main">Customer Information</div>
+            <div className="inner-title-main">{t.cart.customerInformation}</div>
             <div className="inner-list-group">
               <div className="inner-group">
                 <input
                   id="fullName"
-                  placeholder="Full Name *"
+                  placeholder={t.cart.fullNamePlaceholder}
                   type="text"
                   name="fullName"
                   value={form.fullName}
@@ -169,7 +171,7 @@ export default function CartPage() {
               <div className="inner-group">
                 <input
                   id="phone"
-                  placeholder="Phone Number *"
+                  placeholder={t.cart.phoneNumberPlaceholder}
                   type="tel"
                   name="phone"
                   value={form.phone}
@@ -178,7 +180,7 @@ export default function CartPage() {
               </div>
               <div className="inner-group inner-two-col">
                 <textarea
-                  placeholder="Note"
+                  placeholder={t.cart.notePlaceholder}
                   name="note"
                   value={form.note}
                   onChange={(e) => setForm({ ...form, note: e.target.value })}
@@ -186,11 +188,11 @@ export default function CartPage() {
               </div>
             </div>
 
-            <div className="inner-title-main">Select Payment Method</div>
+            <div className="inner-title-main">{t.cart.selectPaymentMethod}</div>
             <div className="inner-list-method">
               {[
-                { value: "money", label: "Cash on Tour" },
-                { value: "bank", label: "Bank Transfer" },
+                { value: "money", label: t.cart.cashOnTour },
+                { value: "bank", label: t.cart.bankTransfer },
                 { value: "vnpay", label: "VNPay" },
                 { value: "zalopay", label: "ZaloPay" },
               ].map(({ value, label }) => (
@@ -213,18 +215,18 @@ export default function CartPage() {
 
             {showBankInfo && (
               <div className="inner-info-bank active">
-                <div className="inner-title">Bank Transfer Information</div>
+                <div className="inner-title">{t.cart.bankTransferInfo}</div>
                 <div className="inner-text">
-                  <div>Bank: Vietcombank</div>
-                  <div>Account Name: Le Van A</div>
-                  <div>Account Number: 0123456789</div>
+                  <div>{t.cart.bankLabel}</div>
+                  <div>{t.cart.accountNameLabel}</div>
+                  <div>{t.cart.accountNumberLabel}</div>
                 </div>
               </div>
             )}
 
             <div className="inner-button">
               <button onClick={handleSubmit} disabled={loading || items.length === 0}>
-                {loading ? "Processing..." : "BOOK TOUR"}
+                {loading ? t.cart.processing : t.cart.bookTour}
               </button>
             </div>
           </div>

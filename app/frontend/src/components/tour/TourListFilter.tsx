@@ -2,12 +2,14 @@
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { City } from "@/types";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface Props {
   cities: City[];
 }
 
 export default function TourListFilter({ cities }: Props) {
+  const { t } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -60,24 +62,24 @@ export default function TourListFilter({ cities }: Props) {
     <div className="box-filter">
       <div className="inner-filter-list">
         <div className="inner-head">
-          <div className="inner-title">Filter</div>
+          <div className="inner-title">{t.filter.title}</div>
           <i className="fa-solid fa-filter"></i>
         </div>
 
         <div className="inner-group">
-          <div className="inner-label">Tour Name</div>
+          <div className="inner-label">{t.filter.tourName}</div>
           <input
             type="text"
             name="keyword"
             defaultValue={searchParams.get("keyword") || ""}
-            placeholder="Search tour name..."
+            placeholder={t.filter.searchTourNamePlaceholder}
           />
         </div>
 
         <div className="inner-group">
-          <div className="inner-label">Departure From</div>
+          <div className="inner-label">{t.filter.departureFrom}</div>
           <select name="locationFrom" defaultValue={searchParams.get("locationFrom") || ""}>
-            <option value="">-- All cities --</option>
+            <option value="">{t.filter.allCities}</option>
             {cities.map((c) => (
               <option key={c._id} value={c._id}>{c.name}</option>
             ))}
@@ -85,9 +87,9 @@ export default function TourListFilter({ cities }: Props) {
         </div>
 
         <div className="inner-group">
-          <div className="inner-label">Destination</div>
+          <div className="inner-label">{t.filter.destination}</div>
           <select name="locationTo" defaultValue={searchParams.get("locationTo") || ""}>
-            <option value="">-- All destinations --</option>
+            <option value="">{t.filter.allDestinations}</option>
             {cities.map((c) => (
               <option key={c._id} value={c.name}>{c.name}</option>
             ))}
@@ -95,7 +97,7 @@ export default function TourListFilter({ cities }: Props) {
         </div>
 
         <div className="inner-group">
-          <div className="inner-label">Departure Date</div>
+          <div className="inner-label">{t.common.departureDate}</div>
           <input
             type="date"
             name="departureDate"
@@ -104,10 +106,10 @@ export default function TourListFilter({ cities }: Props) {
         </div>
 
         <div className="inner-group">
-          <div className="inner-label">Passenger Count</div>
+          <div className="inner-label">{t.filter.passengerCount}</div>
           <div className="inner-input-list">
             <div className="inner-input-item">
-              <div className="inner-label">Adult:</div>
+              <div className="inner-label">{t.common.adult}:</div>
               <input
                 type="number" min={0}
                 value={stockAdult}
@@ -115,7 +117,7 @@ export default function TourListFilter({ cities }: Props) {
               />
             </div>
             <div className="inner-input-item">
-              <div className="inner-label">Children:</div>
+              <div className="inner-label">{t.common.children}:</div>
               <input
                 type="number" min={0}
                 value={stockChildren}
@@ -123,7 +125,7 @@ export default function TourListFilter({ cities }: Props) {
               />
             </div>
             <div className="inner-input-item">
-              <div className="inner-label">Baby:</div>
+              <div className="inner-label">{t.common.baby}:</div>
               <input
                 type="number" min={0}
                 value={stockBaby}
@@ -134,19 +136,19 @@ export default function TourListFilter({ cities }: Props) {
         </div>
 
         <div className="inner-group">
-          <div className="inner-label">Price Range</div>
+          <div className="inner-label">{t.filter.priceRange}</div>
           <select name="price" defaultValue={searchParams.get("price") || ""}>
-            <option value="">-- All prices --</option>
-            <option value="0-999999">Under 1M</option>
-            <option value="1000000-3000000">1M to 3M</option>
-            <option value="3000000-6000000">3M to 6M</option>
-            <option value="6000000-10000000">6M to 10M</option>
-            <option value="10000000-99999999">Over 10M</option>
+            <option value="">{t.filter.allPrices}</option>
+            <option value="0-999999">{t.filter.priceUnder1M}</option>
+            <option value="1000000-3000000">{t.filter.price1to3M}</option>
+            <option value="3000000-6000000">{t.filter.price3to6M}</option>
+            <option value="6000000-10000000">{t.filter.price6to10M}</option>
+            <option value="10000000-99999999">{t.filter.priceOver10M}</option>
           </select>
         </div>
 
-        <button className="inner-button" onClick={apply}>Apply</button>
-        <button className="inner-button-reset" onClick={reset}>Reset</button>
+        <button className="inner-button" onClick={apply}>{t.common.apply}</button>
+        <button className="inner-button-reset" onClick={reset}>{t.common.reset}</button>
       </div>
     </div>
   );

@@ -2,8 +2,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { adminAuthService } from "@/services/admin.service";
+import { useTranslation } from "@/hooks/useTranslation";
+import LanguageToggle from "@/components/shared/LanguageToggle";
 
 export default function AdminLoginPage() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [email, setEmail]         = useState("");
   const [password, setPassword]   = useState("");
@@ -20,10 +23,10 @@ export default function AdminLoginPage() {
       if (res.code === "success") {
         router.push("/admin/dashboard");
       } else {
-        setError(res.message ?? "Login failed");
+        setError(res.message ?? t.adminAuth.loginFailed);
       }
     } catch {
-      setError("Connection error. Please try again.");
+      setError(t.adminAuth.connectionErrorRetry);
     } finally {
       setLoading(false);
     }
@@ -31,9 +34,12 @@ export default function AdminLoginPage() {
 
   return (
     <div className="page-account">
+      <div style={{ position: "absolute", top: 20, right: 20 }}>
+        <LanguageToggle />
+      </div>
       <div className="form-account">
-        <h3 className="inner-title">Sign in to the system</h3>
-        <p className="inner-desc">Enter your credentials to continue</p>
+        <h3 className="inner-title">{t.adminAuth.signInTitle}</h3>
+        <p className="inner-desc">{t.adminAuth.signInDesc}</p>
 
         {error && (
           <div style={{
@@ -47,12 +53,12 @@ export default function AdminLoginPage() {
 
         <form onSubmit={handleSubmit}>
           <div className="inner-group">
-            <label className="inner-label" htmlFor="email">Email</label>
+            <label className="inner-label" htmlFor="email">{t.adminAuth.emailLabel}</label>
             <input
               id="email"
               type="email"
               className="inner-control"
-              placeholder="Enter your email"
+              placeholder={t.adminAuth.emailPlaceholder}
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
@@ -61,12 +67,12 @@ export default function AdminLoginPage() {
           </div>
 
           <div className="inner-group">
-            <label className="inner-label" htmlFor="password">Password</label>
+            <label className="inner-label" htmlFor="password">{t.adminAuth.passwordLabel}</label>
             <input
               id="password"
               type="password"
               className="inner-control"
-              placeholder="Enter your password"
+              placeholder={t.adminAuth.passwordPlaceholder}
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
@@ -82,10 +88,10 @@ export default function AdminLoginPage() {
                 checked={remember}
                 onChange={e => setRemember(e.target.checked)}
               />
-              <label htmlFor="remember">Remember me</label>
+              <label htmlFor="remember">{t.adminAuth.rememberMe}</label>
             </div>
             <a href="/admin/auth/forgot-password" className="inner-link">
-              Forgot password?
+              {t.adminAuth.forgotPassword}
             </a>
           </div>
 
@@ -94,13 +100,13 @@ export default function AdminLoginPage() {
             className="inner-button"
             disabled={loading}
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? t.adminAuth.signingIn : t.adminAuth.signIn}
           </button>
         </form>
 
         <div className="inner-more">
-          <span>Don&apos;t have an account?</span>
-          <a href="/admin/auth/register">Sign up</a>
+          <span>{t.adminAuth.noAccountYet}</span>
+          <a href="/admin/auth/register">{t.adminAuth.signUp}</a>
         </div>
       </div>
     </div>

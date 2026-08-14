@@ -1,8 +1,11 @@
 "use client";
 import { useState } from "react";
 import { adminAuthService } from "@/services/admin.service";
+import { useTranslation } from "@/hooks/useTranslation";
+import LanguageToggle from "@/components/shared/LanguageToggle";
 
 export default function ResetPasswordPage() {
+  const { t } = useTranslation();
   const [password, setPassword]         = useState("");
   const [confirmPassword, setConfirm]   = useState("");
   const [error, setError]               = useState("");
@@ -11,7 +14,7 @@ export default function ResetPasswordPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      setError(t.adminProfile.passwordsDoNotMatch);
       return;
     }
     setLoading(true);
@@ -22,10 +25,10 @@ export default function ResetPasswordPage() {
         sessionStorage.removeItem("resetEmail");
         window.location.href = "/admin/auth/login";
       } else {
-        setError(res.message ?? "Failed to reset password");
+        setError(res.message ?? t.adminAuth.resetPasswordFailed);
       }
     } catch {
-      setError("Connection error. Please try again.");
+      setError(t.adminAuth.connectionErrorRetry);
     } finally {
       setLoading(false);
     }
@@ -33,9 +36,12 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="page-account">
+      <div style={{ position: "absolute", top: 20, right: 20 }}>
+        <LanguageToggle />
+      </div>
       <div className="form-account">
-        <h1 className="inner-title">Reset Password</h1>
-        <p className="inner-desc">Please enter your new password to continue</p>
+        <h1 className="inner-title">{t.adminAuth.resetPasswordTitle}</h1>
+        <p className="inner-desc">{t.adminAuth.resetPasswordDesc}</p>
 
         {error && (
           <div style={{
@@ -49,12 +55,12 @@ export default function ResetPasswordPage() {
 
         <form onSubmit={handleSubmit}>
           <div className="inner-group">
-            <label className="inner-label" htmlFor="password">New Password *</label>
+            <label className="inner-label" htmlFor="password">{t.adminProfile.newPasswordLabel}</label>
             <input
               id="password"
               type="password"
               className="inner-control"
-              placeholder="Enter new password"
+              placeholder={t.adminAuth.newPasswordPlaceholder}
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
@@ -62,12 +68,12 @@ export default function ResetPasswordPage() {
           </div>
 
           <div className="inner-group">
-            <label className="inner-label" htmlFor="confirmPassword">Confirm Password *</label>
+            <label className="inner-label" htmlFor="confirmPassword">{t.adminProfile.confirmPasswordLabel}</label>
             <input
               id="confirmPassword"
               type="password"
               className="inner-control"
-              placeholder="Confirm new password"
+              placeholder={t.adminAuth.confirmPasswordPlaceholder}
               value={confirmPassword}
               onChange={e => setConfirm(e.target.value)}
               required
@@ -75,13 +81,13 @@ export default function ResetPasswordPage() {
           </div>
 
           <button type="submit" className="inner-button" disabled={loading}>
-            {loading ? "Changing..." : "Change Password"}
+            {loading ? t.adminProfile.changing : t.adminProfile.changePassword}
           </button>
         </form>
 
         <div className="inner-more">
-          <span>Remembered your password?</span>
-          <a href="/admin/auth/login">Login</a>
+          <span>{t.adminAuth.rememberedPassword}</span>
+          <a href="/admin/auth/login">{t.adminAuth.login}</a>
         </div>
       </div>
     </div>

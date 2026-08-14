@@ -1,16 +1,17 @@
 "use client";
 import Link from "next/link";
-
-const SETTINGS = [
-  { href:"/admin/settings/website-info", icon:"fa-globe",         label:"Website Info",        desc:"Name, logo, contact details" },
-  { href:"/admin/settings/accounts",     icon:"fa-users-gear",    label:"Admin Accounts",      desc:"Manage administrator accounts" },
-  { href:"/admin/settings/roles",        icon:"fa-shield-halved", label:"Roles & Permissions", desc:"Define roles and access rights" },
-];
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function SettingsPage() {
+  const { t } = useTranslation();
+  const SETTINGS = [
+    { href:"/admin/settings/website-info", icon:"fa-globe",         label:t.adminWebsiteInfo.title, desc:t.adminSettingsHub.websiteInfoDesc },
+    { href:"/admin/settings/accounts",     icon:"fa-users-gear",    label:t.adminAccounts.title,    desc:t.adminSettingsHub.accountsDesc },
+    { href:"/admin/settings/roles",        icon:"fa-shield-halved", label:t.adminRoles.title,       desc:t.adminSettingsHub.rolesDesc },
+  ];
   return (
     <>
-      <h1 className="box-title">General Settings</h1>
+      <h1 className="box-title">{t.adminShell.generalSettings}</h1>
       <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:30 }}>
         {SETTINGS.map(s => (
           <Link key={s.href} href={s.href} style={{

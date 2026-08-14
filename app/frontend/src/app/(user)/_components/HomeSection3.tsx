@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const banners = [
   "/client/assets/images/banner-1.png",
@@ -13,11 +14,12 @@ const banners = [
 ];
 
 export default function HomeSection3() {
+  const { t } = useTranslation();
   return (
     <div className="section-3">
       <div className="container">
         <h2 className="box-title" data-aos="fade-up" data-aos-duration="800">
-          Explosive Deals - Beat the Heat
+          {t.home.explosiveDealsTitle}
         </h2>
         <div className="inner-wrap" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
           <Swiper

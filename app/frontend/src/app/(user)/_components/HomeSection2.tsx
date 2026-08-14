@@ -5,12 +5,14 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import TourCard from "@/components/tour/TourCard";
 import { Tour } from "@/types";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface Props {
   tours: Tour[];
 }
 
 export default function HomeSection2({ tours }: Props) {
+  const { t } = useTranslation();
   const expireDate = new Date("2025-10-28T20:00:00");
   const [time, setTime] = useState({ days: "00", hours: "00", minutes: "00", seconds: "00" });
 
@@ -44,31 +46,31 @@ export default function HomeSection2({ tours }: Props) {
         <div className="inner-wrap">
           <div className="inner-info">
             <h2 className="inner-title" data-aos="fade-up" data-aos-duration="800">
-              2024 DEALS
+              {t.home.dealsTitleLine1}
               <br />
-              LAST MINUTE TOURS
+              {t.home.dealsTitleLine2}
             </h2>
             <p className="inner-desc" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              {t.home.dealsDesc}
             </p>
             <div className="inner-clock-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
-              Ends in
+              {t.home.endsIn}
             </div>
             <div className="inner-clock-number" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
               {[
-                { val: time.days, label: "Days" },
-                { val: time.hours, label: "Hours" },
-                { val: time.minutes, label: "Minutes" },
-                { val: time.seconds, label: "Seconds" },
-              ].map(({ val, label }) => (
-                <div key={label} className="inner-item">
+                { id: "days", val: time.days, label: t.home.days },
+                { id: "hours", val: time.hours, label: t.home.hours },
+                { id: "minutes", val: time.minutes, label: t.home.minutes },
+                { id: "seconds", val: time.seconds, label: t.home.seconds },
+              ].map(({ id, val, label }) => (
+                <div key={id} className="inner-item">
                   <div className="inner-number">{val}</div>
                   <div className="inner-label">{label}</div>
                 </div>
               ))}
             </div>
             <div className="inner-discount-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="600">
-              UP TO
+              {t.home.upTo}
             </div>
             <div className="inner-discount-price" data-aos="fade-up" data-aos-duration="800" data-aos-delay="600">
               990,000<span>VND</span>

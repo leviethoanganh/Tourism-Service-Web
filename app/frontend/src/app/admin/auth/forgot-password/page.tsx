@@ -1,8 +1,11 @@
 "use client";
 import { useState } from "react";
 import { adminAuthService } from "@/services/admin.service";
+import { useTranslation } from "@/hooks/useTranslation";
+import LanguageToggle from "@/components/shared/LanguageToggle";
 
 export default function ForgotPasswordPage() {
+  const { t } = useTranslation();
   const [email, setEmail]     = useState("");
   const [error, setError]     = useState("");
   const [success, setSuccess] = useState("");
@@ -16,16 +19,16 @@ export default function ForgotPasswordPage() {
     try {
       const res = await adminAuthService.forgotPassword(email);
       if (res.code === "success") {
-        setSuccess("OTP code has been sent to your email.");
+        setSuccess(t.adminAuth.otpSentSuccess);
         sessionStorage.setItem("resetEmail", email);
         setTimeout(() => {
           window.location.href = "/admin/auth/otp-password";
         }, 1500);
       } else {
-        setError(res.message ?? "Failed to send OTP");
+        setError(res.message ?? t.adminAuth.otpSendFailed);
       }
     } catch {
-      setError("Connection error. Please try again.");
+      setError(t.adminAuth.connectionErrorRetry);
     } finally {
       setLoading(false);
     }
@@ -33,9 +36,12 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="page-account">
+      <div style={{ position: "absolute", top: 20, right: 20 }}>
+        <LanguageToggle />
+      </div>
       <div className="form-account">
-        <h1 className="inner-title">Forgot Password</h1>
-        <p className="inner-desc">Please enter your email to continue</p>
+        <h1 className="inner-title">{t.adminAuth.forgotPasswordTitle}</h1>
+        <p className="inner-desc">{t.adminAuth.forgotPasswordDesc}</p>
 
         {error && (
           <div style={{
@@ -59,12 +65,12 @@ export default function ForgotPasswordPage() {
 
         <form onSubmit={handleSubmit}>
           <div className="inner-group">
-            <label className="inner-label" htmlFor="email">Email *</label>
+            <label className="inner-label" htmlFor="email">{t.adminAccountForm.emailLabel}</label>
             <input
               id="email"
               type="email"
               className="inner-control"
-              placeholder="e.g. levana@gmail.com"
+              placeholder={t.adminAuth.registerEmailPlaceholder}
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
@@ -72,13 +78,13 @@ export default function ForgotPasswordPage() {
           </div>
 
           <button type="submit" className="inner-button" disabled={loading}>
-            {loading ? "Sending..." : "Send OTP code"}
+            {loading ? t.adminAuth.sendingOtp : t.adminAuth.sendOtpCode}
           </button>
         </form>
 
         <div className="inner-more">
-          <span>Remembered your password?</span>
-          <a href="/admin/auth/login">Login</a>
+          <span>{t.adminAuth.rememberedPassword}</span>
+          <a href="/admin/auth/login">{t.adminAuth.login}</a>
         </div>
       </div>
     </div>

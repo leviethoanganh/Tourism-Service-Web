@@ -1,8 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { adminAuthService } from "@/services/admin.service";
+import { useTranslation } from "@/hooks/useTranslation";
+import LanguageToggle from "@/components/shared/LanguageToggle";
 
 export default function OtpPasswordPage() {
+  const { t } = useTranslation();
   const [otp, setOtp]         = useState("");
   const [email, setEmail]     = useState("");
   const [error, setError]     = useState("");
@@ -23,10 +26,10 @@ export default function OtpPasswordPage() {
       if (res.code === "success") {
         window.location.href = "/admin/auth/reset-password";
       } else {
-        setError(res.message ?? "Invalid OTP code");
+        setError(res.message ?? t.adminAuth.invalidOtp);
       }
     } catch {
-      setError("Connection error. Please try again.");
+      setError(t.adminAuth.connectionErrorRetry);
     } finally {
       setLoading(false);
     }
@@ -34,9 +37,12 @@ export default function OtpPasswordPage() {
 
   return (
     <div className="page-account">
+      <div style={{ position: "absolute", top: 20, right: 20 }}>
+        <LanguageToggle />
+      </div>
       <div className="form-account">
-        <h1 className="inner-title">Enter OTP Code</h1>
-        <p className="inner-desc">Please enter the OTP code to continue</p>
+        <h1 className="inner-title">{t.adminAuth.enterOtpTitle}</h1>
+        <p className="inner-desc">{t.adminAuth.enterOtpDesc}</p>
 
         {error && (
           <div style={{
@@ -50,7 +56,7 @@ export default function OtpPasswordPage() {
 
         <form onSubmit={handleSubmit}>
           <div className="inner-group">
-            <label className="inner-label" htmlFor="otp">OTP Code *</label>
+            <label className="inner-label" htmlFor="otp">{t.adminAuth.otpCodeLabel}</label>
             <input
               id="otp"
               type="text"
@@ -64,13 +70,13 @@ export default function OtpPasswordPage() {
           </div>
 
           <button type="submit" className="inner-button" disabled={loading}>
-            {loading ? "Verifying..." : "Verify"}
+            {loading ? t.adminAuth.verifying : t.adminAuth.verify}
           </button>
         </form>
 
         <div className="inner-more">
-          <span>Remembered your password?</span>
-          <a href="/admin/auth/login">Login</a>
+          <span>{t.adminAuth.rememberedPassword}</span>
+          <a href="/admin/auth/login">{t.adminAuth.login}</a>
         </div>
       </div>
     </div>

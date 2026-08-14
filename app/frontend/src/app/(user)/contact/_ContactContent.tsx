@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { contactService } from "@/services/contact.service";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface Props {
   email: string;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export default function ContactContent({ email, phone, address }: Props) {
+  const { t } = useTranslation();
   const [form, setForm] = useState({ fullName: "", email: "", phone: "", message: "" });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -27,7 +29,7 @@ export default function ContactContent({ email, phone, address }: Props) {
       setForm({ fullName: "", email: "", phone: "", message: "" });
     } catch (err: any) {
       setStatus("error");
-      setErrorMsg(err?.response?.data?.message || "Something went wrong. Please try again.");
+      setErrorMsg(err?.response?.data?.message || t.contact.genericErrorMsg);
     }
   };
 
@@ -38,10 +40,9 @@ export default function ContactContent({ email, phone, address }: Props) {
 
           {/* Info Column */}
           <div className="contact-info">
-            <h2 className="contact-info-title">Get In Touch</h2>
+            <h2 className="contact-info-title">{t.contact.getInTouch}</h2>
             <p className="contact-info-desc">
-              Have questions about a tour? Want to customize your trip? Our team is ready
-              to help you plan the perfect travel experience.
+              {t.contact.intro}
             </p>
 
             <ul className="contact-info-list">
@@ -51,7 +52,7 @@ export default function ContactContent({ email, phone, address }: Props) {
                     <i className="fa-solid fa-location-dot"></i>
                   </span>
                   <div>
-                    <strong>Address</strong>
+                    <strong>{t.contact.address}</strong>
                     <p>{address}</p>
                   </div>
                 </li>
@@ -62,7 +63,7 @@ export default function ContactContent({ email, phone, address }: Props) {
                     <i className="fa-solid fa-phone"></i>
                   </span>
                   <div>
-                    <strong>Phone</strong>
+                    <strong>{t.contact.phone}</strong>
                     <p>{phone}</p>
                   </div>
                 </li>
@@ -73,7 +74,7 @@ export default function ContactContent({ email, phone, address }: Props) {
                     <i className="fa-solid fa-envelope"></i>
                   </span>
                   <div>
-                    <strong>Email</strong>
+                    <strong>{t.contact.email}</strong>
                     <p>{email}</p>
                   </div>
                 </li>
@@ -83,8 +84,8 @@ export default function ContactContent({ email, phone, address }: Props) {
                   <i className="fa-solid fa-clock"></i>
                 </span>
                 <div>
-                  <strong>Working Hours</strong>
-                  <p>Mon – Sat: 8:00 AM – 6:00 PM</p>
+                  <strong>{t.contact.workingHours}</strong>
+                  <p>{t.contact.workingHoursValue}</p>
                 </div>
               </li>
             </ul>
@@ -99,12 +100,12 @@ export default function ContactContent({ email, phone, address }: Props) {
 
           {/* Form Column */}
           <div className="contact-form-wrap">
-            <h2 className="contact-form-title">Send Us a Message</h2>
+            <h2 className="contact-form-title">{t.contact.sendUsAMessage}</h2>
 
             {status === "success" && (
               <div className="contact-alert contact-alert-success">
                 <i className="fa-solid fa-circle-check"></i>
-                Your message has been sent successfully! We will get back to you soon.
+                {t.contact.sendSuccessMsg}
               </div>
             )}
 
@@ -118,22 +119,22 @@ export default function ContactContent({ email, phone, address }: Props) {
             <form className="contact-form" onSubmit={handleSubmit}>
               <div className="contact-row">
                 <div className="contact-field">
-                  <label>Full Name <span>*</span></label>
+                  <label>{t.contact.fullName} <span>*</span></label>
                   <input
                     type="text"
                     name="fullName"
-                    placeholder="Enter your full name"
+                    placeholder={t.contact.fullNamePlaceholder}
                     value={form.fullName}
                     onChange={handleChange}
                     required
                   />
                 </div>
                 <div className="contact-field">
-                  <label>Phone Number</label>
+                  <label>{t.contact.phoneNumber}</label>
                   <input
                     type="tel"
                     name="phone"
-                    placeholder="Enter your phone number"
+                    placeholder={t.contact.phoneNumberPlaceholder}
                     value={form.phone}
                     onChange={handleChange}
                   />
@@ -141,11 +142,11 @@ export default function ContactContent({ email, phone, address }: Props) {
               </div>
 
               <div className="contact-field">
-                <label>Email Address <span>*</span></label>
+                <label>{t.contact.emailAddress} <span>*</span></label>
                 <input
                   type="email"
                   name="email"
-                  placeholder="Enter your email"
+                  placeholder={t.contact.emailPlaceholder}
                   value={form.email}
                   onChange={handleChange}
                   required
@@ -153,10 +154,10 @@ export default function ContactContent({ email, phone, address }: Props) {
               </div>
 
               <div className="contact-field">
-                <label>Message <span>*</span></label>
+                <label>{t.contact.message} <span>*</span></label>
                 <textarea
                   name="message"
-                  placeholder="Write your message here..."
+                  placeholder={t.contact.messagePlaceholder}
                   rows={6}
                   value={form.message}
                   onChange={handleChange}
@@ -170,9 +171,9 @@ export default function ContactContent({ email, phone, address }: Props) {
                 disabled={status === "loading"}
               >
                 {status === "loading" ? (
-                  <><i className="fa-solid fa-spinner fa-spin"></i> Sending...</>
+                  <><i className="fa-solid fa-spinner fa-spin"></i> {t.contact.sending}</>
                 ) : (
-                  <><i className="fa-solid fa-paper-plane"></i> Send Message</>
+                  <><i className="fa-solid fa-paper-plane"></i> {t.contact.sendMessage}</>
                 )}
               </button>
             </form>

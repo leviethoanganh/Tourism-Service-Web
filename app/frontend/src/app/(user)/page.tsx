@@ -3,6 +3,7 @@ import TourCard from "@/components/tour/TourCard";
 import HomeHero from "./_components/HomeHero";
 import HomeSection2 from "./_components/HomeSection2";
 import HomeSection3 from "./_components/HomeSection3";
+import T from "@/components/shared/T";
 
 export default async function HomePage() {
   let featured: any[] = [], domestic: any[] = [], international: any[] = [];
@@ -32,7 +33,7 @@ export default async function HomePage() {
         <div className="section-4">
           <div className="container">
             <h2 className="box-title" data-aos="fade-up" data-aos-duration="800">
-              Domestic Tours
+              <T ns="home" k="domesticTours" />
             </h2>
             <div className="inner-wrap">
               {domestic.map((tour: any) => (
@@ -40,7 +41,7 @@ export default async function HomePage() {
               ))}
             </div>
             <div className="inner-button" data-aos="fade-up" data-aos-duration="800">
-              <a className="button-outline" href="/tours">View All</a>
+              <a className="button-outline" href="/tours"><T ns="home" k="viewAll" /></a>
             </div>
           </div>
         </div>
@@ -60,7 +61,7 @@ export default async function HomePage() {
         <div className="section-4">
           <div className="container">
             <h2 className="box-title" data-aos="fade-up" data-aos-duration="800">
-              International Tours
+              <T ns="home" k="internationalTours" />
             </h2>
             <div className="inner-wrap">
               {international.map((tour: any) => (
@@ -68,7 +69,7 @@ export default async function HomePage() {
               ))}
             </div>
             <div className="inner-button" data-aos="fade-up" data-aos-duration="800">
-              <a className="button-outline" href="/tours">View All</a>
+              <a className="button-outline" href="/tours"><T ns="home" k="viewAll" /></a>
             </div>
           </div>
         </div>
@@ -87,7 +88,7 @@ export default async function HomePage() {
       <div className="section-8">
         <div className="container">
           <h2 className="box-title" data-aos="fade-up" data-aos-duration="800">
-            Latest News
+            <T ns="home" k="latestNews" />
           </h2>
           <div className="inner-wrap">
             <div className="blog-item-1">

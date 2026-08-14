@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export interface ScheduleItem {
   title: string;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function ScheduleEditor({ value, onChange }: Props) {
+  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState<Record<number, boolean>>({});
 
   const update = (i: number, patch: Partial<ScheduleItem>) => {
@@ -32,7 +34,7 @@ export default function ScheduleEditor({ value, onChange }: Props) {
 
   return (
     <div className="inner-group inner-two-col">
-      <label className="inner-label">Tour Schedule</label>
+      <label className="inner-label">{t.tourDetail.tourSchedule}</label>
       <div className="inner-schedule">
         <div className="inner-schedule-list">
           {value.map((item, i) => (
@@ -41,7 +43,7 @@ export default function ScheduleEditor({ value, onChange }: Props) {
                 <input
                   type="text"
                   value={item.title}
-                  placeholder="Day title..."
+                  placeholder={t.scheduleEditor.dayTitlePlaceholder}
                   onChange={(e) => update(i, { title: e.target.value })}
                 />
                 <div className="inner-schedule-button inner-remove" onClick={() => remove(i)}>
@@ -54,14 +56,14 @@ export default function ScheduleEditor({ value, onChange }: Props) {
               <div className="inner-schedule-body">
                 <textarea
                   value={item.description}
-                  placeholder="Day description..."
+                  placeholder={t.scheduleEditor.dayDescriptionPlaceholder}
                   onChange={(e) => update(i, { description: e.target.value })}
                 />
               </div>
             </div>
           ))}
         </div>
-        <div className="inner-schedule-create" onClick={add}>+ Add Schedule</div>
+        <div className="inner-schedule-create" onClick={add}>{t.scheduleEditor.addSchedule}</div>
       </div>
     </div>
   );

@@ -2,8 +2,11 @@
 import { useEffect, useState, Suspense } from "react";
 import { adminTourService } from "@/services/admin.service";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslation } from "@/hooks/useTranslation";
+import T from "@/components/shared/T";
 
 function TourTrashContent() {
+  const { t } = useTranslation();
   const router = useRouter();
   const sp = useSearchParams();
   const page = sp.get("page") || "1";
@@ -20,13 +23,13 @@ function TourTrashContent() {
   useEffect(() => { load(); }, [page]);
 
   const handleRestore = async (id: string) => {
-    if (!confirm("Restore this tour?")) return;
+    if (!confirm(t.adminTrash.restoreConfirm)) return;
     await adminTourService.restore(id).catch(() => {});
     load();
   };
 
   const handleDestroy = async (id: string) => {
-    if (!confirm("Permanently delete this tour? This cannot be undone.")) return;
+    if (!confirm(t.adminTrash.destroyConfirm)) return;
     await adminTourService.destroy(id).catch(() => {});
     load();
   };
@@ -40,32 +43,32 @@ function TourTrashContent() {
 
   return (
     <>
-      <h1 className="box-title">Tour Trash</h1>
+      <h1 className="box-title">{t.adminTrash.title}</h1>
 
       <div className="section-5">
         <div className="inner-wrap">
           <div className="inner-button-create">
-            <a href="/admin/tours">← Back to Tours</a>
+            <a href="/admin/tours">{t.adminTrash.backToTours}</a>
           </div>
         </div>
       </div>
 
       <div className="section-6">
-        {loading ? <p style={{ padding: 20 }}>Loading...</p> : (
+        {loading ? <p style={{ padding: 20 }}>{t.common.loading}</p> : (
           <div className="table-2">
             <table>
               <thead>
                 <tr>
-                  <th className="text-center">Avatar</th>
-                  <th className="text-left">Tour Name</th>
-                  <th className="text-left">Price (Adult)</th>
-                  <th className="text-center">Status</th>
-                  <th className="text-left">Actions</th>
+                  <th className="text-center">{t.adminCategories.colAvatar}</th>
+                  <th className="text-left">{t.adminTours.colTourName}</th>
+                  <th className="text-left">{t.adminTours.colPriceAdult}</th>
+                  <th className="text-center">{t.common.status}</th>
+                  <th className="text-left">{t.common.actions}</th>
                 </tr>
               </thead>
               <tbody>
                 {list.length === 0
-                  ? <tr><td colSpan={5} className="text-center" style={{ padding: 30, color: "#bbb" }}>Trash is empty</td></tr>
+                  ? <tr><td colSpan={5} className="text-center" style={{ padding: 30, color: "#bbb" }}>{t.adminTrash.trashEmpty}</td></tr>
                   : list.map((tour: any) => (
                     <tr key={tour._id}>
                       <td className="text-center">
@@ -98,11 +101,11 @@ function TourTrashContent() {
 
       {!loading && totalRecord > 0 && (
         <div className="section-7">
-          <span className="inner-label">Showing {skip + 1}–{Math.min(skip + list.length, totalRecord)} of {totalRecord}</span>
+          <span className="inner-label">{t.adminCommon.showingLabel} {skip + 1}–{Math.min(skip + list.length, totalRecord)} {t.adminCommon.ofLabel} {totalRecord}</span>
           <select className="inner-pagination" value={currentPage}
             onChange={e => router.push(`/admin/tours/trash?page=${e.target.value}`)}>
             {Array.from({ length: totalPage }, (_, i) => i + 1).map(p =>
-              <option key={p} value={p}>Page {p}</option>
+              <option key={p} value={p}>{t.adminCommon.pageLabel} {p}</option>
             )}
           </select>
         </div>
@@ -113,7 +116,7 @@ function TourTrashContent() {
 
 export default function TourTrashPage() {
   return (
-    <Suspense fallback={<div style={{ padding: 20 }}>Loading...</div>}>
+    <Suspense fallback={<div style={{ padding: 20 }}><T ns="common" k="loading" /></div>}>
       <TourTrashContent />
     </Suspense>
   );

@@ -2,30 +2,22 @@
 import { useState } from "react";
 import { adminSettingService } from "@/services/admin.service";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "@/hooks/useTranslation";
 
-const PERMISSIONS = [
-  { label: "Dashboard View",           value: "dashboard-view" },
-  { label: "Category View",            value: "category-view" },
-  { label: "Category Create",          value: "category-create" },
-  { label: "Category Edit",            value: "category-edit" },
-  { label: "Category Delete",          value: "category-delete" },
-  { label: "Tour View",                value: "tour-view" },
-  { label: "Tour Create",              value: "tour-create" },
-  { label: "Tour Edit",                value: "tour-edit" },
-  { label: "Tour Delete",              value: "tour-delete" },
-  { label: "Order View",               value: "order-view" },
-  { label: "Order Edit",               value: "order-edit" },
-  { label: "User View",                value: "user-view" },
-  { label: "Setting View",             value: "setting-view" },
-  { label: "Setting Account Create",   value: "setting-account-create" },
-  { label: "Setting Account Edit",     value: "setting-account-edit" },
-  { label: "Setting Account Delete",   value: "setting-account-delete" },
-  { label: "Setting Role Create",      value: "setting-role-create" },
-  { label: "Setting Role Edit",        value: "setting-role-edit" },
-  { label: "Setting Role Delete",      value: "setting-role-delete" },
+const PERMISSION_VALUES = [
+  "dashboard-view",
+  "category-view", "category-create", "category-edit", "category-delete",
+  "tour-view", "tour-create", "tour-edit", "tour-delete",
+  "order-view", "order-edit",
+  "user-view",
+  "setting-view",
+  "setting-account-create", "setting-account-edit", "setting-account-delete",
+  "setting-role-create", "setting-role-edit", "setting-role-delete",
 ];
 
 export default function RoleCreatePage() {
+  const { t } = useTranslation();
+  const PERMISSIONS = PERMISSION_VALUES.map(value => ({ value, label: t.permissions[value] }));
   const router = useRouter();
   const [name, setName]         = useState("");
   const [selected, setSelected] = useState<string[]>([]);
@@ -37,19 +29,19 @@ export default function RoleCreatePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) { setMsg("Role name is required."); return; }
+    if (!name.trim()) { setMsg(t.adminRoleForm.roleNameRequired); return; }
     setSaving(true); setMsg("");
     try {
       const res = await adminSettingService.createRole({ name, permissions: selected });
       if (res.code === "success") router.push("/admin/settings/roles");
-      else setMsg(res.message ?? "Error");
-    } catch { setMsg("Connection error."); }
+      else setMsg(res.message ?? t.adminCategoryForm.errorGeneric);
+    } catch { setMsg(t.common.connectionError); }
     finally { setSaving(false); }
   };
 
   return (
     <>
-      <h1 className="box-title">Create Role</h1>
+      <h1 className="box-title">{t.adminRoleForm.createTitle}</h1>
       <div className="section-8">
         {msg && (
           <div style={{
@@ -59,13 +51,13 @@ export default function RoleCreatePage() {
         )}
         <form onSubmit={handleSubmit}>
           <div className="inner-group inner-two-col">
-            <label className="inner-label" htmlFor="name">Role Name *</label>
+            <label className="inner-label" htmlFor="name">{t.adminRoleForm.roleNameLabel}</label>
             <input id="name" type="text" value={name}
-              onChange={e => setName(e.target.value)} placeholder="e.g. Editor" required />
+              onChange={e => setName(e.target.value)} placeholder={t.adminRoleForm.roleNamePlaceholder} required />
           </div>
 
           <div className="inner-group inner-two-col">
-            <label className="inner-label">Permissions</label>
+            <label className="inner-label">{t.adminRoleForm.permissionsLabel}</label>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "10px 24px", paddingTop: 8 }}>
               {PERMISSIONS.map(p => (
                 <label key={p.value} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontWeight: 600, fontSize: 14, color: "#606060" }}>
@@ -78,11 +70,11 @@ export default function RoleCreatePage() {
           </div>
 
           <div className="inner-button inner-two-col">
-            <button type="submit" disabled={saving}>{saving ? "Creating..." : "Create"}</button>
+            <button type="submit" disabled={saving}>{saving ? t.common.creating : t.common.create}</button>
           </div>
         </form>
         <div className="inner-back">
-          <a href="/admin/settings/roles">Back to list</a>
+          <a href="/admin/settings/roles">{t.common.backToList}</a>
         </div>
       </div>
     </>

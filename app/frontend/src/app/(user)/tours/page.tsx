@@ -5,6 +5,7 @@ import TourCard from "@/components/tour/TourCard";
 import Pagination from "@/components/ui/Pagination";
 import TourListFilter from "@/components/tour/TourListFilter";
 import ToursToolbar from "@/components/tour/ToursToolbar";
+import T from "@/components/shared/T";
 
 interface Props {
   searchParams: Promise<Record<string, string>>;
@@ -59,8 +60,8 @@ export default async function ToursPage({ searchParams }: Props) {
           {/* Right content */}
           <div className="inner-right">
             <div className="inner-info-1">
-              <h2 className="inner-title">All Tours</h2>
-              <div className="inner-desc">Discover amazing tours for every budget and interest.</div>
+              <h2 className="inner-title"><T ns="toursPage" k="title" /></h2>
+              <div className="inner-desc"><T ns="toursPage" k="desc" /></div>
             </div>
 
             <div className="inner-info-2">
@@ -70,7 +71,7 @@ export default async function ToursPage({ searchParams }: Props) {
             </div>
 
             {tourList.length === 0 ? (
-              <p style={{ padding: "40px 0", color: "#888" }}>No tours found matching your criteria.</p>
+              <p style={{ padding: "40px 0", color: "#888" }}><T ns="toolbar" k="noToursFound" /></p>
             ) : (
               <div className="inner-list-tour">
                 {tourList.map((tour) => (

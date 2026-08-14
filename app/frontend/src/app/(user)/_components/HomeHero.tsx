@@ -1,8 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function HomeHero() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [locationTo, setLocationTo] = useState("");
   const [departureDate, setDepartureDate] = useState("");
@@ -13,7 +15,7 @@ export default function HomeHero() {
   const [showSuggest, setShowSuggest] = useState(false);
   const quantityRef = useRef<HTMLDivElement>(null);
 
-  const passengerDisplay = `${adultCount} Adult${adultCount !== 1 ? "s" : ""}, ${childrenCount} Children, ${babyCount} Baby`;
+  const passengerDisplay = `${adultCount} ${t.common.adult}, ${childrenCount} ${t.common.children}, ${babyCount} ${t.common.baby}`;
 
   useEffect(() => {
     if (!showQuantity) return;
@@ -46,9 +48,9 @@ export default function HomeHero() {
             data-aos="fade-up"
             data-aos-duration="800"
           >
-            Travel Asia - Discover America, Australia, Europe
+            {t.home.heroTitleLine1}
             <br />
-            Go wherever you want
+            {t.home.heroTitleLine2}
           </h1>
           <p
             className="inner-desc"
@@ -56,8 +58,7 @@ export default function HomeHero() {
             data-aos-duration="800"
             data-aos-delay="200"
           >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua
+            {t.home.heroDesc}
           </p>
 
           <form
@@ -73,7 +74,7 @@ export default function HomeHero() {
                 <img className="inner-icon" alt="" src="/client/assets/images/icon-address.png" />
                 <input
                   className="inner-input"
-                  placeholder="Where do you want to go?"
+                  placeholder={t.home.destinationPlaceholder}
                   type="text"
                   name="locationTo"
                   value={locationTo}
@@ -86,7 +87,7 @@ export default function HomeHero() {
               <div className="inner-suggest">
                 <div className="inner-suggest-title">
                   <i className="fa-solid fa-location-dot"></i>
-                  Hot Destinations
+                  {t.home.hotDestinations}
                 </div>
                 <div className="inner-suggest-list">
                   {["Japan", "Phu Quoc", "Singapore"].map((place) => (
@@ -118,7 +119,7 @@ export default function HomeHero() {
                 <input
                   className="inner-input"
                   readOnly
-                  placeholder="Passengers"
+                  placeholder={t.home.passengersPlaceholder}
                   type="text"
                   value={passengerDisplay}
                   onFocus={() => setShowQuantity(true)}
@@ -127,11 +128,11 @@ export default function HomeHero() {
               </div>
               <div className="inner-quantity">
                 {[
-                  { label: "Adult", count: adultCount, set: setAdultCount },
-                  { label: "Children", count: childrenCount, set: setChildrenCount },
-                  { label: "Baby", count: babyCount, set: setBabyCount },
-                ].map(({ label, count, set }) => (
-                  <div key={label} className="inner-item">
+                  { id: "adult", label: t.common.adult, count: adultCount, set: setAdultCount },
+                  { id: "children", label: t.common.children, count: childrenCount, set: setChildrenCount },
+                  { id: "baby", label: t.common.baby, count: babyCount, set: setBabyCount },
+                ].map(({ id, label, count, set }) => (
+                  <div key={id} className="inner-item">
                     <div className="inner-label">{label}</div>
                     <div className="inner-count">
                       <span
@@ -155,7 +156,7 @@ export default function HomeHero() {
                 <img className="inner-icon" alt="" src="/client/assets/images/icon-calendar.png" />
                 <input
                   className="inner-input"
-                  placeholder="Departure Date"
+                  placeholder={t.common.departureDate}
                   type="date"
                   name="departureDate"
                   value={departureDate}
@@ -167,7 +168,7 @@ export default function HomeHero() {
 
             <button type="submit" className="inner-button">
               <i className="fa-solid fa-magnifying-glass"></i>
-              Search
+              {t.home.searchButton}
             </button>
           </form>
         </div>

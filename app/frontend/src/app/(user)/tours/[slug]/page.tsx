@@ -6,10 +6,12 @@ import { settingService } from "@/services/setting.service";
 import { useCartStore } from "@/store/cart.store";
 import { Tour, City } from "@/types";
 import TourImageGallery from "./_TourImageGallery";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const fmt = (n: number) => n.toLocaleString("en-US");
 
 export default function TourDetailPage() {
+  const { t } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
   const addItem = useCartStore((s) => s.addItem);
 
@@ -42,18 +44,18 @@ export default function TourDetailPage() {
 
   const handleAddToCart = () => {
     if (!tour) return;
-    if (!locationFrom) { alert("Please select a departure city!"); return; }
+    if (!locationFrom) { alert(t.tourDetail.selectDepartureCityAlert); return; }
     addItem({
       tourId: tour._id, name: tour.name, avatar: tour.avatar, slug: tour.slug,
       quantityAdult: qtyAdult, quantityChildren: qtyChildren, quantityBaby: qtyBaby,
       priceNewAdult: tour.priceNewAdult, priceNewChildren: tour.priceNewChildren,
       priceNewBaby: tour.priceNewBaby, locationFrom, departureDate: tour.departureDateFormat,
     });
-    alert("Added to cart successfully!");
+    alert(t.tourDetail.addedToCartAlert);
   };
 
-  if (loading) return <div style={{ textAlign: "center", padding: "80px 0" }}>Loading...</div>;
-  if (!tour) return <div style={{ textAlign: "center", padding: "80px 0" }}>Tour not found</div>;
+  if (loading) return <div style={{ textAlign: "center", padding: "80px 0" }}>{t.common.loading}</div>;
+  if (!tour) return <div style={{ textAlign: "center", padding: "80px 0" }}>{t.tourDetail.tourNotFound}</div>;
 
   return (
     <>
@@ -67,7 +69,7 @@ export default function TourDetailPage() {
             <div className="inner-wrap">
               <h1 className="inner-title">{tour.name}</h1>
               <nav className="inner-links">
-                <a href="/">Home</a>
+                <a href="/">{t.header.home}</a>
                 {category && (
                   <>
                     <i className="fa-solid fa-angles-right"></i>
@@ -94,7 +96,7 @@ export default function TourDetailPage() {
 
               {/* Box Tour Info */}
               <div className={`box-tour-info${showTourInfo ? " active" : ""}`}>
-                <div className="inner-title-main">Tour Information</div>
+                <div className="inner-title-main">{t.tourDetail.tourInformation}</div>
                 <div
                   className="inner-content"
                   dangerouslySetInnerHTML={{ __html: tour.information || "" }}
@@ -104,7 +106,7 @@ export default function TourDetailPage() {
                     className="button-outline"
                     onClick={() => setShowTourInfo(!showTourInfo)}
                   >
-                    {showTourInfo ? "Show less" : "View All"}
+                    {showTourInfo ? t.tourDetail.showLess : t.tourDetail.viewAll}
                   </button>
                 </div>
               </div>
@@ -113,7 +115,7 @@ export default function TourDetailPage() {
               {/* Box Tour Schedule */}
               {tour.schedules?.length > 0 && (
                 <div className="box-tour-schedule">
-                  <div className="inner-title-main">Tour Schedule</div>
+                  <div className="inner-title-main">{t.tourDetail.tourSchedule}</div>
                   <div className="inner-list">
                     <div className="inner-line"></div>
                     {tour.schedules.map((s, i) => (
@@ -135,7 +137,7 @@ export default function TourDetailPage() {
             {/* Right */}
             <div className="inner-right">
               <div className="box-tour-detail">
-                <div className="inner-title-main">Your Trip</div>
+                <div className="inner-title-main">{t.tourDetail.yourTrip}</div>
 
                 <div className="inner-product">
                   <div className="inner-image">
@@ -148,7 +150,7 @@ export default function TourDetailPage() {
                         {[1,2,3,4].map((i) => <i key={i} className="fa-solid fa-star"></i>)}
                         <i className="fa-regular fa-star"></i>
                       </div>
-                      <div className="inner-number">500 reviews</div>
+                      <div className="inner-number">{t.tourDetail.reviews}</div>
                     </div>
                   </div>
                 </div>
@@ -156,23 +158,23 @@ export default function TourDetailPage() {
                 <div className="inner-meta">
                   <div className="inner-item">
                     <i className="fa-solid fa-calendar-days"></i>
-                    <span>Duration:</span>
+                    <span>{t.common.duration}:</span>
                     <span className="inner-highlight">{tour.time}</span>
                   </div>
                   <div className="inner-item">
                     <i className="fa-solid fa-car"></i>
-                    <span>Transport:</span>
+                    <span>{t.tourDetail.transport}</span>
                     <span className="inner-highlight">{tour.vehicle}</span>
                   </div>
                   <div className="inner-item">
                     <i className="fa-solid fa-calendar-days"></i>
-                    <span>Departure Date:</span>
+                    <span>{t.common.departureDate}:</span>
                     <span className="inner-highlight">{tour.departureDateFormat}</span>
                   </div>
                 </div>
 
                 <div className="inner-group">
-                  <div className="inner-label">Departure From:</div>
+                  <div className="inner-label">{t.tourDetail.departureFrom}</div>
                   <select value={locationFrom} onChange={(e) => setLocationFrom(e.target.value)}>
                     {cities.map((c) => (
                       <option key={c._id} value={c._id}>{c.name}</option>
@@ -181,10 +183,10 @@ export default function TourDetailPage() {
                 </div>
 
                 <div className="inner-group">
-                  <div className="inner-label">Passenger Count</div>
+                  <div className="inner-label">{t.filter.passengerCount}</div>
                   <div className="inner-list">
                     <div className="inner-item">
-                      <div className="inner-item-label">Adult:</div>
+                      <div className="inner-item-label">{t.common.adult}:</div>
                       <div className="inner-item-input">
                         <input
                           type="number" min={0} max={tour.stockAdult}
@@ -198,7 +200,7 @@ export default function TourDetailPage() {
                       </div>
                     </div>
                     <div className="inner-item">
-                      <div className="inner-item-label">Children:</div>
+                      <div className="inner-item-label">{t.common.children}:</div>
                       <div className="inner-item-input">
                         <input
                           type="number" min={0} max={tour.stockChildren}
@@ -212,7 +214,7 @@ export default function TourDetailPage() {
                       </div>
                     </div>
                     <div className="inner-item">
-                      <div className="inner-item-label">Baby:</div>
+                      <div className="inner-item-label">{t.common.baby}:</div>
                       <div className="inner-item-input">
                         <input
                           type="number" min={0} max={tour.stockBaby}
@@ -229,14 +231,14 @@ export default function TourDetailPage() {
                 </div>
 
                 <div className="inner-total">
-                  <div className="inner-label">Total:</div>
+                  <div className="inner-label">{t.common.total}:</div>
                   <div className="inner-price">
                     <span>{fmt(total)}</span> VND
                   </div>
                 </div>
 
                 <button className="inner-button-add-cart" onClick={handleAddToCart}>
-                  Add to Cart
+                  {t.tourDetail.addToCart}
                 </button>
               </div>
             </div>

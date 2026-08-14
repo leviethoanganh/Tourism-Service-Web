@@ -3,8 +3,11 @@ import { useEffect, useState, Suspense } from "react";
 import { adminTourService } from "@/services/admin.service";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useTranslation } from "@/hooks/useTranslation";
+import T from "@/components/shared/T";
 
 function TourListContent() {
+  const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -53,7 +56,7 @@ function TourListContent() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Move this tour to trash?")) return;
+    if (!confirm(t.adminTours.moveToTrashConfirm)) return;
     await adminTourService.softDelete(id);
     load();
   };
@@ -82,7 +85,7 @@ function TourListContent() {
 
   return (
     <>
-      <h1 className="box-title">Tours</h1>
+      <h1 className="box-title">{t.adminTours.title}</h1>
 
       {/* Section 4 — Filters */}
       <div className="section-4">
@@ -92,18 +95,18 @@ function TourListContent() {
           </div>
 
           <div className="inner-item">
-            <span>Status:</span>
+            <span>{t.adminTours.statusLabel}</span>
             <select value={status} onChange={(e) => handleFilterChange("status", e.target.value)}>
-              <option value="">All</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
+              <option value="">{t.adminTours.all}</option>
+              <option value="active">{t.common.active}</option>
+              <option value="inactive">{t.common.inactive}</option>
             </select>
           </div>
 
           <div className="inner-item">
-            <span>Category:</span>
+            <span>{t.adminTours.categoryLabel}</span>
             <select value={category} onChange={(e) => handleFilterChange("category", e.target.value)}>
-              <option value="">All</option>
+              <option value="">{t.adminTours.all}</option>
               {categoryList.map((c: any) => (
                 <option key={c._id} value={c._id}>{c.name}</option>
               ))}
@@ -111,18 +114,18 @@ function TourListContent() {
           </div>
 
           <div className="inner-item">
-            <span>Price:</span>
+            <span>{t.adminTours.priceLabel}</span>
             <select value={priceRange} onChange={(e) => handleFilterChange("priceRange", e.target.value)}>
-              <option value="">All</option>
-              <option value="0-1000000">Under 1M</option>
-              <option value="1000000-5000000">1M – 5M</option>
-              <option value="5000000-10000000">5M – 10M</option>
-              <option value="10000000-99999999">Over 10M</option>
+              <option value="">{t.adminTours.all}</option>
+              <option value="0-1000000">{t.adminTours.priceUnder1M}</option>
+              <option value="1000000-5000000">{t.adminTours.price1to5M}</option>
+              <option value="5000000-10000000">{t.adminTours.price5to10M}</option>
+              <option value="10000000-99999999">{t.adminTours.priceOver10M}</option>
             </select>
           </div>
 
           <div className="inner-item">
-            <span>From:</span>
+            <span>{t.adminTours.fromLabel}</span>
             <input
               type="date"
               value={startDate}
@@ -131,7 +134,7 @@ function TourListContent() {
           </div>
 
           <div className="inner-item">
-            <span>To:</span>
+            <span>{t.adminTours.toLabel}</span>
             <input
               type="date"
               value={endDate}
@@ -141,7 +144,7 @@ function TourListContent() {
 
           <div className="inner-item">
             <a className="inner-reset" onClick={handleReset} style={{ cursor: "pointer" }}>
-              Reset
+              {t.common.reset}
             </a>
           </div>
         </div>
@@ -152,15 +155,15 @@ function TourListContent() {
         <div className="inner-wrap">
           <div className="inner-change-status">
             <div className="inner-item">
-              <span>Selected ({selectedIds.length}):</span>
+              <span>{t.adminTours.selectedPrefix} ({selectedIds.length}):</span>
               <select defaultValue="">
-                <option value="">-- Action --</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
+                <option value="">{t.adminTours.actionPlaceholder}</option>
+                <option value="active">{t.common.active}</option>
+                <option value="inactive">{t.common.inactive}</option>
               </select>
             </div>
             <div className="inner-item">
-              <button onClick={() => load()}>Apply</button>
+              <button onClick={() => load()}>{t.common.apply}</button>
             </div>
           </div>
 
@@ -168,7 +171,7 @@ function TourListContent() {
             <i className="fa-solid fa-magnifying-glass"></i>
             <input
               type="text"
-              placeholder="Search tours..."
+              placeholder={t.adminTours.searchPlaceholder}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -176,13 +179,13 @@ function TourListContent() {
 
           <div className="inner-button-create">
             <Link href="/admin/tours/create">
-              <i className="fa-solid fa-plus"></i> Add Tour
+              <i className="fa-solid fa-plus"></i> {t.adminTours.addTour}
             </Link>
           </div>
 
           <div className="inner-button-trash">
             <Link href="/admin/tours/trash">
-              <i className="fa-solid fa-trash"></i> Trash
+              <i className="fa-solid fa-trash"></i> {t.adminTours.trash}
             </Link>
           </div>
         </div>
@@ -191,7 +194,7 @@ function TourListContent() {
       {/* Section 6 — Table */}
       <div className="section-6">
         {loading ? (
-          <p>Loading...</p>
+          <p>{t.common.loading}</p>
         ) : (
           <div className="table-2">
             <table>
@@ -211,20 +214,20 @@ function TourListContent() {
                       }
                     />
                   </th>
-                  <th className="text-left">Tour Name</th>
-                  <th className="text-center">Avatar</th>
-                  <th className="text-right">Price Adult</th>
-                  <th className="text-right">Price Children</th>
-                  <th className="text-right">Price Baby</th>
-                  <th className="text-center">Stock</th>
-                  <th className="text-center">Status</th>
-                  <th className="text-center">Actions</th>
+                  <th className="text-left">{t.adminTours.colTourName}</th>
+                  <th className="text-center">{t.adminCategories.colAvatar}</th>
+                  <th className="text-right">{t.adminTours.colPriceAdult}</th>
+                  <th className="text-right">{t.adminTours.colPriceChildren}</th>
+                  <th className="text-right">{t.adminTours.colPriceBaby}</th>
+                  <th className="text-center">{t.adminTours.colStock}</th>
+                  <th className="text-center">{t.common.status}</th>
+                  <th className="text-center">{t.common.actions}</th>
                 </tr>
               </thead>
               <tbody>
                 {(!data?.tourList || data.tourList.length === 0) && (
                   <tr>
-                    <td colSpan={9} className="text-center">No tours found</td>
+                    <td colSpan={9} className="text-center">{t.adminTours.noToursFound}</td>
                   </tr>
                 )}
                 {data?.tourList?.map((tour: any) => (
@@ -269,7 +272,7 @@ function TourListContent() {
                     </td>
                     <td className="text-center">
                       <span className={`tag ${tour.status === "active" ? "tag-green" : "tag-red"}`}>
-                        {tour.status === "active" ? "Active" : "Inactive"}
+                        {tour.status === "active" ? t.common.active : t.common.inactive}
                       </span>
                     </td>
                     <td className="text-center">
@@ -298,7 +301,7 @@ function TourListContent() {
       {!loading && pag && (
         <div className="section-7">
           <span className="inner-label">
-            Showing {showingFrom}-{showingTo} of {totalRecord}
+            {t.adminCommon.showingLabel} {showingFrom}-{showingTo} {t.adminCommon.ofLabel} {totalRecord}
           </span>
           {totalPage > 1 && (
             <select
@@ -308,7 +311,7 @@ function TourListContent() {
             >
               {Array.from({ length: totalPage }, (_, i) => i + 1).map((p) => (
                 <option key={p} value={String(p)}>
-                  Page {p}
+                  {t.adminCommon.pageLabel} {p}
                 </option>
               ))}
             </select>
@@ -321,7 +324,7 @@ function TourListContent() {
 
 export default function ToursPage() {
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense fallback={<p><T ns="common" k="loading" /></p>}>
       <TourListContent />
     </Suspense>
   );

@@ -3,8 +3,11 @@ import { useEffect, useState, Suspense } from "react";
 import { adminCategoryService } from "@/services/admin.service";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useTranslation } from "@/hooks/useTranslation";
+import T from "@/components/shared/T";
 
 function CategoryListContent() {
+  const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = searchParams.get("page") || "1";
@@ -34,7 +37,7 @@ function CategoryListContent() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Delete this category?")) return;
+    if (!confirm(t.adminCategories.deleteConfirm)) return;
     await adminCategoryService.softDelete(id);
     load();
   };
@@ -60,7 +63,7 @@ function CategoryListContent() {
 
   return (
     <div>
-      <h1 className="box-title">Categories</h1>
+      <h1 className="box-title">{t.adminCategories.title}</h1>
 
       <div className="section-4">
         <div className="inner-wrap">
@@ -69,9 +72,9 @@ function CategoryListContent() {
               value={status}
               onChange={e => pushParam("status", e.target.value)}
             >
-              <option value="">All Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
+              <option value="">{t.adminCommon.allStatus}</option>
+              <option value="active">{t.common.active}</option>
+              <option value="inactive">{t.common.inactive}</option>
             </select>
           </div>
         </div>
@@ -83,13 +86,13 @@ function CategoryListContent() {
             <i className="fa-solid fa-magnifying-glass"></i>
             <input
               type="text"
-              placeholder="Search categories..."
+              placeholder={t.adminCategories.searchPlaceholder}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
           </form>
           <Link href="/admin/categories/create" className="inner-button-create">
-            <i className="fa-solid fa-plus"></i> Add Category
+            <i className="fa-solid fa-plus"></i> {t.adminCategories.addCategory}
           </Link>
         </div>
       </div>
@@ -97,24 +100,24 @@ function CategoryListContent() {
       <div className="section-6">
         <div className="table-2">
           {loading ? (
-            <div style={{ padding: "20px", textAlign: "center" }}>Loading...</div>
+            <div style={{ padding: "20px", textAlign: "center" }}>{t.common.loading}</div>
           ) : (
             <table>
               <thead>
                 <tr>
-                  <th className="text-center inner-small">#</th>
-                  <th className="text-center">Avatar</th>
-                  <th className="text-left">Category Name</th>
-                  <th className="text-left">Parent</th>
-                  <th className="text-center inner-small">Position</th>
-                  <th className="text-center">Status</th>
-                  <th className="text-center">Actions</th>
+                  <th className="text-center inner-small">{t.adminCategories.colNo}</th>
+                  <th className="text-center">{t.adminCategories.colAvatar}</th>
+                  <th className="text-left">{t.adminCategories.colName}</th>
+                  <th className="text-left">{t.adminCategories.colParent}</th>
+                  <th className="text-center inner-small">{t.adminCategories.colPosition}</th>
+                  <th className="text-center">{t.common.status}</th>
+                  <th className="text-center">{t.common.actions}</th>
                 </tr>
               </thead>
               <tbody>
                 {list.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="text-center">No categories found</td>
+                    <td colSpan={7} className="text-center">{t.adminCommon.noResultsFound}</td>
                   </tr>
                 )}
                 {list.map((cat: any, i: number) => (
@@ -131,8 +134,8 @@ function CategoryListContent() {
                     <td className="text-center">{cat.position ?? 0}</td>
                     <td className="text-center">
                       {cat.status === "active"
-                        ? <span className="tag tag-green">Active</span>
-                        : <span className="tag tag-red">Inactive</span>
+                        ? <span className="tag tag-green">{t.common.active}</span>
+                        : <span className="tag tag-red">{t.common.inactive}</span>
                       }
                     </td>
                     <td className="text-center">
@@ -160,7 +163,7 @@ function CategoryListContent() {
       {!loading && totalItems > 0 && (
         <div className="section-7">
           <span className="inner-label">
-            Showing {startItem}–{endItem} of {totalItems}
+            {t.adminCommon.showingLabel} {startItem}–{endItem} {t.adminCommon.ofLabel} {totalItems}
           </span>
           <select
             className="inner-pagination"
@@ -172,7 +175,7 @@ function CategoryListContent() {
             }}
           >
             {pageOptions.map(p => (
-              <option key={p} value={p}>Page {p}</option>
+              <option key={p} value={p}>{t.adminCommon.pageLabel} {p}</option>
             ))}
           </select>
         </div>
@@ -183,7 +186,7 @@ function CategoryListContent() {
 
 export default function CategoriesPage() {
   return (
-    <Suspense fallback={<div style={{ padding: "20px" }}>Loading...</div>}>
+    <Suspense fallback={<div style={{ padding: "20px" }}><T ns="common" k="loading" /></div>}>
       <CategoryListContent />
     </Suspense>
   );

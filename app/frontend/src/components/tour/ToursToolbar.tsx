@@ -1,5 +1,6 @@
 "use client";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface Props {
   sortBy: string;
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export default function ToursToolbar({ sortBy, totalRecord }: Props) {
+  const { t } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -25,34 +27,34 @@ export default function ToursToolbar({ sortBy, totalRecord }: Props) {
   return (
     <>
       <div className="inner-sort">
-        <div className="inner-label">Sort by:</div>
+        <div className="inner-label">{t.toolbar.sortBy}</div>
         <button
           className={sortBy === "price-asc" ? "active" : ""}
           onClick={() => setSort("price-asc")}
         >
-          Price: Low to High
+          {t.toolbar.priceLowToHigh}
           <i className="fa-solid fa-circle-arrow-up"></i>
         </button>
         <button
           className={sortBy === "price-desc" ? "active" : ""}
           onClick={() => setSort("price-desc")}
         >
-          Price: High to Low
+          {t.toolbar.priceHighToLow}
           <i className="fa-solid fa-circle-arrow-down"></i>
         </button>
         <button
           className={!sortBy || sortBy === "hot" ? "active" : ""}
           onClick={() => setSort("hot")}
         >
-          Hot Deals
+          {t.toolbar.hotDeals}
           <i className="fa-solid fa-tag"></i>
         </button>
       </div>
       <div className="inner-total-item">
-        All: <b>{totalRecord} Tours</b>
+        {t.toolbar.allTours} <b>{totalRecord} {t.toolbar.toursSuffix}</b>
       </div>
       <button className="inner-button-filter" onClick={openFilter}>
-        Filter
+        {t.filter.title}
         <i className="fa-solid fa-filter"></i>
       </button>
     </>

@@ -1,11 +1,14 @@
+"use client";
 import Link from "next/link";
 import { Tour } from "@/types";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface Props {
   tour: Tour;
 }
 
 export default function TourCard({ tour }: Props) {
+  const { t } = useTranslation();
   const priceAdult = tour.priceAdult || 0;
   const priceNewAdult = tour.priceNewAdult || 0;
   const discount = priceAdult > 0
@@ -26,13 +29,13 @@ export default function TourCard({ tour }: Props) {
       {discount > 0 && (
         <div className="inner-discount">
           <i className="fa-solid fa-bolt"></i>
-          {` Sale -${discount}%`}
+          {` ${t.tourCard.sale} -${discount}%`}
         </div>
       )}
 
       <div className="inner-content">
         <h3 className="inner-title">
-          <Link href={`/tours/${tour.slug}`}>{tour.name || "Tour name updating"}</Link>
+          <Link href={`/tours/${tour.slug}`}>{tour.name || t.tourCard.nameUpdating}</Link>
         </h3>
 
         <div className="inner-prices">
@@ -48,10 +51,10 @@ export default function TourCard({ tour }: Props) {
 
         <div className="inner-desc">
           {tour.code && (
-            <div>Tour Code: <span>{tour.code}</span></div>
+            <div>{t.tourCard.tourCode} <span>{tour.code}</span></div>
           )}
-          <div>Departure Date: <span>{tour.departureDateFormat || "Contact us"}</span></div>
-          <div>Duration: <span>{tour.time || "Updating"}</span></div>
+          <div>{t.common.departureDate}: <span>{tour.departureDateFormat || t.tourCard.contactUs}</span></div>
+          <div>{t.common.duration}: <span>{tour.time || t.tourCard.updating}</span></div>
         </div>
 
         <div className="inner-meta">
@@ -64,7 +67,7 @@ export default function TourCard({ tour }: Props) {
             <div className="inner-number">(5)</div>
           </div>
           <div className="inner-stock">
-            <div className="inner-label">Seats left:</div>
+            <div className="inner-label">{t.tourCard.seatsLeft}</div>
             <div className="inner-number">{tour.stockAdult || 0}</div>
           </div>
         </div>

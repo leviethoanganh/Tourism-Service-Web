@@ -2,8 +2,11 @@
 import { useEffect, useState, Suspense } from "react";
 import { adminUserService } from "@/services/admin.service";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslation } from "@/hooks/useTranslation";
+import T from "@/components/shared/T";
 
 function UserListContent() {
+  const { t } = useTranslation();
   const router = useRouter();
   const sp = useSearchParams();
 
@@ -39,7 +42,7 @@ function UserListContent() {
 
   return (
     <>
-      <h1 className="box-title">User Management</h1>
+      <h1 className="box-title">{t.adminUsers.title}</h1>
 
       {/* Section 4 */}
       <div className="section-4">
@@ -49,9 +52,9 @@ function UserListContent() {
           </div>
           <div className="inner-item">
             <select value={status} onChange={e => router.push(buildQuery({ status: e.target.value, page: "1" }))}>
-              <option value="">Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
+              <option value="">{t.adminOrders.statusPlaceholder}</option>
+              <option value="active">{t.common.active}</option>
+              <option value="inactive">{t.common.inactive}</option>
             </select>
           </div>
           <div className="inner-item inner-reset">
@@ -68,7 +71,7 @@ function UserListContent() {
           <form className="inner-search"
             onSubmit={e => { e.preventDefault(); router.push(buildQuery({ keyword: search, page: "1" })); }}>
             <i className="fa-solid fa-magnifying-glass" />
-            <input type="text" placeholder="Search users..." value={search}
+            <input type="text" placeholder={t.adminUsers.searchPlaceholder} value={search}
               onChange={e => setSearch(e.target.value)} />
           </form>
         </div>
@@ -76,22 +79,22 @@ function UserListContent() {
 
       {/* Section 6 */}
       <div className="section-6">
-        {loading ? <p style={{ padding: 20 }}>Loading...</p> : (
+        {loading ? <p style={{ padding: 20 }}>{t.common.loading}</p> : (
           <div className="table-2">
             <table>
               <thead>
                 <tr>
-                  <th className="text-center">Avatar</th>
-                  <th className="text-left">Full Name</th>
-                  <th className="text-left">Email</th>
-                  <th className="text-left">Phone</th>
-                  <th className="text-center">Status</th>
-                  <th className="text-left">Joined</th>
+                  <th className="text-center">{t.adminCategories.colAvatar}</th>
+                  <th className="text-left">{t.adminUsers.colFullName}</th>
+                  <th className="text-left">{t.adminUsers.colEmail}</th>
+                  <th className="text-left">{t.adminUsers.colPhone}</th>
+                  <th className="text-center">{t.common.status}</th>
+                  <th className="text-left">{t.adminUsers.colJoined}</th>
                 </tr>
               </thead>
               <tbody>
                 {list.length === 0
-                  ? <tr><td colSpan={6} className="text-center" style={{ padding: 30, color: "#bbb" }}>No users found</td></tr>
+                  ? <tr><td colSpan={6} className="text-center" style={{ padding: 30, color: "#bbb" }}>{t.adminUsers.noUsersFound}</td></tr>
                   : list.map((u: any) => (
                     <tr key={u._id}>
                       <td className="text-center">
@@ -105,7 +108,7 @@ function UserListContent() {
                       <td className="text-left">{u.phone ?? "—"}</td>
                       <td className="text-center">
                         <span className={`tag ${u.status === "active" ? "tag-green" : "tag-red"}`}>
-                          {u.status === "active" ? "Active" : "Inactive"}
+                          {u.status === "active" ? t.common.active : t.common.inactive}
                         </span>
                       </td>
                       <td className="text-left">
@@ -122,11 +125,11 @@ function UserListContent() {
       {/* Section 7 */}
       {!loading && totalRecord > 0 && (
         <div className="section-7">
-          <span className="inner-label">Showing {showFrom}–{showTo} of {totalRecord}</span>
+          <span className="inner-label">{t.adminCommon.showingLabel} {showFrom}–{showTo} {t.adminCommon.ofLabel} {totalRecord}</span>
           <select className="inner-pagination" value={currentPage}
             onChange={e => router.push(buildQuery({ page: e.target.value }))}>
             {Array.from({ length: totalPage }, (_, i) => i + 1).map(p =>
-              <option key={p} value={p}>Page {p}</option>
+              <option key={p} value={p}>{t.adminCommon.pageLabel} {p}</option>
             )}
           </select>
         </div>
@@ -137,7 +140,7 @@ function UserListContent() {
 
 export default function UsersPage() {
   return (
-    <Suspense fallback={<div style={{ padding: 20 }}>Loading...</div>}>
+    <Suspense fallback={<div style={{ padding: 20 }}><T ns="common" k="loading" /></div>}>
       <UserListContent />
     </Suspense>
   );
